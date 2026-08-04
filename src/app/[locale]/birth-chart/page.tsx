@@ -2,78 +2,62 @@
 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useSession } from 'next-auth/react';
-import jsPDF from 'jspdf';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import AuthModal from '@/components/AuthModal';
+import Loader from '@/components/Loader';
 import { useToast } from '@/context/ToastContext';
 import styles from './page.module.css';
 
 export default function BirthChart() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: session } = useSession();
   const { showToast } = useToast();
+
   const [formData, setFormData] = useState({ name: '', date: '', time: '', location: '' });
   const [result, setResult] = useState<string | null>(null);
+  const [metadata, setMetadata] = useState<Record<string, string> | null>(null);
   const [loading, setLoading] = useState(false);
   const [remainingQuota, setRemainingQuota] = useState<number | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
-  const generatePDF = () => {
-    if (!result) return;
-    const doc = new jsPDF();
-    doc.setFillColor(5, 5, 26);
-    doc.rect(0, 0, 210, 40, 'F');
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(24);
-    doc.text('ZodiacSense Report', 105, 25, { align: 'center' });
-
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(16);
-    doc.text('Birth Chart Breakdown', 20, 60);
-
-    doc.setFontSize(12);
-    const splitText = doc.splitTextToSize(result, 170);
-    doc.text(splitText, 20, 80);
-
-    doc.setFontSize(10);
-    doc.setTextColor(150, 150, 150);
-    doc.text(`Generated on ${new Date().toLocaleDateString()}`, 20, 280);
-    doc.save('birth_chart_report.pdf');
-    showToast('Birth Chart PDF report downloaded!', 'success', 'PDF Export');
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!session) {
-      showToast('Please Sign In to generate your Birth Chart and daily quota.', 'warning', 'Authentication Required');
+      showToast('Please sign in to generate your Birth Chart.', 'warning', 'Sign In Required');
       setIsAuthModalOpen(true);
       return;
     }
 
     setLoading(true);
+    setResult(null);
+    setMetadata(null);
 
     try {
-      const response = await fetch('/api/birth-chart', {
+      const langMap: Record<string, string> = { en: 'English', hi: 'Hindi', bn: 'Bengali' };
+      const selectedLang = langMap[i18n.language] || 'English';
+
+      const res = await fetch('/api/birth-chart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, language: selectedLang }),
       });
+      const data = await res.json();
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (!res.ok) {
         showToast(data.error || 'Failed to generate birth chart', 'error', 'Calculation Error');
       } else {
         setResult(data.result);
-        if (data.remainingQuota !== undefined) {
-          setRemainingQuota(data.remainingQuota);
-        }
-        showToast('Birth Chart calculation generated successfully!', 'success', 'Kundali Complete');
+        setMetadata(data.metadata ?? null);
+        if (data.remainingQuota !== undefined) setRemainingQuota(data.remainingQuota);
+        showToast('Your Kundali has been generated!', 'success', 'Kundali Complete');
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }
-    } catch (error) {
-      console.error(error);
-      showToast('Cosmic connection error. Please try again.', 'error', 'Network Error');
+    } catch {
+      showToast('Network error. Please try again.', 'error', 'Connection Error');
     } finally {
       setLoading(false);
     }
@@ -81,101 +65,151 @@ export default function BirthChart() {
 
   return (
     <div className={styles.container}>
-      <motion.div
-        className={styles.content}
-        initial={{ opacity: 0, y: 20 }}
+      <motion.h1
+        className={styles.title}
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h1 className={`glow-text ${styles.title}`}>{t('birth_chart')}</h1>
-        <p className={styles.description}>Enter your birth details to generate your comprehensive astrological birth chart.</p>
+        {t('birth_chart')}
+      </motion.h1>
 
-        {remainingQuota !== null && (
-          <div style={{ marginBottom: '1.5rem', fontSize: '0.95rem', color: '#38bdf8', fontWeight: 600 }}>
-            ✦ Remaining Birth Chart Readings Today: {remainingQuota}
+      <motion.p
+        className={styles.subtitle}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+      >
+        Enter your birth details to generate an accurate Vedic &amp; Western birth chart powered by real astronomical calculations.
+      </motion.p>
+
+      {remainingQuota !== null && (
+        <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#38bdf8', fontWeight: 600 }}>
+          ✦ Remaining readings today: {remainingQuota}
+        </div>
+      )}
+
+      <motion.div
+        className={styles.formCard}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+      >
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formGrid}>
+            <div className={styles.formGroup}>
+              <label htmlFor="bc-name">Full Name</label>
+              <input
+                suppressHydrationWarning
+                id="bc-name"
+                type="text"
+                required
+                placeholder="e.g. Arjun Sharma"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="bc-location">Place of Birth</label>
+              <input
+                suppressHydrationWarning
+                id="bc-location"
+                type="text"
+                required
+                placeholder="e.g. Kolkata, India"
+                value={formData.location}
+                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="bc-date">Date of Birth</label>
+              <input
+                suppressHydrationWarning
+                id="bc-date"
+                type="date"
+                required
+                value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="bc-time">Time of Birth</label>
+              <input
+                suppressHydrationWarning
+                id="bc-time"
+                type="time"
+                required
+                value={formData.time}
+                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+              />
+            </div>
           </div>
-        )}
 
-        <form onSubmit={handleSubmit} className={`glass-panel ${styles.form}`}>
-          <div className={styles.inputGroup}>
-            <label>Full Name</label>
-            <input
-              type="text"
-              required
-              placeholder="e.g. John Doe"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>Date of Birth</label>
-            <input
-              type="date"
-              required
-              value={formData.date}
-              onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>Time of Birth</label>
-            <input
-              type="time"
-              required
-              value={formData.time}
-              onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label>Place of Birth</label>
-            <input
-              type="text"
-              required
-              placeholder="e.g. London, UK"
-              value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-            />
-          </div>
-
-          <button type="submit" className={styles.submitBtn} disabled={loading}>
+          <button
+            suppressHydrationWarning
+            type="submit"
+            className={styles.button}
+            disabled={loading}
+          >
             {!session
-              ? 'Sign In to Generate Chart'
+              ? '🔒 Sign In to Generate Chart'
               : loading
-              ? 'Calculating Planetary Alignment...'
-              : 'Generate Chart'}
+                ? '⏳ Calculating Planetary Positions...'
+                : '🌌 Generate My Birth Chart'}
           </button>
         </form>
-
-        {result && (
-          <motion.div
-            className={`glass-panel ${styles.resultCard}`}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2>Vedic & Western Synthesis</h2>
-              <button
-                onClick={generatePDF}
-                style={{
-                  padding: '0.5rem 1rem',
-                  background: 'linear-gradient(to right, #8b5cf6, #3b82f6)',
-                  border: 'none',
-                  borderRadius: '8px',
-                  color: 'white',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
-              >
-                📥 Download PDF
-              </button>
-            </div>
-            <div className={styles.resultText}>{result}</div>
-          </motion.div>
-        )}
       </motion.div>
 
-      {/* Auth Modal Popup */}
+      <AnimatePresence mode="wait">
+        {loading && (
+          <Loader key="loader" text="Calculating Planetary Positions..." />
+        )}
+        {!loading && result && (
+          <motion.div
+            key="result"
+            className={styles.result}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {/* Metadata chips */}
+            {metadata && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                {Object.entries(metadata).slice(0, 6).map(([k, v]) => (
+                  <span
+                    key={k}
+                    style={{
+                      padding: '0.3rem 0.75rem',
+                      background: 'rgba(139,92,246,0.15)',
+                      border: '1px solid rgba(139,92,246,0.35)',
+                      borderRadius: '9999px',
+                      fontSize: '0.8rem',
+                      color: '#a78bfa',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {k.replace(/([A-Z])/g, ' $1').trim()}: {v}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <div style={{ marginBottom: '1.5rem' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-color-strong)', margin: 0 }}>
+                🌌 Your Vedic &amp; Western Kundali
+              </h2>
+            </div>
+
+            <div className="markdown-body">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{result}</ReactMarkdown>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </div>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import { Camera, RefreshCw, CheckCircle2, Sparkles } from 'lucide-react';
+import { Camera, RefreshCw, CheckCircle2, Sparkles, SwitchCamera, Upload } from 'lucide-react';
 import styles from './CameraCapture.module.css';
 
 interface CameraCaptureProps {
@@ -12,11 +12,14 @@ interface CameraCaptureProps {
 export default function CameraCapture({ onCapture, label }: CameraCaptureProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isHandDetected, setIsHandDetected] = useState(false);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [detecting, setDetecting] = useState(false);
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
 
   const handDetectionTimer = useRef<NodeJS.Timeout | null>(null);
   const countdownInterval = useRef<NodeJS.Timeout | null>(null);
@@ -58,31 +61,75 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
       canvas.height = height;
       const context = canvas.getContext('2d');
       if (context) {
+        // Mirror if using front camera
+        if (facingMode === 'user') {
+          context.translate(width, 0);
+          context.scale(-1, 1);
+        }
         context.drawImage(video, 0, 0, width, height);
-        const imageSrc = canvas.toDataURL('image/jpeg', 0.65);
+        const imageSrc = canvas.toDataURL('image/jpeg', 0.7);
         setCapturedImage(imageSrc);
         onCapture(imageSrc);
         stopCamera();
       }
     }
-  }, [onCapture, stopCamera]);
+  }, [facingMode, onCapture, stopCamera]);
 
-  const startCamera = async () => {
+  const startCamera = async (overrideFacing?: 'user' | 'environment') => {
+    const targetFacing = overrideFacing || facingMode;
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+      setStream(null);
+    }
+
     try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } },
-      });
+      let mediaStream: MediaStream;
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: targetFacing, width: { ideal: 1280 }, height: { ideal: 720 } },
+        });
+      } catch (firstErr) {
+        // Fallback for devices without strict facingMode support
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: { width: { ideal: 1280 }, height: { ideal: 720 } },
+        });
+      }
       setStream(mediaStream);
       setDetecting(true);
     } catch (err) {
       console.error('Error accessing camera', err);
-      alert('Please allow camera access to scan your hand.');
+      alert('Camera access failed. You can also upload a palm photo directly from your device.');
+    }
+  };
+
+  const toggleCamera = () => {
+    const nextFacing = facingMode === 'environment' ? 'user' : 'environment';
+    setFacingMode(nextFacing);
+    if (stream) {
+      startCamera(nextFacing);
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageSrc = event.target?.result as string;
+        if (imageSrc) {
+          setCapturedImage(imageSrc);
+          onCapture(imageSrc);
+          stopCamera();
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   useEffect(() => {
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
+      videoRef.current.play().catch(() => {});
     }
   }, [stream]);
 
@@ -106,9 +153,9 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
 
         hands.setOptions({
           maxNumHands: 1,
-          modelComplexity: 1,
-          minDetectionConfidence: 0.65,
-          minTrackingConfidence: 0.65,
+          modelComplexity: 0, // Lower complexity for faster mobile performance
+          minDetectionConfidence: 0.55,
+          minTrackingConfidence: 0.55,
         });
 
         let countdownActive = false;
@@ -147,7 +194,9 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
         cameraInstance = new cameraModule.Camera(videoRef.current, {
           onFrame: async () => {
             if (videoRef.current && isSubscribed) {
-              await hands.send({ image: videoRef.current });
+              try {
+                await hands.send({ image: videoRef.current });
+              } catch (e) {}
             }
           },
           width: 640,
@@ -156,7 +205,7 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
 
         cameraInstance.start();
       } catch (err) {
-        console.error('MediaPipe Init Error:', err);
+        console.warn('MediaPipe Init Warning (Manual capture still active):', err);
       }
     }
 
@@ -182,16 +231,39 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
       {!capturedImage ? (
         <div className={styles.cameraBox}>
           {!stream ? (
-            <button className={styles.startBtn} onClick={startCamera}>
-              <Camera size={36} />
-              <span>Show Hand to Camera</span>
-              <span style={{ fontSize: '0.8rem', opacity: 0.7, marginTop: '0.2rem' }}>
-                Auto-captures when hand is aligned
-              </span>
-            </button>
+            <div className={styles.startActions}>
+              <button className={styles.startBtn} onClick={() => startCamera()}>
+                <Camera size={32} />
+                <span>Scan with Camera</span>
+                <span className={styles.subHint}>
+                  Auto-scans or snap manually
+                </span>
+              </button>
+
+              <div className={styles.divider}>OR</div>
+
+              <button className={styles.uploadBtn} onClick={() => fileInputRef.current?.click()}>
+                <Upload size={20} />
+                <span>Upload from Gallery</span>
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className={styles.fileInput}
+                onChange={handleFileUpload}
+              />
+            </div>
           ) : (
             <>
-              <video ref={videoRef} autoPlay playsInline muted className={styles.video} />
+              <video
+                ref={videoRef}
+                autoPlay
+                playsInline
+                muted
+                className={`${styles.video} ${facingMode === 'user' ? styles.mirrored : ''}`}
+              />
 
               {/* Hand Detection Overlay Frame */}
               <div className={`${styles.handGuideFrame} ${isHandDetected ? styles.detected : ''}`}>
@@ -208,10 +280,19 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
                 ) : (
                   <div className={styles.detectionBadgePending}>
                     <Sparkles size={16} />
-                    <span>Place Hand Inside Frame</span>
+                    <span>Place Palm Inside Frame</span>
                   </div>
                 )}
               </div>
+
+              {/* Camera Switch Toggle */}
+              <button
+                className={styles.switchCamBtn}
+                onClick={toggleCamera}
+                title="Switch Camera (Front/Back)"
+              >
+                <SwitchCamera size={20} />
+              </button>
 
               {/* Countdown Animation */}
               {countdown !== null && (
@@ -221,7 +302,7 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
                 </div>
               )}
 
-              {/* Manual Snap Fallback Button */}
+              {/* Manual Snap Button */}
               <button className={styles.captureBtn} onClick={capturePhoto} title="Manual Snap">
                 <div className={styles.captureInner} />
               </button>
@@ -233,8 +314,8 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={capturedImage} alt="Captured Hand" className={styles.preview} />
           <button className={styles.retakeBtn} onClick={retake}>
-            <RefreshCw size={20} />
-            <span>Retake</span>
+            <RefreshCw size={18} />
+            <span>Retake / Change</span>
           </button>
         </div>
       )}

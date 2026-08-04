@@ -163,3 +163,53 @@
 .link:hover {
   text-decoration: underline;
 }
+
+/* =============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================= */
+@media (max-width: 1024px) {
+  .container {
+    padding: 1.5rem 1.25rem;
+  }
+  .card {
+    padding: 2.5rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem 1rem;
+    min-height: calc(100vh - 100px);
+  }
+  .card {
+    padding: 2rem 1.5rem;
+  }
+  .title {
+    font-size: 1.65rem;
+  }
+  .subtitle {
+    font-size: 0.9rem;
+  }
+  .inputGroup input {
+    padding: 0.8rem 0.95rem;
+    font-size: 0.95rem;
+  }
+  .submitBtn {
+    padding: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.75rem 0.75rem;
+  }
+  .card {
+    padding: 1.5rem 1rem;
+  }
+  .title {
+    font-size: 1.4rem;
+  }
+  .header {
+    margin-bottom: 1.5rem;
+  }
+}

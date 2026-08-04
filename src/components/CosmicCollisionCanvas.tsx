@@ -107,10 +107,10 @@ export default function CosmicCollisionCanvas() {
       {
         id: 'venus',
         name: 'Venus',
-        x: width * 0.50,
-        y: height * 0.12,
-        baseX: width * 0.50,
-        baseY: height * 0.12,
+        x: width * 0.28,
+        y: height * 0.08,
+        baseX: width * 0.28,
+        baseY: height * 0.08,
         vx: 0.1,
         vy: 0.14,
         radius: 26,
@@ -321,62 +321,11 @@ export default function CosmicCollisionCanvas() {
         const scrollParallaxY = scrollOffset * p1.depthFactor;
         p1.radius = (p1.baseRadius * mobileScaleFactor) * (1 + (scrollOffset / height) * 0.2);
 
-        // Move planet across full screen axes in slow motion
-        p1.x += p1.vx;
-        p1.y += p1.vy;
+        // Move planet across full screen axes in slow motion (Disabled by user request)
+        // p1.x += p1.vx;
+        // p1.y += p1.vy;
 
         const renderY = p1.y - scrollParallaxY;
-
-        // Screen boundary rebound across full width & height
-        const padding = p1.radius + (isMobile ? 8 : 15);
-        const topBoundary = isMobile ? 60 : 75;
-
-        if (p1.x < padding) {
-          p1.x = padding;
-          p1.vx *= -1;
-        } else if (p1.x > width - padding) {
-          p1.x = width - padding;
-          p1.vx *= -1;
-        }
-
-        if (renderY < topBoundary + p1.radius) {
-          p1.y = topBoundary + p1.radius + scrollParallaxY;
-          p1.vy *= -1;
-        } else if (renderY > height - padding) {
-          p1.y = height - padding + scrollParallaxY;
-          p1.vy *= -1;
-        }
-
-        // Collision Check with other planets
-        for (let j = i + 1; j < planets.length; j++) {
-          const p2 = planets[j];
-          const renderY2 = p2.y - scrollOffset * p2.depthFactor;
-          const dx = p2.x - p1.x;
-          const dy = renderY2 - renderY;
-          const distance = Math.hypot(dx, dy);
-          const minDistance = p1.radius + p2.radius;
-
-          if (distance < minDistance) {
-            // Collision point
-            const collisionX = (p1.x + p2.x) / 2;
-            const collisionY = (renderY + renderY2) / 2;
-
-            // Trigger fireworks!
-            createFireworks(collisionX, collisionY, p1.glowColor, p2.glowColor, isMobile);
-
-            // Gentle elastic bounce physics response
-            const angle = Math.atan2(dy, dx);
-            const targetX = p1.x + Math.cos(angle) * minDistance;
-            const targetY = renderY + Math.sin(angle) * minDistance;
-            const ax = (targetX - p2.x) * 0.025;
-            const ay = (targetY - renderY2) * 0.025;
-
-            p1.vx -= ax;
-            p1.vy -= ay;
-            p2.vx += ax;
-            p2.vy += ay;
-          }
-        }
 
         // Render 3D Planet at renderY
         ctx.save();
