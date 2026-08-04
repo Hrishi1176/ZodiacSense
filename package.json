@@ -1,0 +1,38 @@
+{
+  "name": "zodiac-sense",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@mediapipe/camera_utils": "^0.3.1675466862",
+    "@mediapipe/hands": "^0.4.1675469240",
+    "bcryptjs": "^3.0.3",
+    "framer-motion": "^12.43.0",
+    "html2canvas": "^1.4.1",
+    "i18next": "^26.3.6",
+    "i18next-resources-to-backend": "^1.2.3",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^1.28.0",
+    "mongoose": "^9.9.1",
+    "next": "16.3.0",
+    "next-auth": "^4.24.15",
+    "next-i18n-router": "^5.5.8",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-i18next": "^17.0.11"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.0",
+    "typescript": "^5"
+  }
+}
