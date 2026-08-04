@@ -6,10 +6,14 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Sparkles, Hand, Compass, Heart, Calendar, ChevronDown, ChevronUp, Zap } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import styles from './page.module.css';
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
 
   const [data, setData] = useState<any>(null);
@@ -20,16 +24,25 @@ export default function Dashboard() {
     if (status === 'unauthenticated') {
       router.push('/auth/login');
     } else if (status === 'authenticated') {
-      fetch('/api/dashboard')
-        .then((res) => res.json())
-        .then((d) => {
+      const fetchData = async () => {
+        const langMap: Record<string, string> = { en: 'English', hi: 'Hindi', bn: 'Bengali' };
+        const selectedLang = langMap[i18n.language] || 'English';
+
+        try {
+          const res = await fetch('/api/dashboard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ language: selectedLang })
+          });
+          const d = await res.json();
           setData(d);
           setLoading(false);
-        })
-        .catch((err) => {
+        } catch (err) {
           console.error(err);
           setLoading(false);
-        });
+        }
+      };
+      fetchData();
     }
   }, [status, router]);
 
@@ -164,7 +177,9 @@ export default function Dashboard() {
           <Sparkles size={24} color="#a78bfa" />
           <h2>AI Life Analytics & Cosmic Synthesis</h2>
         </div>
-        <p className={styles.analyticsText}>{analytics?.summary}</p>
+        <div className={`${styles.analyticsText} markdown-body`}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{analytics?.summary || ''}</ReactMarkdown>
+        </div>
       </motion.div>
 
       {/* Reading History */}
@@ -205,9 +220,9 @@ export default function Dashboard() {
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
-                      className={styles.historyContent}
+                      className={`${styles.historyContent} markdown-body`}
                     >
-                      {item.result}
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.result}</ReactMarkdown>
                     </motion.div>
                   )}
                 </div>

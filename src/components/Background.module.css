@@ -47,6 +47,11 @@
   z-index: 2;
   pointer-events: none;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.floatingWidgetHidden {
+  display: none;
 }
 
 [data-theme='light'] .floatingWidget {
@@ -54,6 +59,16 @@
   border-color: rgba(139, 92, 246, 0.25);
   color: #1a202c;
   box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
+}
+
+@media (max-width: 768px) {
+  .floatingWidget {
+    font-size: 0.7rem;
+    padding: 0.5rem 0.85rem;
+  }
+  .floatingWidgetHidden {
+    display: none;
+  }
 }
 
 /* Mouse Blob */

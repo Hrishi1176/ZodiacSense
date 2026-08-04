@@ -234,3 +234,80 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* =============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================= */
+@media (max-width: 1024px) {
+  .modal {
+    max-width: 480px;
+    padding: 2.25rem 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    padding: 1rem;
+    align-items: flex-start;
+    padding-top: 5vh;
+  }
+  .modal {
+    padding: 1.75rem 1.25rem;
+    border-radius: var(--radius-lg);
+  }
+  .header h2 {
+    font-size: 1.5rem;
+  }
+  .header p {
+    font-size: 0.85rem;
+  }
+  .iconCircle {
+    width: 48px;
+    height: 48px;
+  }
+  .inputGroup input {
+    padding: 0.8rem 0.95rem 0.8rem 2.5rem;
+    font-size: 0.9rem;
+  }
+  .submitBtn {
+    padding: 0.85rem;
+    font-size: 0.95rem;
+  }
+  .googleBtn {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  .closeBtn {
+    width: 32px;
+    height: 32px;
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .overlay {
+    padding: 0.75rem;
+    padding-top: 3vh;
+  }
+  .modal {
+    padding: 1.5rem 1rem;
+  }
+  .header h2 {
+    font-size: 1.3rem;
+  }
+  .header p {
+    font-size: 0.8rem;
+  }
+  .tab {
+    padding: 0.55rem;
+    font-size: 0.85rem;
+  }
+  .inputGroup input {
+    padding: 0.75rem 0.85rem 0.75rem 2.4rem;
+    font-size: 0.9rem;
+  }
+  .inputIcon {
+    left: 0.85rem;
+  }
+}

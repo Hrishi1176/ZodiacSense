@@ -4,16 +4,17 @@ import React, { useEffect, useRef } from 'react';
 import styles from './Background.module.css';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import CosmicCollisionCanvas from './CosmicCollisionCanvas';
+import ZodiacOverlay from './ZodiacOverlay';
 
 export default function Background() {
   const blobRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
 
   // Apple-style scroll-triggered background video transforms with full-screen coverage
-  const videoScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1.25, 1.4]);
-  const videoRotate = useTransform(scrollYProgress, [0, 1], [0, 4]);
-  const videoBlur = useTransform(scrollYProgress, [0, 0.5, 1], ['blur(0px)', 'blur(2px)', 'blur(5px)']);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.55, 0.65, 0.75]);
+  const videoScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1.18, 1.3]);
+  const videoRotate = useTransform(scrollYProgress, [0, 1], [0, 3]);
+  const videoBlur = useTransform(scrollYProgress, [0, 0.5, 1], ['blur(0px)', 'blur(1.5px)', 'blur(3px)']);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.5, 0.6, 0.7]);
 
   useEffect(() => {
     const handlePointerMove = (e: PointerEvent) => {
@@ -28,7 +29,7 @@ export default function Background() {
         );
       }
     };
-    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
     return () => window.removeEventListener('pointermove', handlePointerMove);
   }, []);
 
@@ -61,6 +62,9 @@ export default function Background() {
       {/* Cosmic Physics Canvas: 9 3D Planets with Real-Time Scroll Parallax & Collision Fireworks */}
       <CosmicCollisionCanvas />
 
+      {/* 12 Zodiac Constellation Wheel with Twinkling Stars (Astrology Live Animation) */}
+      <ZodiacOverlay />
+
       {/* Floating Astrology Badges */}
       <motion.div
         className={styles.floatingWidget}
@@ -78,6 +82,15 @@ export default function Background() {
         transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
       >
         <span>✦ Aligning Stars</span>
+      </motion.div>
+
+      <motion.div
+        className={`${styles.floatingWidget} ${styles.floatingWidgetHidden}`}
+        style={{ top: '50%', right: '8%' }}
+        animate={{ y: [0, -14, 0], opacity: [0.35, 0.7, 0.35] }}
+        transition={{ duration: 13, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+      >
+        <span>☥ Cosmic Wisdom</span>
       </motion.div>
     </div>
   );

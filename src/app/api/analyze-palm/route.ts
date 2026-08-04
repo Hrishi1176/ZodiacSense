@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth';
 import { checkAndIncrementQuota } from '@/lib/quota';
 import { connectToDatabase } from '@/lib/db';
 import Reading from '@/models/Reading';
+import { callGrokVision } from '@/lib/ai';
+import palmReadingPrompt from '@/config/prompts/palm-reading.prompt.json';
 
 export async function POST(req: Request) {
   try {
@@ -27,74 +29,59 @@ export async function POST(req: Request) {
       );
     }
 
-    const { leftHand, rightHand } = await req.json();
+    const { leftHand, rightHand, language } = await req.json();
 
     if (!leftHand || !rightHand) {
-      return NextResponse.json({ error: 'Both hand images are required.' }, { status: 400 });
+      return NextResponse.json({ error: 'Both left and right hand images are required.' }, { status: 400 });
     }
 
-    const grokKey = process.env.GROK_API_KEY;
-    let aiResultText = '';
+    // Validate that both are base64 data URLs or valid URLs
+    const isValidImage = (img: string) =>
+      img.startsWith('data:image/') || img.startsWith('http://') || img.startsWith('https://');
 
-    if (grokKey && grokKey !== 'your_grok_key_here') {
-      try {
-        const grokResponse = await fetch('https://api.x.ai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${grokKey}`,
-          },
-          body: JSON.stringify({
-            model: 'grok-2-vision-1212',
-            messages: [
-              {
-                role: 'user',
-                content: [
-                  {
-                    type: 'text',
-                    text: 'Perform a detailed palm reading based on these left and right hand palm images. Analyze the Life Line, Head Line, Heart Line, and Fate Line. Provide insights into career, relationships, health, and personal growth.',
-                  },
-                  { type: 'image_url', image_url: { url: leftHand } },
-                  { type: 'image_url', image_url: { url: rightHand } },
-                ],
-              },
-            ],
-            max_tokens: 800,
-          }),
-        });
-
-        const grokData = await grokResponse.json();
-        aiResultText = grokData.choices?.[0]?.message?.content || '';
-      } catch (err) {
-        console.error('Grok API Error:', err);
-      }
+    if (!isValidImage(leftHand) || !isValidImage(rightHand)) {
+      return NextResponse.json(
+        { error: 'Invalid image format. Images must be base64 data URLs or public image URLs.' },
+        { status: 400 }
+      );
     }
 
-    if (!aiResultText) {
-      aiResultText = `✨ Palm Alignment Insights for ${session.user?.name || 'Cosmic Seeker'}:
+    // Call Grok Vision with the two palm images using the structured prompt
+    const finalSystemPrompt = `${palmReadingPrompt.systemPrompt}\n\nIMPORTANT: You must write the ENTIRE response in ${language || 'English'}. Do not output English if another language was requested.`;
 
-• Left Hand (Inner Potential & Past): Your life line shows resilience and deep inner wisdom. The head line indicates a strong creative mind with analytical depth.
-• Right Hand (Present & Destiny): The fate line shows significant career growth and alignment coming in the upcoming cycles. Your heart line reflects deep emotional devotion and capacity for meaningful connections.
-• Cosmic Guidance: Embrace key opportunities around communication and creative leadership. Trust your intuition when making major life transitions.`;
-    }
+    const aiResponse = await callGrokVision(
+      palmReadingPrompt.model,
+      finalSystemPrompt,
+      palmReadingPrompt.userPromptText,
+      [leftHand, rightHand],
+      palmReadingPrompt.maxTokens,
+    );
 
     // Store reading in MongoDB
     await connectToDatabase();
     const newReading = new Reading({
       userId,
       type: 'palm_reading',
-      inputData: { leftHandLength: leftHand.length, rightHandLength: rightHand.length },
-      result: aiResultText,
+      inputData: {
+        leftHandLength: leftHand.length,
+        rightHandLength: rightHand.length,
+        format: leftHand.startsWith('data:') ? 'base64' : 'url',
+      },
+      result: aiResponse.text,
+      metadata: {
+        model: aiResponse.model,
+        tokens: aiResponse.usage,
+      },
     });
     await newReading.save();
 
     return NextResponse.json({
-      result: aiResultText,
+      result: aiResponse.text,
       remainingQuota: quotaResult.remaining,
       limit: quotaResult.limit,
     });
   } catch (error: any) {
-    console.error('Palm Analysis Error:', error);
+    console.error('[analyze-palm] Error:', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
   }
 }
