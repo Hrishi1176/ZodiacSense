@@ -103,7 +103,7 @@ export default function Footer() {
           </h4>
           <span className={styles.link}>
             <span className={styles.flagEmoji}>🇮🇳</span>
-            English
+            English(US)
           </span>
           <span className={styles.link}>
             <span className={styles.flagEmoji}>🇮🇳</span>
