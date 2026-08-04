@@ -56,8 +56,9 @@ export default function BirthChart() {
         showToast('Your Kundali has been generated!', 'success', 'Kundali Complete');
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }
-    } catch {
-      showToast('Network error. Please try again.', 'error', 'Connection Error');
+    } catch (error: any) {
+      console.error('Birth Chart Error:', error);
+      showToast(`Network error: ${error.message || 'Please try again.'}`, 'error', 'Connection Error');
     } finally {
       setLoading(false);
     }

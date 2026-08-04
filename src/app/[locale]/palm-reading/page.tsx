@@ -62,8 +62,9 @@ export default function PalmReading() {
         showToast('Palm reading complete!', 'success', 'Cosmic Insight Unlocked');
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }
-    } catch {
-      showToast('Network error. Please try again.', 'error', 'Connection Error');
+    } catch (error: any) {
+      console.error('Palm Reading Error:', error);
+      showToast(`Network error: ${error.message || 'Please try again.'}`, 'error', 'Connection Error');
     } finally {
       setLoading(false);
     }
