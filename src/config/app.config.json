@@ -1,0 +1,16 @@
+{
+  "quotas": {
+    "palm_reading": 10,
+    "birth_chart": 10,
+    "marriage_bichar": 10
+  },
+  "ai": {
+    "model": "grok-2-vision-1212",
+    "maxTokens": 1024
+  },
+  "features": {
+    "autoHandDetect": true,
+    "googleAuth": true,
+    "emailAuth": true
+  }
+}

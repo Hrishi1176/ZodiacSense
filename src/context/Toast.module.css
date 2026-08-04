@@ -1,0 +1,122 @@
+.toastContainer {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 380px;
+  width: calc(100vw - 3rem);
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem 1.1rem;
+  background: rgba(15, 15, 42, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 18px;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px rgba(139, 92, 246, 0.2);
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme='light'] .toast {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(139, 92, 246, 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12), 0 0 20px rgba(139, 92, 246, 0.15);
+  color: #0f172a;
+}
+
+.iconArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2px;
+}
+
+.successIcon {
+  color: #10b981;
+}
+
+.errorIcon {
+  color: #ef4444;
+}
+
+.warningIcon {
+  color: #f59e0b;
+}
+
+.infoIcon {
+  color: #38bdf8;
+}
+
+.textArea {
+  flex: 1;
+}
+
+.toastTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  color: #ffffff;
+}
+
+[data-theme='light'] .toastTitle {
+  color: #0f172a;
+}
+
+.toastMessage {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  margin: 0;
+  color: rgba(226, 232, 240, 0.9);
+}
+
+[data-theme='light'] .toastMessage {
+  color: rgba(51, 65, 85, 0.9);
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: rgba(148, 163, 184, 0.7);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.closeBtn:hover {
+  color: #ffffff;
+}
+
+[data-theme='light'] .closeBtn:hover {
+  color: #0f172a;
+}
+
+/* Border highlights per type */
+.success {
+  border-left: 4px solid #10b981;
+}
+
+.error {
+  border-left: 4px solid #ef4444;
+}
+
+.warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.info {
+  border-left: 4px solid #38bdf8;
+}
