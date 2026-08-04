@@ -61,8 +61,9 @@ export default function MarriageBichar() {
         showToast('Compatibility report generated!', 'success', 'Gun Milan Complete');
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }
-    } catch {
-      showToast('Network error. Please try again.', 'error', 'Connection Error');
+    } catch (error: any) {
+      console.error('Marriage Bichar Error:', error);
+      showToast(`Network error: ${error.message || 'Please try again.'}`, 'error', 'Connection Error');
     } finally {
       setLoading(false);
     }
