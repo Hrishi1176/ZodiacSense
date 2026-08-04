@@ -102,7 +102,7 @@ export default function Footer() {
             Languages
           </h4>
           <span className={styles.link}>
-            <span className={styles.flagEmoji}>🇬🇧</span>
+            <span className={styles.flagEmoji}>🇮🇳</span>
             English
           </span>
           <span className={styles.link}>
@@ -110,7 +110,7 @@ export default function Footer() {
             हिंदी (Hindi)
           </span>
           <span className={styles.link}>
-            <span className={styles.flagEmoji}>🇧🇩</span>
+            <span className={styles.flagEmoji}>🇮🇳</span>
             বাংলা (Bengali)
           </span>
         </motion.div>
