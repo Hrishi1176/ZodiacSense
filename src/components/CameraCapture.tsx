@@ -43,7 +43,8 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
       const video = videoRef.current;
       const canvas = canvasRef.current;
 
-      const maxSize = 600;
+      // Keep palm images small to avoid Vercel 413 Request Entity Too Large
+      const maxSize = 480;
       let width = video.videoWidth || 640;
       let height = video.videoHeight || 480;
 
@@ -69,7 +70,7 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
           context.scale(-1, 1);
         }
         context.drawImage(video, 0, 0, width, height);
-        const imageSrc = canvas.toDataURL('image/jpeg', 0.7);
+        const imageSrc = canvas.toDataURL('image/jpeg', 0.6);
         setCapturedImage(imageSrc);
         onCapture(imageSrc);
         stopCamera();
@@ -79,54 +80,93 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
 
   const startCamera = async (overrideFacing?: 'user' | 'environment') => {
     const targetFacing = overrideFacing || facingMode;
+
+    // Stop any existing stream first and clear state
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
       setStream(null);
     }
+    setDetecting(false);
+    setIsHandDetected(false);
+    setCountdown(null);
+    setCameraError(false);
 
     try {
-      let mediaStream: MediaStream;
+      let mediaStream: MediaStream | null = null;
+
+      // Strategy 1: exact facing mode (best for mobile switching)
       try {
         mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: targetFacing, width: { ideal: 1280 }, height: { ideal: 720 } },
+          video: {
+            facingMode: { exact: targetFacing },
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+          },
         });
-      } catch (firstErr) {
-        // Fallback for devices without strict facingMode support
+      } catch (exactErr) {
+        console.warn(`Exact ${targetFacing} camera not available, trying preferred constraint`);
+      }
+
+      // Strategy 2: preferred facing mode
+      if (!mediaStream) {
+        try {
+          mediaStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: targetFacing,
+              width: { ideal: 1280 },
+              height: { ideal: 720 },
+            },
+          });
+        } catch (preferredErr) {
+          console.warn(`Preferred ${targetFacing} camera failed, falling back to any camera`);
+        }
+      }
+
+      // Strategy 3: any camera
+      if (!mediaStream) {
         mediaStream = await navigator.mediaDevices.getUserMedia({
           video: { width: { ideal: 1280 }, height: { ideal: 720 } },
         });
       }
+
       setStream(mediaStream);
       setDetecting(true);
       setCameraError(false);
     } catch (err) {
       console.error('Error accessing camera', err);
       setCameraError(true);
+      setDetecting(false);
     }
   };
 
-  const toggleCamera = () => {
+  const toggleCamera = async () => {
     const nextFacing = facingMode === 'environment' ? 'user' : 'environment';
     setFacingMode(nextFacing);
-    if (stream) {
-      startCamera(nextFacing);
+    if (stream || capturedImage === null) {
+      await startCamera(nextFacing);
     }
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const imageSrc = event.target?.result as string;
-        if (imageSrc) {
-          setCapturedImage(imageSrc);
-          onCapture(imageSrc);
-          stopCamera();
-        }
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const imageSrc = event.target?.result as string;
+      if (!imageSrc) return;
+      compressImage(imageSrc, 480, 0.6).then((compressed) => {
+        setCapturedImage(compressed);
+        onCapture(compressed);
+        stopCamera();
+      }).catch(() => {
+        setCapturedImage(imageSrc);
+        onCapture(imageSrc);
+        stopCamera();
+      });
+    };
+    reader.readAsDataURL(file);
+    e.target.value = ''; // reset input so same file can be selected again
   };
 
   useEffect(() => {
@@ -232,6 +272,38 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
   const retake = () => {
     setCapturedImage(null);
     startCamera();
+  };
+
+  const compressImage = (dataUrl: string, maxSize: number, quality: number): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxSize) {
+            height *= maxSize / width;
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width *= maxSize / height;
+            height = maxSize;
+          }
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return reject(new Error('Canvas context not available'));
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = dataUrl;
+    });
   };
 
   return (
