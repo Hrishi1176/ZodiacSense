@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Noto_Sans_Bengali, Noto_Sans_Devanagari } from 'next/font/google';
 import '../globals.css';
 import i18nConfig from '../../../i18nConfig';
 import { dir } from 'i18next';
@@ -13,6 +13,8 @@ import SessionProvider from '@/components/SessionProvider';
 import { ToastProvider } from '@/context/ToastContext';
 
 const inter = Inter({ subsets: ['latin'] });
+const notoBengali = Noto_Sans_Bengali({ subsets: ['bengali'], weight: ['400', '500', '600', '700'], display: 'swap' });
+const notoDevanagari = Noto_Sans_Devanagari({ subsets: ['devanagari'], weight: ['400', '500', '600', '700'], display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'ZodiacSense - Discover Your Cosmic Destiny',
@@ -63,7 +65,7 @@ export default async function RootLayout(props: {
 
   return (
     <html lang={locale} dir={dir(locale)} data-scroll-behavior="smooth" data-theme="dark" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.className} ${notoBengali.className} ${notoDevanagari.className}`}>
         <SessionProvider>
           <ThemeProvider>
             <ToastProvider>

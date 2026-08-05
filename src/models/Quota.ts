@@ -7,6 +7,7 @@ export interface IQuotaUsage extends Document {
     palm_reading: number;
     birth_chart: number;
     marriage_bichar: number;
+    chatbot: number;
   };
 }
 
@@ -18,6 +19,7 @@ const QuotaSchema: Schema<IQuotaUsage> = new Schema(
       palm_reading: { type: Number, default: 0 },
       birth_chart: { type: Number, default: 0 },
       marriage_bichar: { type: Number, default: 0 },
+      chatbot: { type: Number, default: 0 },
     },
   },
   { timestamps: true }

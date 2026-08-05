@@ -92,10 +92,16 @@ export default function Navbar({ locale }: { locale: string }) {
               </Link>
             ))}
             {session && (
-              <Link href="/dashboard" className={styles.dashboardLink}>
-                <LayoutDashboard size={16} />
-                <span>Dashboard</span>
-              </Link>
+              <>
+                <Link href="/dashboard" className={styles.dashboardLink}>
+                  <LayoutDashboard size={16} />
+                  <span>Dashboard</span>
+                </Link>
+                <Link href="/profile" className={styles.dashboardLink} style={{ marginLeft: '1rem' }}>
+                  <UserIcon size={16} />
+                  <span>Profile</span>
+                </Link>
+              </>
             )}
           </div>
 
@@ -194,6 +200,16 @@ export default function Navbar({ locale }: { locale: string }) {
                     <Link href="/dashboard" className={styles.mobileNavLink}>
                       <LayoutDashboard size={18} />
                       <span>Dashboard</span>
+                    </Link>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: navLinks.length * 0.07 + 0.05 }}
+                  >
+                    <Link href="/profile" className={styles.mobileNavLink}>
+                      <UserIcon size={18} />
+                      <span>My Profile</span>
                     </Link>
                   </motion.div>
                   <motion.button

@@ -2,7 +2,8 @@
   "quotas": {
     "palm_reading": 3,
     "birth_chart": 3,
-    "marriage_bichar": 3
+    "marriage_bichar": 3,
+    "chatbot": 5
   },
   "features": {
     "autoHandDetect": true,

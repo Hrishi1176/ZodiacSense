@@ -55,9 +55,10 @@ export async function POST(req: Request) {
       nakshatraLord: chart.nakshatra.lord,
       currentDasha: chart.currentDasha,
       dashaEndsAt: chart.dashaEndsAt,
+      language: language || 'English',
     });
 
-    const finalSystemPrompt = `${birthChartPrompt.systemPrompt}\n\nIMPORTANT: You must write the ENTIRE response in ${language || 'English'}. Do not output English if another language was requested.`;
+    const finalSystemPrompt = fillTemplate(birthChartPrompt.systemPrompt, { language: language || 'English' });
 
     // Step 4: Call Grok AI for interpretation
     const aiResponse = await callGrokText(
@@ -91,6 +92,7 @@ export async function POST(req: Request) {
     await newReading.save();
 
     return NextResponse.json({
+      id: newReading._id.toString(),
       result: aiResponse.text,
       metadata: {
         ascendant: chart.ascendant.sign,

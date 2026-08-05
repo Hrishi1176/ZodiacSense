@@ -61,9 +61,10 @@ export async function POST(req: Request) {
           marriageCount,
           latestType,
           readingSnippets: readingSnippets || 'No previous text available.',
+          language: language || 'English',
         });
 
-        const finalSystemPrompt = `${dashboardPrompt.systemPrompt}\n\nIMPORTANT: You must write the ENTIRE response in ${language || 'English'}. Do not output English if another language was requested.`;
+        const finalSystemPrompt = fillTemplate(dashboardPrompt.systemPrompt, { language: language || 'English' });
 
         const aiResponse = await callGrokText(
           dashboardPrompt.model,

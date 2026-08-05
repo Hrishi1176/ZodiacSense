@@ -6,7 +6,7 @@ import { authOptions } from '@/lib/auth';
 import { checkAndIncrementQuota } from '@/lib/quota';
 import { connectToDatabase } from '@/lib/db';
 import Reading from '@/models/Reading';
-import { callGrokVision } from '@/lib/ai';
+import { callGrokVision, fillTemplate } from '@/lib/ai';
 import palmReadingPrompt from '@/config/prompts/palm-reading.prompt.json';
 
 export async function POST(req: Request) {
@@ -49,12 +49,15 @@ export async function POST(req: Request) {
     }
 
     // Call Grok Vision with the two palm images using the structured prompt
-    const finalSystemPrompt = `${palmReadingPrompt.systemPrompt}\n\nIMPORTANT: You must write the ENTIRE response in ${language || 'English'}. Do not output English if another language was requested.`;
+    const finalSystemPrompt = fillTemplate(palmReadingPrompt.systemPrompt, { language: language || 'English' });
+
+    // Fill user prompt template with language
+    const userPrompt = fillTemplate(palmReadingPrompt.userPromptTemplate, { language: language || 'English' });
 
     const aiResponse = await callGrokVision(
       palmReadingPrompt.model,
       finalSystemPrompt,
-      palmReadingPrompt.userPromptText,
+      userPrompt,
       [leftHand, rightHand],
       palmReadingPrompt.maxTokens,
     );
