@@ -52,10 +52,24 @@ export default function PalmReading() {
           language: selectedLang
         }),
       });
-      const data = await res.json();
+
+      const contentType = res.headers.get('content-type') || '';
+      let data: any = {};
+      if (contentType.includes('application/json')) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        console.error('[analyze-palm] Non-JSON response:', res.status, text.slice(0, 200));
+        data = { error: text };
+      }
 
       if (!res.ok) {
-        showToast(data.error || 'Failed to analyze palms', 'error', 'Analysis Failed');
+        const msg = data.error || data.message || `Server error ${res.status}`;
+        if (res.status === 413 || msg.includes('Entity Too Large') || msg.includes('too large')) {
+          showToast('Images are too large. Please retake with less detail or upload smaller photos.', 'error', 'Image Too Large');
+        } else {
+          showToast(typeof msg === 'string' ? msg : 'Failed to analyze palms', 'error', 'Analysis Failed');
+        }
       } else {
         setResult(data.result);
         if (data.remainingQuota !== undefined) setRemainingQuota(data.remainingQuota);
