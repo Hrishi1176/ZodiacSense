@@ -1,4 +1,4 @@
-export const maxDuration = 60; // Max duration for Vercel Hobby plan
+export const maxDuration = 90;
 
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';

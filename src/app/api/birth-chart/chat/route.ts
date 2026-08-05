@@ -1,4 +1,4 @@
-export const maxDuration = 60;
+export const maxDuration = 90;
 
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
@@ -55,15 +55,37 @@ export async function POST(req: Request) {
         .join('\n');
     }
 
-    // Prepare context
-    const chartContext = reading.result || JSON.stringify(reading.inputData);
-    const currentTime = new Date().toISOString();
+    // Prepare context — include both the AI reading result AND raw chart data
+    const readingResult = reading.result || '';
+    const chartMeta = reading.metadata?.chart;
+    let chartContext = readingResult;
+    if (chartMeta) {
+      const planetLine = (label: string, p: any) => p ? `${label}: ${p.sign} ${p.degree || ''}${p.isRetrograde ? ' (R)' : ''}` : '';
+      const rawChart = [
+        `\n--- RAW CHART DATA ---`,
+        `Ascendant: ${chartMeta.ascendant?.sign || 'N/A'}`,
+        planetLine('Sun', chartMeta.sun),
+        planetLine('Moon', chartMeta.moon),
+        planetLine('Mars', chartMeta.mars),
+        planetLine('Mercury', chartMeta.mercury),
+        planetLine('Venus', chartMeta.venus),
+        planetLine('Jupiter', chartMeta.jupiter),
+        planetLine('Saturn', chartMeta.saturn),
+        planetLine('Rahu', chartMeta.rahu),
+        planetLine('Ketu', chartMeta.ketu),
+        `Nakshatra: ${chartMeta.nakshatra?.name || 'N/A'} (Pada ${chartMeta.nakshatra?.pada || '?'}, Lord: ${chartMeta.nakshatra?.lord || '?'})`,
+        `Current Mahadasha: ${chartMeta.currentDasha || 'N/A'} (until ${chartMeta.dashaEndsAt || 'N/A'})`,
+        `Ayanamsha: ${chartMeta.ayanamsha || 'N/A'}`,
+      ].filter(Boolean).join('\n');
+      chartContext = readingResult + rawChart;
+    }
+    const currentTime = new Date().toISOString(); // kept for logging
     const preferredLanguage = typeof language === 'string' && language.trim() ? language.trim() : 'English';
     const finalSystemPrompt = fillTemplate(chatPrompt.systemPrompt, { language: preferredLanguage });
 
     const userPrompt = fillTemplate(chatPrompt.userPromptTemplate, {
       chartData: chartContext,
-      timeContext: `Current time is ${currentTime}`,
+      timeContext: new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
       history: historyStr || 'None',
       query: trimmedMessage,
       language: preferredLanguage,
