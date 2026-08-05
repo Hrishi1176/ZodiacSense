@@ -91,6 +91,12 @@ export default function PalmReading() {
         Show both palms to the camera. Our AI analyzes your Life Line, Heart Line, Head Line, and more to reveal insights about your destiny.
       </motion.p>
 
+      {!('mediaDevices' in navigator) && (
+        <div style={{ marginBottom: '1rem', padding: '0.75rem 1rem', background: 'rgba(251,191,36,0.12)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: '12px', color: '#fbbf24', fontSize: '0.85rem', maxWidth: '500px', textAlign: 'center' }}>
+          Camera requires a secure connection (HTTPS). If camera doesn't work, use "Upload from Gallery" instead.
+        </div>
+      )}
+
       {remainingQuota !== null && (
         <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#38bdf8', fontWeight: 600 }}>
           ✦ Remaining readings today: {remainingQuota}
@@ -130,27 +136,11 @@ export default function PalmReading() {
         </div>
 
         {/* Status row */}
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginBottom: '1.5rem' }}>
-          <span style={{
-            padding: '0.35rem 0.9rem',
-            borderRadius: '9999px',
-            fontSize: '0.82rem',
-            fontWeight: 600,
-            background: leftHand ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.05)',
-            border: `1px solid ${leftHand ? 'rgba(16,185,129,0.4)' : 'rgba(255,255,255,0.12)'}`,
-            color: leftHand ? '#34d399' : 'var(--text-muted)',
-          }}>
+        <div className={styles.statusRow}>
+          <span className={`${styles.statusBadge} ${leftHand ? styles.statusBadgeActive : ''}`}>
             {leftHand ? '✓ Left Palm Captured' : '○ Left Palm'}
           </span>
-          <span style={{
-            padding: '0.35rem 0.9rem',
-            borderRadius: '9999px',
-            fontSize: '0.82rem',
-            fontWeight: 600,
-            background: rightHand ? 'rgba(16,185,129,0.15)' : 'rgba(255,255,255,0.05)',
-            border: `1px solid ${rightHand ? 'rgba(16,185,129,0.4)' : 'rgba(255,255,255,0.12)'}`,
-            color: rightHand ? '#34d399' : 'var(--text-muted)',
-          }}>
+          <span className={`${styles.statusBadge} ${rightHand ? styles.statusBadgeActive : ''}`}>
             {rightHand ? '✓ Right Palm Captured' : '○ Right Palm'}
           </span>
         </div>

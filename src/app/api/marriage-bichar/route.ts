@@ -1,4 +1,4 @@
-export const maxDuration = 60; // Max duration for Vercel Hobby plan
+export const maxDuration = 90;
 
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
@@ -71,9 +71,11 @@ export async function POST(req: Request) {
       partner2Pada:            chart2.nakshatra.pada,
       partner2NakshatraLord:   chart2.nakshatra.lord,
       partner2Ascendant:       chart2.ascendant.sign,
+
+      language: language || 'English',
     });
 
-    const finalSystemPrompt = `${marriageBicharPrompt.systemPrompt}\n\nIMPORTANT: You must write the ENTIRE response in ${language || 'English'}. Do not output English if another language was requested.`;
+    const finalSystemPrompt = fillTemplate(marriageBicharPrompt.systemPrompt, { language: language || 'English' });
 
     // Call Grok AI
     const aiResponse = await callGrokText(

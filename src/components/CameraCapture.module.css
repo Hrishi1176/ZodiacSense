@@ -4,7 +4,7 @@
   align-items: center;
   gap: 1rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
 }
 
 .label {
@@ -16,8 +16,8 @@
 
 .cameraBox, .resultBox {
   width: 100%;
-  min-height: 180px;
-  max-height: 320px;
+  min-height: 200px;
+  max-height: 340px;
   background: var(--glass-bg);
   border: 2px dashed rgba(139, 92, 246, 0.4);
   border-radius: 20px;
@@ -29,6 +29,11 @@
   position: relative;
   backdrop-filter: blur(8px);
   transition: all 0.4s ease;
+}
+
+.cameraBoxActive {
+  min-height: 280px;
+  max-height: 420px;
 }
 
 .startActions {
@@ -95,6 +100,37 @@
   background: rgba(139, 92, 246, 0.3);
   color: #fff;
   border-color: #8b5cf6;
+}
+
+.cameraErrorMsg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: #fbbf24;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.retryBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  color: #fbbf24;
+  border-radius: 9999px;
+  padding: 0.45rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retryBtn:hover {
+  background: rgba(251, 191, 36, 0.3);
+  color: #fff;
 }
 
 .fileInput {
@@ -217,8 +253,8 @@
 .captureBtn {
   position: absolute;
   bottom: 14px;
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   border: 3px solid #fff;
@@ -235,8 +271,8 @@
 }
 
 .captureInner {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #fff;
 }
@@ -265,25 +301,44 @@
 }
 
 @media (max-width: 768px) {
+  .captureContainer {
+    max-width: 100%;
+  }
   .cameraBox, .resultBox {
-    min-height: 150px;
-    max-height: 220px;
+    min-height: 200px;
+    max-height: 300px;
+    border-radius: 16px;
+  }
+  .cameraBoxActive {
+    min-height: 320px;
+    max-height: 55vh;
     border-radius: 16px;
   }
   .startActions {
-    padding: 0.65rem 0.5rem;
-    gap: 0.35rem;
+    padding: 0.75rem 0.5rem;
+    gap: 0.5rem;
   }
   .startBtn {
-    font-size: 0.88rem;
-    padding: 0.15rem;
+    font-size: 0.95rem;
+    padding: 0.25rem;
+    min-height: 44px;
   }
   .subHint {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
   }
   .uploadBtn {
-    padding: 0.4rem 0.85rem;
-    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.82rem;
+    min-height: 44px;
+  }
+  .retryBtn {
+    padding: 0.5rem 1rem;
+    font-size: 0.82rem;
+    min-height: 44px;
+  }
+  .cameraErrorMsg {
+    font-size: 0.85rem;
+    gap: 0.5rem;
   }
   .handGuideFrame {
     inset: 8px;
@@ -291,5 +346,26 @@
   .detectionBadgePending, .detectionBadge {
     font-size: 0.72rem;
     padding: 0.2rem 0.5rem;
+  }
+  .captureBtn {
+    width: 60px;
+    height: 60px;
+    bottom: 16px;
+  }
+  .captureInner {
+    width: 40px;
+    height: 40px;
+  }
+  .retakeBtn {
+    min-height: 44px;
+    padding: 0.55rem 1.2rem;
+    font-size: 0.85rem;
+  }
+  .switchCamBtn {
+    width: 44px;
+    height: 44px;
+  }
+  .preview {
+    max-height: 55vh;
   }
 }

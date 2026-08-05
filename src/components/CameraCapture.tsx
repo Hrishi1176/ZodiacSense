@@ -20,6 +20,8 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
   const [countdown, setCountdown] = useState<number | null>(null);
   const [detecting, setDetecting] = useState(false);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
+  const [isMobile, setIsMobile] = useState(false);
+  const [cameraError, setCameraError] = useState(false);
 
   const handDetectionTimer = useRef<NodeJS.Timeout | null>(null);
   const countdownInterval = useRef<NodeJS.Timeout | null>(null);
@@ -96,9 +98,10 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
       }
       setStream(mediaStream);
       setDetecting(true);
+      setCameraError(false);
     } catch (err) {
       console.error('Error accessing camera', err);
-      alert('Camera access failed. You can also upload a palm photo directly from your device.');
+      setCameraError(true);
     }
   };
 
@@ -132,6 +135,13 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
       videoRef.current.play().catch(() => {});
     }
   }, [stream]);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Load MediaPipe Hands dynamically when stream starts
   useEffect(() => {
@@ -229,14 +239,14 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
       <h3 className={styles.label}>{label}</h3>
 
       {!capturedImage ? (
-        <div className={styles.cameraBox}>
-          {!stream ? (
+        <div className={`${styles.cameraBox} ${stream ? styles.cameraBoxActive : ''}`}>
+          {!stream && !cameraError ? (
             <div className={styles.startActions}>
               <button className={styles.startBtn} onClick={() => startCamera()}>
-                <Camera size={32} />
+                <Camera size={isMobile ? 36 : 32} />
                 <span>Scan with Camera</span>
                 <span className={styles.subHint}>
-                  Auto-scans or snap manually
+                  {isMobile ? 'Tap to open camera — show your palm' : 'Auto-scans or snap manually'}
                 </span>
               </button>
 
@@ -245,6 +255,32 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
               <button className={styles.uploadBtn} onClick={() => fileInputRef.current?.click()}>
                 <Upload size={20} />
                 <span>Upload from Gallery</span>
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                capture="environment"
+                className={styles.fileInput}
+                onChange={handleFileUpload}
+              />
+            </div>
+          ) : cameraError ? (
+            <div className={styles.startActions}>
+              <div className={styles.cameraErrorMsg}>
+                <Camera size={36} />
+                <span>Camera access denied or unavailable</span>
+                <span className={styles.subHint}>
+                  Please allow camera permission or upload a photo instead
+                </span>
+              </div>
+              <button className={styles.uploadBtn} onClick={() => fileInputRef.current?.click()}>
+                <Upload size={20} />
+                <span>Upload Palm Photo</span>
+              </button>
+              <button className={styles.retryBtn} onClick={() => { setCameraError(false); startCamera(); }}>
+                <RefreshCw size={16} />
+                <span>Retry Camera</span>
               </button>
               <input
                 ref={fileInputRef}

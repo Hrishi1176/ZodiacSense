@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSession } from 'next-auth/react';
@@ -8,6 +8,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import AuthModal from '@/components/AuthModal';
 import Loader from '@/components/Loader';
+import FeedbackComponent from '@/components/FeedbackComponent';
+import ChatbotComponent from '@/components/ChatbotComponent';
 import { useToast } from '@/context/ToastContext';
 import styles from './page.module.css';
 
@@ -15,13 +17,29 @@ export default function BirthChart() {
   const { t, i18n } = useTranslation();
   const { data: session } = useSession();
   const { showToast } = useToast();
+  const langMap: Record<string, string> = { en: 'English', hi: 'Hindi', bn: 'Bengali' };
+  const selectedLang = langMap[i18n.language] || 'English';
 
   const [formData, setFormData] = useState({ name: '', date: '', time: '', location: '' });
   const [result, setResult] = useState<string | null>(null);
+  const [readingId, setReadingId] = useState<string | null>(null);
   const [metadata, setMetadata] = useState<Record<string, string> | null>(null);
   const [loading, setLoading] = useState(false);
   const [remainingQuota, setRemainingQuota] = useState<number | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (session) {
+      fetch('/api/user/profile')
+        .then(res => res.json())
+        .then(data => {
+          if (data.birthDetails) {
+            setFormData(prev => ({ ...prev, ...data.birthDetails }));
+          }
+        })
+        .catch(err => console.error('Failed to load presets:', err));
+    }
+  }, [session]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,12 +52,10 @@ export default function BirthChart() {
 
     setLoading(true);
     setResult(null);
+    setReadingId(null);
     setMetadata(null);
 
     try {
-      const langMap: Record<string, string> = { en: 'English', hi: 'Hindi', bn: 'Bengali' };
-      const selectedLang = langMap[i18n.language] || 'English';
-
       const res = await fetch('/api/birth-chart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,14 +67,16 @@ export default function BirthChart() {
         showToast(data.error || 'Failed to generate birth chart', 'error', 'Calculation Error');
       } else {
         setResult(data.result);
+        setReadingId(data.id);
         setMetadata(data.metadata ?? null);
         if (data.remainingQuota !== undefined) setRemainingQuota(data.remainingQuota);
         showToast('Your Kundali has been generated!', 'success', 'Kundali Complete');
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Birth Chart Error:', error);
-      showToast(`Network error: ${error.message || 'Please try again.'}`, 'error', 'Connection Error');
+      const message = error instanceof Error ? error.message : 'Please try again.';
+      showToast(`Network error: ${message}`, 'error', 'Connection Error');
     } finally {
       setLoading(false);
     }
@@ -207,6 +225,9 @@ export default function BirthChart() {
             <div className="markdown-body">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{result}</ReactMarkdown>
             </div>
+
+            {readingId && <FeedbackComponent readingId={readingId} />}
+            {readingId && <ChatbotComponent readingId={readingId} language={selectedLang} />}
           </motion.div>
         )}
       </AnimatePresence>

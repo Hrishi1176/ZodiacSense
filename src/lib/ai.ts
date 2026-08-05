@@ -64,7 +64,7 @@ export async function callGrokText(
       'Authorization': `Bearer ${config.key}`,
     },
     body: JSON.stringify({ model: finalModel, messages, max_tokens: maxTokens }),
-    signal: AbortSignal.timeout(60000), // 60s timeout
+    signal: AbortSignal.timeout(90000), // 90s timeout for structured responses
   });
 
   if (!res.ok) {

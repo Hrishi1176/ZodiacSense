@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -50,15 +50,32 @@ const cards = [
   },
 ];
 
-const stats = [
-  { value: '50K+', label: 'Readings Done', icon: <Star size={14} /> },
-  { value: '98%', label: 'Accuracy Rate', icon: <Zap size={14} /> },
-  { value: '3', label: 'Languages', icon: <Sparkles size={14} /> },
-  { value: 'AI', label: 'Powered by Grok', icon: <Heart size={14} /> },
-];
-
 export default function Home() {
   const { t } = useTranslation();
+  const [totalReadings, setTotalReadings] = useState<string>('50K+');
+
+  useEffect(() => {
+    fetch('/api/stats/global')
+      .then(res => res.json())
+      .then(data => {
+        if (data.totalReadings !== undefined) {
+          const count = data.totalReadings;
+          if (count > 1000) {
+            setTotalReadings((count / 1000).toFixed(1) + 'K+');
+          } else {
+            setTotalReadings(count.toString());
+          }
+        }
+      })
+      .catch(err => console.error('Failed to fetch stats:', err));
+  }, []);
+
+  const stats = [
+    { value: totalReadings, label: 'Readings Done', icon: <Star size={14} /> },
+    { value: '98%', label: 'Accuracy Rate', icon: <Zap size={14} /> },
+    { value: '3', label: 'Languages', icon: <Sparkles size={14} /> },
+    { value: 'AI', label: 'Powered by Grok', icon: <Heart size={14} /> },
+  ];
 
   return (
     <div className={styles.container}>
