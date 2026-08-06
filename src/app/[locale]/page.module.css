@@ -11,6 +11,20 @@
   padding: 2rem 1.25rem 4rem;
   text-align: center;
   width: 100%;
+  position: relative;
+}
+
+/* Stage for the live 3D Navagraha scene behind the hero */
+.cosmicStage {
+  position: absolute;
+  top: -80px;
+  left: 0;
+  width: 100%;
+  height: 880px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 52%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 52%, transparent 80%);
 }
 
 .main {
@@ -19,6 +33,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== Hero badge ===== */

@@ -7,6 +7,7 @@ import { checkAndIncrementQuota } from '@/lib/quota';
 import { connectToDatabase } from '@/lib/db';
 import Reading from '@/models/Reading';
 import { callGrokVision, fillTemplate } from '@/lib/ai';
+import { languageDirective } from '@/lib/language';
 import palmReadingPrompt from '@/config/prompts/palm-reading.prompt.json';
 
 export async function POST(req: Request) {
@@ -49,10 +50,12 @@ export async function POST(req: Request) {
     }
 
     // Call Grok Vision with the two palm images using the structured prompt
-    const finalSystemPrompt = fillTemplate(palmReadingPrompt.systemPrompt, { language: language || 'English' });
+    // Strict language directive (name + native script) injected into all prompts
+    const langDirective = languageDirective(language);
+    const finalSystemPrompt = fillTemplate(palmReadingPrompt.systemPrompt, { language: langDirective });
 
     // Fill user prompt template with language
-    const userPrompt = fillTemplate(palmReadingPrompt.userPromptTemplate, { language: language || 'English' });
+    const userPrompt = fillTemplate(palmReadingPrompt.userPromptTemplate, { language: langDirective });
 
     const aiResponse = await callGrokVision(
       palmReadingPrompt.model,

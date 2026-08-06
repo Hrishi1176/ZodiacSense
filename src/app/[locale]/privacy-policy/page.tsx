@@ -1,11 +1,14 @@
 'use client';
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Shield, Eye, Lock, Server } from 'lucide-react';
 import styles from '../legal.module.css';
 
 export default function PrivacyPolicyPage() {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.container}>
       <motion.h1
@@ -13,7 +16,7 @@ export default function PrivacyPolicyPage() {
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        Privacy Policy
+        {t('legal_privacy_policy')}
       </motion.h1>
 
       <motion.p
@@ -22,7 +25,7 @@ export default function PrivacyPolicyPage() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
       >
-        How ZodiacSense collects, uses, and safeguards your personal and astrological information.
+        {t('legal_privacy_policy_sub')}
       </motion.p>
 
       <motion.div

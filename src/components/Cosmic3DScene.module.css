@@ -1,0 +1,205 @@
+/* =============================================
+   Cosmic3DScene — Navagraha 3D solar system
+   Pure CSS 3D: tilted plane, orbiting icons,
+   counter-rotation keeps every icon upright.
+   ============================================= */
+
+.sceneWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  perspective: 1400px;
+  z-index: 0;
+  opacity: 0.95;
+}
+
+.parallax {
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-out;
+  will-change: transform;
+}
+
+.scaler {
+  transform-style: preserve-3d;
+}
+
+.scene {
+  --tilt: 58deg;
+  position: relative;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--tilt));
+}
+
+/* ---- Orbit guide rings (static, in the tilted plane) ---- */
+.orbitRing {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 92, 246, 0.14);
+}
+
+.zodiacRingVisual {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(167, 139, 250, 0.22);
+}
+
+/* ---- Spin keyframes ---- */
+@keyframes orbitSpin {
+  from { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
+}
+
+@keyframes orbitSpinRev {
+  from { transform: rotateZ(0deg); }
+  to { transform: rotateZ(-360deg); }
+}
+
+/* ---- Zodiac (rashi) outer ring ---- */
+.zodiacRing {
+  position: absolute;
+  transform-style: preserve-3d;
+  animation: orbitSpin var(--dur) linear infinite;
+}
+
+.zodiacArm {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+  transform: rotateZ(var(--phase)) translateX(var(--r));
+}
+
+.zodiacIcon {
+  display: block;
+  font-size: 25px;
+  stroke: url(#zsGold);
+  filter: drop-shadow(0 0 6px rgba(232, 182, 76, 0.65));
+  animation: zodiacTwinkle 5s ease-in-out infinite;
+}
+
+.zodiacArm:nth-child(3n) .zodiacIcon { animation-delay: 1.4s; }
+.zodiacArm:nth-child(4n) .zodiacIcon { animation-delay: 2.6s; }
+
+[data-theme='light'] .zodiacIcon {
+  stroke: url(#zsGoldDeep);
+}
+
+@keyframes zodiacTwinkle {
+  0%, 100% { opacity: 0.65; }
+  50% { opacity: 1; }
+}
+
+/* ---- Central Sun ---- */
+.sunHolder {
+  position: absolute;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(var(--tilt) * -1));
+}
+
+.sunIcon {
+  display: block;
+  font-size: 48px;
+  color: #fbbf24;
+  filter: drop-shadow(0 0 14px rgba(251, 191, 36, 0.9)) drop-shadow(0 0 40px rgba(245, 158, 11, 0.5));
+  animation: sunPulse 4s ease-in-out infinite;
+}
+
+@keyframes sunPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+/* ---- Orbiting planets ---- */
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  animation: orbitSpin var(--dur) linear infinite;
+}
+
+.arm {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-style: preserve-3d;
+  transform: rotateZ(var(--phase)) translateX(var(--r));
+}
+
+/* Cancels the orbit's animated rotation so icons never spin */
+.spinCancel {
+  transform-style: preserve-3d;
+  animation: orbitSpinRev var(--dur) linear infinite;
+}
+
+/* Cancels phase + scene tilt so icons always face the viewer */
+.upright {
+  transform-style: preserve-3d;
+  transform: rotateZ(calc(var(--phase) * -1)) rotateX(calc(var(--tilt) * -1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planetGlow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+.planetIcon {
+  display: block;
+}
+
+/* Decorative ring around Saturn */
+.saturnRingEl {
+  position: absolute;
+  width: 48px;
+  height: 15px;
+  border: 1.5px solid rgba(167, 139, 250, 0.65);
+  border-radius: 50%;
+  transform: rotate(-22deg);
+  pointer-events: none;
+}
+
+/* ---- Responsive scaling ---- */
+@media (max-width: 900px) {
+  .scaler { transform: scale(0.72); }
+}
+
+@media (max-width: 640px) {
+  .scaler { transform: scale(0.52); }
+}
+
+@media (max-width: 420px) {
+  .scaler { transform: scale(0.44); }
+}
+
+/* ---- Light theme tweaks ---- */
+[data-theme='light'] .orbitRing {
+  border-color: rgba(124, 58, 237, 0.16);
+}
+
+[data-theme='light'] .zodiacRingVisual {
+  border-color: rgba(124, 58, 237, 0.25);
+}
+
+/* ---- Accessibility: honor reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .zodiacRing,
+  .orbit,
+  .spinCancel,
+  .zodiacIcon,
+  .sunIcon {
+    animation: none !important;
+  }
+  .parallax {
+    transition: none;
+  }
+}

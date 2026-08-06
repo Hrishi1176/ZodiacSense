@@ -7,13 +7,14 @@
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
   font-weight: 800;
   text-align: center;
   margin-bottom: 0.5rem;
   background: linear-gradient(135deg, #a78bfa 0%, #38bdf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .subtitle {
@@ -31,6 +32,11 @@
   backdrop-filter: blur(16px);
 }
 
+[data-theme='light'] .card {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+}
+
 .formGroup {
   display: flex;
   flex-direction: column;
@@ -44,6 +50,10 @@
   color: #e2e8f0;
 }
 
+[data-theme='light'] .formGroup label {
+  color: #334155;
+}
+
 .formGroup input {
   padding: 0.75rem 1rem;
   border-radius: 10px;
@@ -52,6 +62,13 @@
   color: #fff;
   font-size: 1rem;
   transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+[data-theme='light'] .formGroup input {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(15, 23, 42, 0.15);
+  color: #0f172a;
 }
 
 .formGroup input:focus {
@@ -86,4 +103,35 @@
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
+}
+
+/* ─── Responsive ─────────────────────────────── */
+@media (max-width: 768px) {
+  .container {
+    padding: 6.5rem 1rem 3rem;
+  }
+
+  .card {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 6rem 0.75rem 2.5rem;
+  }
+
+  .card {
+    padding: 1.25rem 1rem;
+    border-radius: 16px;
+  }
+
+  .formGroup input {
+    font-size: 16px; /* prevents iOS zoom-on-focus */
+  }
+
+  .button {
+    font-size: 1rem;
+    padding: 0.9rem;
+  }
 }

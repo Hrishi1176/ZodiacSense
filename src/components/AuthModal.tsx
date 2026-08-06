@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signIn } from 'next-auth/react';
 import { X, Mail, Lock, User, Sparkles } from 'lucide-react';
@@ -13,6 +14,7 @@ interface AuthModalProps {
 }
 
 export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: AuthModalProps) {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<'login' | 'register'>(initialTab);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -36,7 +38,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
     setLoading(false);
 
     if (res?.error) {
-      setError('Invalid email or password');
+      setError(t('auth_err_invalid'));
     } else {
       onClose();
       window.location.reload();
@@ -58,7 +60,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Registration failed');
+        setError(data.error || t('auth_err_register'));
         setLoading(false);
       } else {
         // Auto login on successful registration
@@ -71,7 +73,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
         setLoading(false);
 
         if (loginRes?.error) {
-          setError('Registered, but failed to log in automatically');
+          setError(t('auth_err_autologin'));
         } else {
           onClose();
           window.location.reload();
@@ -79,7 +81,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
       }
     } catch (err) {
       console.error(err);
-      setError('Something went wrong. Please try again.');
+      setError(t('auth_err_generic'));
       setLoading(false);
     }
   };
@@ -106,7 +108,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
               <Sparkles size={24} className={styles.sparkleIcon} />
             </div>
             <h2>ZodiacSense</h2>
-            <p>Sign in to unlock AI Astrology readings & daily quota</p>
+            <p>{t('auth_subtitle')}</p>
           </div>
 
           {/* Tab Controls */}
@@ -118,7 +120,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
                 setError(null);
               }}
             >
-              Sign In
+              {t('auth_tab_login')}
             </button>
             <button
               className={`${styles.tab} ${tab === 'register' ? styles.activeTab : ''}`}
@@ -127,7 +129,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
                 setError(null);
               }}
             >
-              Create Account
+              {t('auth_tab_register')}
             </button>
           </div>
 
@@ -157,11 +159,11 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>Continue with Google</span>
+            <span>{t('auth_google')}</span>
           </button>
 
           <div className={styles.divider}>
-            <span>or sign in with email</span>
+            <span>{t('auth_divider')}</span>
           </div>
 
           {/* Form */}
@@ -171,7 +173,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
                 <Mail size={18} className={styles.inputIcon} />
                 <input
                   type="email"
-                  placeholder="Email Address"
+                  placeholder={t('auth_email_ph')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -182,7 +184,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
                 <Lock size={18} className={styles.inputIcon} />
                 <input
                   type="password"
-                  placeholder="Password"
+                  placeholder={t('auth_password_ph')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -190,7 +192,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
               </div>
 
               <button type="submit" className={styles.submitBtn} disabled={loading}>
-                {loading ? 'Signing In...' : 'Sign In'}
+                {loading ? t('auth_btn_signing') : t('auth_btn_signin')}
               </button>
             </form>
           ) : (
@@ -199,7 +201,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
                 <User size={18} className={styles.inputIcon} />
                 <input
                   type="text"
-                  placeholder="Full Name"
+                  placeholder={t('auth_name_ph')}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -210,7 +212,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
                 <Mail size={18} className={styles.inputIcon} />
                 <input
                   type="email"
-                  placeholder="Email Address"
+                  placeholder={t('auth_email_ph')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -221,7 +223,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
                 <Lock size={18} className={styles.inputIcon} />
                 <input
                   type="password"
-                  placeholder="Password (min 6 chars)"
+                  placeholder={t('auth_password_min')}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   minLength={6}
@@ -230,7 +232,7 @@ export default function AuthModal({ isOpen, onClose, initialTab = 'login' }: Aut
               </div>
 
               <button type="submit" className={styles.submitBtn} disabled={loading}>
-                {loading ? 'Creating Account...' : 'Create Account'}
+                {loading ? t('auth_btn_creating') : t('auth_btn_create')}
               </button>
             </form>
           )}

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, AlertTriangle } from 'lucide-react';
 import styles from './LogoutModal.module.css';
@@ -10,6 +11,7 @@ interface LogoutModalProps {
 }
 
 export default function LogoutModal({ isOpen, onClose, onConfirm }: LogoutModalProps) {
+  const { t } = useTranslation();
   // Lock body scroll when open
   useEffect(() => {
     if (isOpen) {
@@ -40,18 +42,18 @@ export default function LogoutModal({ isOpen, onClose, onConfirm }: LogoutModalP
               <LogOut size={28} />
             </div>
 
-            <h3 className={styles.title}>Sign Out?</h3>
+            <h3 className={styles.title}>{t('logout_title')}</h3>
             <p className={styles.description}>
-              Are you sure you want to sign out of ZodiacSense? You can sign back in anytime to access your birth charts and quota.
+              {t('logout_desc')}
             </p>
 
             <div className={styles.actions}>
               <button className={styles.cancelBtn} onClick={onClose}>
-                Cancel
+                {t('logout_cancel')}
               </button>
               <button className={styles.confirmBtn} onClick={onConfirm}>
                 <LogOut size={16} />
-                <span>Sign Out</span>
+                <span>{t('nav_signout')}</span>
               </button>
             </div>
           </motion.div>

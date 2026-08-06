@@ -7,6 +7,8 @@ import { checkQuotaAvailability, incrementQuotaUsage } from '@/lib/quota';
 import { connectToDatabase } from '@/lib/db';
 import Reading from '@/models/Reading';
 import { callGrokText, fillTemplate } from '@/lib/ai';
+import { retrieveVedicContext } from '@/lib/rag';
+import { languageDirective } from '@/lib/language';
 import chatPrompt from '@/config/prompts/birth-chart-chat.prompt.json';
 
 export async function POST(req: Request) {
@@ -79,9 +81,15 @@ export async function POST(req: Request) {
       ].filter(Boolean).join('\n');
       chartContext = readingResult + rawChart;
     }
+
+    // Retrieve relevant Vedic knowledge from chart metadata
+    const vedicContext = chartMeta ? retrieveVedicContext(chartMeta as any) : 'No chart metadata available for reference.';
     const currentTime = new Date().toISOString(); // kept for logging
-    const preferredLanguage = typeof language === 'string' && language.trim() ? language.trim() : 'English';
-    const finalSystemPrompt = fillTemplate(chatPrompt.systemPrompt, { language: preferredLanguage });
+    const preferredLanguage = languageDirective(language);
+    const finalSystemPrompt = fillTemplate(chatPrompt.systemPrompt, {
+      language: preferredLanguage,
+      vedicContext,
+    });
 
     const userPrompt = fillTemplate(chatPrompt.userPromptTemplate, {
       chartData: chartContext,

@@ -1,11 +1,14 @@
 'use client';
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { FileText, AlertCircle, Sparkles, UserCheck } from 'lucide-react';
 import styles from '../legal.module.css';
 
 export default function TermsOfServicePage() {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.container}>
       <motion.h1
@@ -13,7 +16,7 @@ export default function TermsOfServicePage() {
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        Terms of Service
+        {t('legal_terms')}
       </motion.h1>
 
       <motion.p
@@ -22,7 +25,7 @@ export default function TermsOfServicePage() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
       >
-        Guidelines, entertainment disclaimers, and user terms for ZodiacSense.
+        {t('legal_terms_sub')}
       </motion.p>
 
       <motion.div

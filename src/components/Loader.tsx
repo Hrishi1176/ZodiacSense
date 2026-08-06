@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import styles from './Loader.module.css';
 
@@ -6,7 +7,10 @@ interface LoaderProps {
   text?: string;
 }
 
-export default function Loader({ text = 'Consulting the stars...' }: LoaderProps) {
+export default function Loader({ text }: LoaderProps) {
+  const { t } = useTranslation();
+  const displayText = text ?? t('loader_default');
+
   return (
     <motion.div 
       className={styles.loaderContainer}
@@ -20,7 +24,7 @@ export default function Loader({ text = 'Consulting the stars...' }: LoaderProps
         <div className={styles.orbit1}></div>
         <div className={styles.core}></div>
       </div>
-      {text && <p className={styles.text}>{text}</p>}
+      {displayText && <p className={styles.text}>{displayText}</p>}
     </motion.div>
   );
 }

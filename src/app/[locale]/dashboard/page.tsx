@@ -6,10 +6,33 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Sparkles, Hand, Compass, Heart, Calendar, ChevronDown, ChevronUp, Zap } from 'lucide-react';
+import {
+  TbZodiacAries, TbZodiacTaurus, TbZodiacGemini, TbZodiacCancer,
+  TbZodiacLeo, TbZodiacVirgo, TbZodiacLibra, TbZodiacScorpio,
+  TbZodiacSagittarius, TbZodiacCapricorn, TbZodiacAquarius, TbZodiacPisces,
+} from 'react-icons/tb';
+import type { IconType } from 'react-icons';
+import GoldDefs from '@/components/GoldDefs';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from './page.module.css';
+
+// Premium gold rashi strip shown under the welcome header
+const ZODIAC_STRIP: { key: string; Icon: IconType }[] = [
+  { key: 'Aries', Icon: TbZodiacAries },
+  { key: 'Taurus', Icon: TbZodiacTaurus },
+  { key: 'Gemini', Icon: TbZodiacGemini },
+  { key: 'Cancer', Icon: TbZodiacCancer },
+  { key: 'Leo', Icon: TbZodiacLeo },
+  { key: 'Virgo', Icon: TbZodiacVirgo },
+  { key: 'Libra', Icon: TbZodiacLibra },
+  { key: 'Scorpio', Icon: TbZodiacScorpio },
+  { key: 'Sagittarius', Icon: TbZodiacSagittarius },
+  { key: 'Capricorn', Icon: TbZodiacCapricorn },
+  { key: 'Aquarius', Icon: TbZodiacAquarius },
+  { key: 'Pisces', Icon: TbZodiacPisces },
+];
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -44,12 +67,13 @@ export default function Dashboard() {
       };
       fetchData();
     }
-  }, [status, router]);
+    // Re-fetch analytics when the UI language changes so AI output matches selection
+  }, [status, router, i18n.language]);
 
   if (status === 'loading' || loading) {
     return (
       <div className={styles.container} style={{ textAlign: 'center', paddingTop: '5rem' }}>
-        <h2 className="glow-text">Aligning Your Cosmic Data...</h2>
+        <h2 className="glow-text">{t('dash_loading')}</h2>
       </div>
     );
   }
@@ -60,23 +84,32 @@ export default function Dashboard() {
 
   return (
     <div className={styles.container}>
+      <GoldDefs />
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className={styles.header}
       >
         <h1 className={styles.title}>
-          Welcome, {session?.user?.name || 'Cosmic Seeker'} ✦
+          {t('dash_welcome', { name: session?.user?.name || t('dash_seeker') })}
         </h1>
         <p className={styles.subtitle}>
-          Track your daily AI astrology quotas, life analytics, and history.
+          {t('dash_subtitle')}
         </p>
+        {/* Premium gold rashi strip */}
+        <div className={styles.zodiacStrip}>
+          {ZODIAC_STRIP.map(({ key, Icon }, i) => (
+            <span key={key} className={styles.zodiacStripItem} title={t(`signs.${key}`, key)}>
+              <Icon className={styles.zodiacStripIcon} style={{ animationDelay: `${i * 0.28}s` }} />
+            </span>
+          ))}
+        </div>
       </motion.div>
 
       {/* Daily Quota Cards */}
       <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--text-color)' }}>
         <Zap size={20} style={{ display: 'inline', color: '#38bdf8', verticalAlign: 'middle', marginRight: '0.4rem' }} />
-        Daily AI Quota Status (Reset Daily)
+        {t('dash_quota_title')}
       </h2>
 
       <div className={styles.quotaGrid}>
@@ -86,10 +119,10 @@ export default function Dashboard() {
             <div className={styles.quotaHeader}>
               <span className={styles.quotaTitle}>
                 <Hand size={20} color="#8b5cf6" />
-                <span>হস্তরেখা বিচার (Palm Reading)</span>
+                <span>{t('palm_reading')}</span>
               </span>
               <span className={styles.quotaBadge}>
-                {quota?.remaining?.palm_reading ?? 3} Left
+                {t('dash_left', { count: quota?.remaining?.palm_reading ?? 3 })}
               </span>
             </div>
             <div className={styles.quotaProgressTrack} style={{ marginTop: '1rem' }}>
@@ -101,12 +134,12 @@ export default function Dashboard() {
               />
             </div>
             <div className={styles.quotaStats} style={{ marginTop: '0.5rem' }}>
-              <span>Used: {quota?.usage?.palm_reading ?? 0}</span>
-              <span>Daily Max: {quota?.limits?.palm_reading ?? 3}</span>
+              <span>{t('dash_used', { count: quota?.usage?.palm_reading ?? 0 })}</span>
+              <span>{t('dash_max', { count: quota?.limits?.palm_reading ?? 3 })}</span>
             </div>
           </div>
           <Link href="/palm-reading" className={styles.actionBtn}>
-            Start Palm Scan →
+            {t('dash_palm_action')}
           </Link>
         </motion.div>
 
@@ -116,10 +149,10 @@ export default function Dashboard() {
             <div className={styles.quotaHeader}>
               <span className={styles.quotaTitle}>
                 <Compass size={20} color="#38bdf8" />
-                <span>জন্ম কুণ্ডলী (Birth Chart)</span>
+                <span>{t('birth_chart')}</span>
               </span>
               <span className={styles.quotaBadge}>
-                {quota?.remaining?.birth_chart ?? 2} Left
+                {t('dash_left', { count: quota?.remaining?.birth_chart ?? 2 })}
               </span>
             </div>
             <div className={styles.quotaProgressTrack} style={{ marginTop: '1rem' }}>
@@ -131,12 +164,12 @@ export default function Dashboard() {
               />
             </div>
             <div className={styles.quotaStats} style={{ marginTop: '0.5rem' }}>
-              <span>Used: {quota?.usage?.birth_chart ?? 0}</span>
-              <span>Daily Max: {quota?.limits?.birth_chart ?? 2}</span>
+              <span>{t('dash_used', { count: quota?.usage?.birth_chart ?? 0 })}</span>
+              <span>{t('dash_max', { count: quota?.limits?.birth_chart ?? 2 })}</span>
             </div>
           </div>
           <Link href="/birth-chart" className={styles.actionBtn}>
-            Generate Chart →
+            {t('dash_bc_action')}
           </Link>
         </motion.div>
 
@@ -146,10 +179,10 @@ export default function Dashboard() {
             <div className={styles.quotaHeader}>
               <span className={styles.quotaTitle}>
                 <Heart size={20} color="#ec4899" />
-                <span>বিবাহ বিচার (Marriage Bichar)</span>
+                <span>{t('marriage_bichar')}</span>
               </span>
               <span className={styles.quotaBadge}>
-                {quota?.remaining?.marriage_bichar ?? 2} Left
+                {t('dash_left', { count: quota?.remaining?.marriage_bichar ?? 2 })}
               </span>
             </div>
             <div className={styles.quotaProgressTrack} style={{ marginTop: '1rem' }}>
@@ -161,12 +194,12 @@ export default function Dashboard() {
               />
             </div>
             <div className={styles.quotaStats} style={{ marginTop: '0.5rem' }}>
-              <span>Used: {quota?.usage?.marriage_bichar ?? 0}</span>
-              <span>Daily Max: {quota?.limits?.marriage_bichar ?? 2}</span>
+              <span>{t('dash_used', { count: quota?.usage?.marriage_bichar ?? 0 })}</span>
+              <span>{t('dash_max', { count: quota?.limits?.marriage_bichar ?? 2 })}</span>
             </div>
           </div>
           <Link href="/marriage-bichar" className={styles.actionBtn}>
-            Check Compatibility →
+            {t('dash_mb_action')}
           </Link>
         </motion.div>
       </div>
@@ -175,7 +208,7 @@ export default function Dashboard() {
       <motion.div className={`glass-panel ${styles.analyticsCard}`}>
         <div className={styles.analyticsHeader}>
           <Sparkles size={24} color="#a78bfa" />
-          <h2>AI Life Analytics & Cosmic Synthesis</h2>
+          <h2>{t('dash_analytics_title')}</h2>
         </div>
         <div className={`${styles.analyticsText} markdown-body`}>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>{analytics?.summary || ''}</ReactMarkdown>
@@ -184,17 +217,17 @@ export default function Dashboard() {
 
       {/* Reading History */}
       <div className={styles.historySection}>
-        <h2 className={styles.historyTitle}>Your Cosmic Reading History</h2>
+        <h2 className={styles.historyTitle}>{t('dash_history_title')}</h2>
 
         {readings.length === 0 ? (
           <div className={`glass-panel ${styles.emptyState}`}>
-            <p>No readings recorded yet. Choose a feature above to get your first AI reading!</p>
+            <p>{t('dash_history_empty')}</p>
           </div>
         ) : (
           <div className={styles.historyList}>
             {readings.map((item: any) => {
               const isExpanded = expandedId === item._id;
-              const formattedType = item.type.replace('_', ' ');
+              const formattedType = t(item.type) !== item.type ? t(item.type) : item.type.replace('_', ' ');
               return (
                 <div key={item._id} className={`glass-panel ${styles.historyCard}`}>
                   <div
@@ -210,7 +243,7 @@ export default function Dashboard() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                       <span className={styles.historyDate}>
                         <Calendar size={14} style={{ display: 'inline', marginRight: '0.3rem' }} />
-                        {new Date(item.createdAt).toLocaleDateString()}
+                        {new Date(item.createdAt).toLocaleDateString(i18n.language)}
                       </span>
                       {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                     </div>

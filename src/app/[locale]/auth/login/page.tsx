@@ -4,11 +4,13 @@ import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import styles from './page.module.css';
 
 export default function Login() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +35,7 @@ export default function Login() {
         router.refresh();
       }
     } catch (err: any) {
-      setError('An unexpected error occurred.');
+      setError(t('login_err_unexpected'));
     } finally {
       setLoading(false);
     }
@@ -52,8 +54,8 @@ export default function Login() {
         transition={{ duration: 0.4 }}
       >
         <div className={styles.header}>
-          <h1 className={styles.title}>Welcome Back</h1>
-          <p className={styles.subtitle}>Sign in to access your cosmic dashboard & readings</p>
+          <h1 className={styles.title}>{t('login_title')}</h1>
+          <p className={styles.subtitle}>{t('login_subtitle')}</p>
         </div>
 
         {error && <div className={styles.error}>{error}</div>}
@@ -77,16 +79,16 @@ export default function Login() {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
             />
           </svg>
-          <span>Continue with Google</span>
+          <span>{t('auth_google')}</span>
         </button>
 
         <div className={styles.divider}>
-          <span>or sign in with email</span>
+          <span>{t('login_divider')}</span>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
-            <label>Email Address</label>
+            <label>{t('login_email_label')}</label>
             <input
               type="email"
               placeholder="you@example.com"
@@ -97,7 +99,7 @@ export default function Login() {
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Password</label>
+            <label>{t('login_password_label')}</label>
             <input
               type="password"
               placeholder="••••••••"
@@ -108,14 +110,14 @@ export default function Login() {
           </div>
 
           <button type="submit" className={styles.submitBtn} disabled={loading}>
-            {loading ? 'Signing In...' : 'Sign In'}
+            {loading ? t('login_btn_loading') : t('login_btn')}
           </button>
         </form>
 
         <div className={styles.footer}>
-          Don&apos;t have an account?{' '}
+          {t('login_no_account')}{' '}
           <Link href="/auth/register" className={styles.link}>
-            Create one
+            {t('login_create_one')}
           </Link>
         </div>
       </motion.div>

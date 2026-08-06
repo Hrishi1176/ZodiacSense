@@ -384,6 +384,56 @@
   font-size: 1rem;
 }
 
+/* ===== MOBILE LANGUAGE SELECTOR ===== */
+.mobileLangRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.22);
+}
+
+.mobileLangLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-color);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.mobileLangBtns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.mobileLangBtn {
+  padding: 0.6rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+}
+
+.mobileLangBtn:hover {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: var(--primary-glow);
+}
+
+.mobileLangBtnActive {
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.45);
+}
+
 /* =============================================
    RESPONSIVE BREAKPOINTS
    ============================================= */
@@ -502,10 +552,8 @@
     padding: 0.35rem 0.5rem;
     font-size: 0.74rem;
   }
+  /* Language select moves into the mobile menu at this size */
   .langSelect {
-    display: none;
-  }
-  .themeToggle {
     display: none;
   }
 }

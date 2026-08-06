@@ -8,6 +8,8 @@ import { connectToDatabase } from '@/lib/db';
 import Reading from '@/models/Reading';
 import { computeBirthChart } from '@/lib/ephemeris';
 import { callGrokText, fillTemplate } from '@/lib/ai';
+import { retrieveMarriageContext } from '@/lib/rag';
+import { languageDirective } from '@/lib/language';
 import marriageBicharPrompt from '@/config/prompts/marriage-bichar.prompt.json';
 
 // Default coordinates for India (used when no location is provided for partners)
@@ -39,6 +41,9 @@ export async function POST(req: Request) {
 
     const { partner1, partner2, language } = await req.json();
 
+    // Strict language directive (name + native script) injected into all prompts
+    const langDirective = languageDirective(language);
+
     if (!partner1?.name || !partner1?.date || !partner2?.name || !partner2?.date) {
       return NextResponse.json({ error: 'Name and date of birth for both partners are required.' }, { status: 400 });
     }
@@ -51,6 +56,9 @@ export async function POST(req: Request) {
 
     const chart1 = computeBirthChart(partner1.date, p1Time, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_UTC_OFFSET);
     const chart2 = computeBirthChart(partner2.date, p2Time, DEFAULT_LAT, DEFAULT_LNG, DEFAULT_UTC_OFFSET);
+
+    // Retrieve relevant Vedic knowledge for both charts
+    const vedicContext = retrieveMarriageContext(chart1, chart2, 4);
 
     // Fill marriage bichar prompt template
     const userPrompt = fillTemplate(marriageBicharPrompt.userPromptTemplate, {
@@ -72,10 +80,13 @@ export async function POST(req: Request) {
       partner2NakshatraLord:   chart2.nakshatra.lord,
       partner2Ascendant:       chart2.ascendant.sign,
 
-      language: language || 'English',
+      language: langDirective,
     });
 
-    const finalSystemPrompt = fillTemplate(marriageBicharPrompt.systemPrompt, { language: language || 'English' });
+    const finalSystemPrompt = fillTemplate(marriageBicharPrompt.systemPrompt, {
+      language: langDirective,
+      vedicContext,
+    });
 
     // Call Grok AI
     const aiResponse = await callGrokText(

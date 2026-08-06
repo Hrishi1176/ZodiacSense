@@ -7,6 +7,7 @@ import { getUserQuotaStatus } from '@/lib/quota';
 import { connectToDatabase } from '@/lib/db';
 import Reading from '@/models/Reading';
 import { callGrokText, fillTemplate } from '@/lib/ai';
+import { languageDirective } from '@/lib/language';
 import dashboardPrompt from '@/config/prompts/dashboard-analytics.prompt.json';
 
 const READING_TYPE_LABELS: Record<string, string> = {
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
     } else {
       try {
         const { language } = await req.json().catch(() => ({ language: 'English' }));
+        const langDirective = languageDirective(language);
 
         const readingSnippets = readings.slice(0, 3).map((r: any, i: number) => {
           const label = READING_TYPE_LABELS[r.type] || r.type;
@@ -61,10 +63,10 @@ export async function POST(req: Request) {
           marriageCount,
           latestType,
           readingSnippets: readingSnippets || 'No previous text available.',
-          language: language || 'English',
+          language: langDirective,
         });
 
-        const finalSystemPrompt = fillTemplate(dashboardPrompt.systemPrompt, { language: language || 'English' });
+        const finalSystemPrompt = fillTemplate(dashboardPrompt.systemPrompt, { language: langDirective });
 
         const aiResponse = await callGrokText(
           dashboardPrompt.model,

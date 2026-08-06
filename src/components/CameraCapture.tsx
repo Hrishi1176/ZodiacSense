@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Camera, RefreshCw, CheckCircle2, Sparkles, SwitchCamera, Upload } from 'lucide-react';
 import styles from './CameraCapture.module.css';
 
@@ -10,6 +11,7 @@ interface CameraCaptureProps {
 }
 
 export default function CameraCapture({ onCapture, label }: CameraCaptureProps) {
+  const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -316,17 +318,17 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
             <div className={styles.startActions}>
               <button className={styles.startBtn} onClick={() => startCamera()}>
                 <Camera size={isMobile ? 36 : 32} />
-                <span>Scan with Camera</span>
+                <span>{t('camera_scan')}</span>
                 <span className={styles.subHint}>
-                  {isMobile ? 'Tap to open camera — show your palm' : 'Auto-scans or snap manually'}
+                  {isMobile ? t('camera_hint_mobile') : t('camera_hint_desktop')}
                 </span>
               </button>
 
-              <div className={styles.divider}>OR</div>
+              <div className={styles.divider}>{t('camera_or')}</div>
 
               <button className={styles.uploadBtn} onClick={() => fileInputRef.current?.click()}>
                 <Upload size={20} />
-                <span>Upload from Gallery</span>
+                <span>{t('camera_upload')}</span>
               </button>
               <input
                 ref={fileInputRef}
@@ -341,18 +343,18 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
             <div className={styles.startActions}>
               <div className={styles.cameraErrorMsg}>
                 <Camera size={36} />
-                <span>Camera access denied or unavailable</span>
+                <span>{t('camera_err_title')}</span>
                 <span className={styles.subHint}>
-                  Please allow camera permission or upload a photo instead
+                  {t('camera_err_hint')}
                 </span>
               </div>
               <button className={styles.uploadBtn} onClick={() => fileInputRef.current?.click()}>
                 <Upload size={20} />
-                <span>Upload Palm Photo</span>
+                <span>{t('camera_upload_photo')}</span>
               </button>
               <button className={styles.retryBtn} onClick={() => { setCameraError(false); startCamera(); }}>
                 <RefreshCw size={16} />
-                <span>Retry Camera</span>
+                <span>{t('camera_retry')}</span>
               </button>
               <input
                 ref={fileInputRef}
@@ -383,12 +385,12 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
                 {isHandDetected ? (
                   <div className={styles.detectionBadge}>
                     <CheckCircle2 size={16} />
-                    <span>Hand Aligned</span>
+                    <span>{t('camera_aligned')}</span>
                   </div>
                 ) : (
                   <div className={styles.detectionBadgePending}>
                     <Sparkles size={16} />
-                    <span>Place Palm Inside Frame</span>
+                    <span>{t('camera_place')}</span>
                   </div>
                 )}
               </div>
@@ -397,7 +399,7 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
               <button
                 className={styles.switchCamBtn}
                 onClick={toggleCamera}
-                title="Switch Camera (Front/Back)"
+                title={t('camera_switch_title')}
               >
                 <SwitchCamera size={20} />
               </button>
@@ -406,12 +408,12 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
               {countdown !== null && (
                 <div className={styles.countdownOverlay}>
                   <div className={styles.countdownNumber}>{countdown}</div>
-                  <span className={styles.countdownText}>Hold Still...</span>
+                  <span className={styles.countdownText}>{t('camera_hold')}</span>
                 </div>
               )}
 
               {/* Manual Snap Button */}
-              <button className={styles.captureBtn} onClick={capturePhoto} title="Manual Snap">
+              <button className={styles.captureBtn} onClick={capturePhoto} title={t('camera_snap_title')}>
                 <div className={styles.captureInner} />
               </button>
             </>
@@ -420,10 +422,10 @@ export default function CameraCapture({ onCapture, label }: CameraCaptureProps) 
       ) : (
         <div className={styles.resultBox}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={capturedImage} alt="Captured Hand" className={styles.preview} />
+          <img src={capturedImage} alt={t('camera_alt')} className={styles.preview} />
           <button className={styles.retakeBtn} onClick={retake}>
             <RefreshCw size={18} />
-            <span>Retake / Change</span>
+            <span>{t('camera_retake')}</span>
           </button>
         </div>
       )}

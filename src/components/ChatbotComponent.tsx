@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useTranslation } from 'react-i18next';
 import { useToast } from '@/context/ToastContext';
 
 type ChatMessage = {
@@ -24,18 +25,10 @@ export default function ChatbotComponent({
   const [quotaInfo, setQuotaInfo] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { showToast } = useToast();
+  const { t } = useTranslation();
   const trimmedInput = input.trim();
 
-  const placeholder = useMemo(() => {
-    switch (language) {
-      case 'Hindi':
-        return 'उदाहरण: मुझे नई नौकरी कब मिलेगी?';
-      case 'Bengali':
-        return 'যেমন: আমি কবে নতুন চাকরি পাব?';
-      default:
-        return 'e.g. When will I get a new job?';
-    }
-  }, [language]);
+  const placeholder = t('chat_placeholder');
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -66,18 +59,18 @@ export default function ChatbotComponent({
       const data = await res.json();
       
       if (!res.ok) {
-        showToast(data.error || 'Failed to get response', 'error');
+        showToast(data.error || t('chat_err_response'), 'error');
         setMessages(prev => prev.slice(0, -1));
         setInput(userMsg);
       } else {
         setMessages(prev => [...prev, { id: crypto.randomUUID(), role: 'ai', content: data.reply }]);
         if (data.remainingQuota !== undefined) {
-          setQuotaInfo(`${data.remainingQuota} / ${data.limit} chats remaining today`);
+          setQuotaInfo(t('chat_quota', { remaining: data.remainingQuota, limit: data.limit }));
         }
       }
     } catch (err) {
       console.error(err);
-      showToast('Connection error', 'error');
+      showToast(t('chat_err_connection'), 'error');
       setMessages(prev => prev.slice(0, -1));
       setInput(userMsg);
     } finally {
@@ -88,14 +81,14 @@ export default function ChatbotComponent({
   return (
     <div style={{ marginTop: '2.5rem', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(139, 92, 246, 0.3)', borderRadius: '16px', overflow: 'hidden' }}>
       <div style={{ padding: '1rem 1.5rem', background: 'rgba(139, 92, 246, 0.1)', borderBottom: '1px solid rgba(139, 92, 246, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#e2e8f0' }}>💬 Ask your AI Astrologer</h3>
+        <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#e2e8f0' }}>{t('chat_title')}</h3>
         {quotaInfo && <span style={{ fontSize: '0.8rem', color: '#a78bfa' }}>{quotaInfo}</span>}
       </div>
 
       <div style={{ padding: '1.5rem', maxHeight: '400px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         {messages.length === 0 && (
           <p style={{ color: '#94a3b8', textAlign: 'center', margin: 0, fontSize: '0.9rem' }}>
-            Have a question about your birth chart? Ask the AI astrologer!
+            {t('chat_empty')}
           </p>
         )}
         
@@ -123,7 +116,7 @@ export default function ChatbotComponent({
         ))}
         {loading && (
           <div style={{ alignSelf: 'flex-start', background: 'rgba(255, 255, 255, 0.05)', padding: '0.5rem 1rem', borderRadius: '12px', color: '#a78bfa', fontSize: '0.9rem' }}>
-            Thinking...
+            {t('chat_thinking')}
           </div>
         )}
         <div ref={messagesEndRef} />
@@ -143,7 +136,7 @@ export default function ChatbotComponent({
           disabled={loading || !trimmedInput}
           style={{ padding: '0 1.5rem', background: 'linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%)', color: '#fff', border: 'none', fontWeight: 'bold', cursor: loading || !trimmedInput ? 'not-allowed' : 'pointer', opacity: loading || !trimmedInput ? 0.5 : 1 }}
         >
-          Send
+          {t('chat_send')}
         </button>
       </form>
     </div>

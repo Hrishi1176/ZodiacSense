@@ -164,17 +164,17 @@ export default function ZodiacOverlay() {
         // Outer ring
         ctx.beginPath();
         ctx.arc(cx, cy, size, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(139, 92, 246, ${alpha * 0.5})`;
+        ctx.strokeStyle = `rgba(232, 182, 76, ${alpha * 0.5})`;
         ctx.lineWidth = 1.2;
-        ctx.shadowColor = 'rgba(139, 92, 246, 0.5)';
+        ctx.shadowColor = 'rgba(232, 182, 76, 0.5)';
         ctx.shadowBlur = 8 + pulse * 6;
         ctx.stroke();
         ctx.shadowBlur = 0;
 
         // Inner glow circle
         const innerGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, zodiacRadius * 0.7);
-        innerGrad.addColorStop(0, `rgba(167, 139, 250, ${alpha * 0.5})`);
-        innerGrad.addColorStop(1, 'rgba(139, 92, 246, 0)');
+        innerGrad.addColorStop(0, `rgba(240, 208, 120, ${alpha * 0.5})`);
+        innerGrad.addColorStop(1, 'rgba(212, 175, 55, 0)');
         ctx.beginPath();
         ctx.arc(cx, cy, zodiacRadius * 0.7, 0, Math.PI * 2);
         ctx.fillStyle = innerGrad;
@@ -185,8 +185,8 @@ export default function ZodiacOverlay() {
         ctx.font = `${fontSize}px serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = `rgba(196, 181, 253, ${alpha})`;
-        ctx.shadowColor = 'rgba(139, 92, 246, 0.6)';
+        ctx.fillStyle = `rgba(244, 214, 130, ${alpha})`;
+        ctx.shadowColor = 'rgba(232, 182, 76, 0.6)';
         ctx.shadowBlur = 6;
         ctx.fillText(symbol, cx, cy);
         ctx.shadowBlur = 0;
@@ -200,7 +200,7 @@ export default function ZodiacOverlay() {
         ctx.font = '24px serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillStyle = `rgba(196, 181, 253, ${runeAlpha})`;
+        ctx.fillStyle = `rgba(240, 208, 120, ${runeAlpha})`;
         ctx.fillText('☥', cx, cy);
       }
 

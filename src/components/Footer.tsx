@@ -2,11 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Star, Sparkles, Shield, Globe } from 'lucide-react';
 import styles from './Footer.module.css';
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className={styles.footer}>
       {/* Decorative top border with gradient line */}
@@ -28,11 +31,11 @@ export default function Footer() {
             <span>ZodiacSense</span>
           </Link>
           <p className={styles.brandDesc}>
-            AI-powered Vedic &amp; Western astrology, real-time palm reading, and cosmic compatibility analytics.
+            {t('footer_desc')}
           </p>
           <div className={styles.aiBadge}>
             <Sparkles size={14} />
-            <span>Powered by AI</span>
+            <span>{t('footer_powered_ai')}</span>
           </div>
         </motion.div>
 
@@ -45,23 +48,23 @@ export default function Footer() {
         >
           <h4 className={styles.columnTitle}>
             <Star size={14} className={styles.columnIcon} />
-            Features
+            {t('footer_features')}
           </h4>
           <Link href="/palm-reading" className={styles.link}>
             <span className={styles.linkArrow}>→</span>
-            Palm Reading
+            {t('palm_reading')}
           </Link>
           <Link href="/birth-chart" className={styles.link}>
             <span className={styles.linkArrow}>→</span>
-            Birth Chart
+            {t('birth_chart')}
           </Link>
           <Link href="/marriage-bichar" className={styles.link}>
             <span className={styles.linkArrow}>→</span>
-            Marriage Bichar
+            {t('marriage_bichar')}
           </Link>
           <Link href="/dashboard" className={styles.link}>
             <span className={styles.linkArrow}>→</span>
-            Cosmic Dashboard
+            {t('footer_cosmic_dashboard')}
           </Link>
         </motion.div>
 
@@ -74,19 +77,19 @@ export default function Footer() {
         >
           <h4 className={styles.columnTitle}>
             <Shield size={14} className={styles.columnIcon} />
-            Legal &amp; Privacy
+            {t('footer_legal')}
           </h4>
           <Link href="/privacy-policy" className={styles.link}>
             <span className={styles.linkArrow}>→</span>
-            Privacy Policy
+            {t('footer_privacy_policy')}
           </Link>
           <Link href="/data-privacy" className={styles.link}>
             <span className={styles.linkArrow}>→</span>
-            Data Privacy
+            {t('footer_data_privacy')}
           </Link>
           <Link href="/terms-of-service" className={styles.link}>
             <span className={styles.linkArrow}>→</span>
-            Terms of Service
+            {t('footer_terms')}
           </Link>
         </motion.div>
 
@@ -99,7 +102,7 @@ export default function Footer() {
         >
           <h4 className={styles.columnTitle}>
             <Globe size={14} className={styles.columnIcon} />
-            Languages
+            {t('footer_languages')}
           </h4>
           <span className={styles.link}>
             <span className={styles.flagEmoji}>🇮🇳</span>
@@ -124,10 +127,10 @@ export default function Footer() {
         transition={{ duration: 0.6, delay: 0.4 }}
       >
         <p className={styles.copyright}>
-          © {new Date().getFullYear()} <span className={styles.brandName}>ZodiacSense</span>. All rights reserved.
+          © {new Date().getFullYear()} <span className={styles.brandName}>ZodiacSense</span>. {t('footer_rights')}
         </p>
         <p className={styles.tagline}>
-          Cosmic Guidance powered by Advanced AI Models
+          {t('footer_tagline')}
         </p>
       </motion.div>
     </footer>
