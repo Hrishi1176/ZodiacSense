@@ -11,6 +11,8 @@ export interface IUser extends Document {
     date: string;
     time: string;
     location: string;
+    lat?: number;
+    lng?: number;
   };
   createdAt: Date;
   updatedAt: Date;
@@ -28,6 +30,8 @@ const UserSchema: Schema<IUser> = new Schema(
       date: { type: String },
       time: { type: String },
       location: { type: String },
+      lat: { type: Number },
+      lng: { type: Number },
     },
   },
   { timestamps: true }

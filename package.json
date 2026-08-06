@@ -6,20 +6,25 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "extract-audio": "node scripts/extract-bg-audio.cjs",
+    "transcribe-narration": "node scripts/transcribe-narration.cjs"
   },
   "dependencies": {
     "@mediapipe/camera_utils": "^0.3.1675466862",
     "@mediapipe/hands": "^0.4.1675469240",
+    "@types/leaflet": "^1.9.22",
     "@vvo/tzdb": "^6.198.0",
     "astronomia": "^4.2.0",
     "bcryptjs": "^3.0.3",
     "celestine": "^0.2.1",
     "framer-motion": "^12.43.0",
+    "google-translate-api-x": "^10.7.3",
     "html2canvas": "^1.4.1",
     "i18next": "^26.3.6",
     "i18next-resources-to-backend": "^1.2.3",
     "jspdf": "^4.2.1",
+    "leaflet": "^1.9.4",
     "lucide-react": "^1.28.0",
     "mongoose": "^9.9.1",
     "next": "16.3.0",
@@ -29,6 +34,7 @@
     "react-dom": "19.2.8",
     "react-i18next": "^17.0.11",
     "react-icons": "^5.7.0",
+    "react-leaflet": "^5.0.0",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
     "sweph": "^2.10.3-7"
@@ -40,6 +46,10 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
+    "ffmpeg-static": "^5.3.0",
     "typescript": "^5"
+  },
+  "allowScripts": {
+    "ffmpeg-static@5.3.0": true
   }
 }

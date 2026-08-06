@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import i18nConfig from '../../i18nConfig';
 import styles from './Navbar.module.css';
@@ -14,10 +14,10 @@ import LogoutModal from './LogoutModal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar({ locale }: { locale: string }) {
-  const { t } = useTranslation();
-  const router = useRouter();
+  const { t, i18n } = useTranslation();
   const currentPathname = usePathname();
-  const currentLocale = locale;
+  // Live language (may change in-place without navigation); `locale` is the SSR value
+  const currentLocale = i18n.language || locale;
   const { theme, toggleTheme } = useTheme();
   const { data: session } = useSession();
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -51,18 +51,25 @@ export default function Navbar({ locale }: { locale: string }) {
   }, [isMobileMenuOpen]);
 
   const changeLocale = (newLocale: string) => {
+    if (newLocale === currentLocale) return;
+
     const days = 30;
     const date = new Date();
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
     const expires = date.toUTCString();
     document.cookie = `NEXT_LOCALE=${newLocale};expires=${expires};path=/`;
 
-    if (currentLocale === i18nConfig.defaultLocale && !(i18nConfig as any).prefixDefault) {
-      router.push('/' + newLocale + currentPathname);
-    } else {
-      router.push(currentPathname.replace(`/${currentLocale}`, `/${newLocale}`));
-    }
-    router.refresh();
+    // Switch language in place — no router.push, so already generated results
+    // stay on screen and get translated live instead of being lost.
+    const prefixDefault = (i18nConfig as { prefixDefault?: boolean }).prefixDefault;
+    const basePath = currentPathname.replace(new RegExp(`^/${locale}(?=/|$)`), '') || '/';
+    const newPath =
+      newLocale === i18nConfig.defaultLocale && !prefixDefault
+        ? basePath
+        : `/${newLocale}${basePath === '/' ? '' : basePath}`;
+    window.history.replaceState(null, '', newPath);
+    document.documentElement.lang = newLocale;
+    i18n.changeLanguage(newLocale);
   };
 
   const changeLocaleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {

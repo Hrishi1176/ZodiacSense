@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSession } from 'next-auth/react';
@@ -9,8 +10,12 @@ import Loader from '@/components/Loader';
 import FeedbackComponent from '@/components/FeedbackComponent';
 import ChatbotComponent from '@/components/ChatbotComponent';
 import AstrologyReport, { type ReportMetadata } from '@/components/AstrologyReport';
+import useLiveTranslation from '@/hooks/useLiveTranslation';
 import { useToast } from '@/context/ToastContext';
+import type { LocationPick } from '@/components/LocationPicker';
 import styles from './page.module.css';
+
+const LocationPicker = dynamic(() => import('@/components/LocationPicker'), { ssr: false });
 
 export default function BirthChart() {
   const { t, i18n } = useTranslation();
@@ -20,6 +25,7 @@ export default function BirthChart() {
   const selectedLang = langMap[i18n.language] || 'English';
 
   const [formData, setFormData] = useState({ name: '', date: '', time: '', location: '' });
+  const [picked, setPicked] = useState<{ lat: number; lng: number } | null>(null);
   const [result, setResult] = useState<string | null>(null);
   const [readingId, setReadingId] = useState<string | null>(null);
   const [metadata, setMetadata] = useState<ReportMetadata | null>(null);
@@ -27,13 +33,68 @@ export default function BirthChart() {
   const [remainingQuota, setRemainingQuota] = useState<number | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
+  // Live-translate the generated report + metadata texts when the UI language changes
+  const isTranslating = useLiveTranslation(result, setResult, () => {
+    if (!metadata) return null;
+    const texts: string[] = [];
+    const take = (s?: string) => {
+      if (s && s.trim()) {
+        texts.push(s);
+        return texts.length - 1;
+      }
+      return -1;
+    };
+    const yogaSlots = (metadata.yogas || []).map((y) => take(y.description));
+    const doshaSlots = (metadata.doshas || []).map((d) => ({
+      desc: take(d.description),
+      cancels: (d.cancellation || []).map((c) => take(c)),
+      remedy: take(d.remedy),
+    }));
+    if (texts.length === 0) return null;
+    return {
+      texts,
+      apply: (translations) => {
+        setMetadata((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            yogas: (prev.yogas || []).map((y, i) =>
+              yogaSlots[i] >= 0 ? { ...y, description: translations[yogaSlots[i]] } : y
+            ),
+            doshas: (prev.doshas || []).map((d, i) => {
+              const s = doshaSlots[i];
+              if (!s) return d;
+              return {
+                ...d,
+                description: s.desc >= 0 ? translations[s.desc] : d.description,
+                cancellation: (d.cancellation || []).map((c, j) =>
+                  s.cancels[j] >= 0 ? translations[s.cancels[j]] : c
+                ),
+                remedy: s.remedy >= 0 ? translations[s.remedy] : d.remedy,
+              };
+            }),
+          };
+        });
+      },
+    };
+  });
+
   useEffect(() => {
     if (session) {
       fetch('/api/user/profile')
         .then(res => res.json())
         .then(data => {
           if (data.birthDetails) {
-            setFormData(prev => ({ ...prev, ...data.birthDetails }));
+            setFormData(prev => ({
+              ...prev,
+              name: data.birthDetails.name ?? prev.name,
+              date: data.birthDetails.date ?? prev.date,
+              time: data.birthDetails.time ?? prev.time,
+              location: data.birthDetails.location ?? prev.location,
+            }));
+            if (typeof data.birthDetails.lat === 'number' && typeof data.birthDetails.lng === 'number') {
+              setPicked({ lat: data.birthDetails.lat, lng: data.birthDetails.lng });
+            }
           }
         })
         .catch(err => console.error('Failed to load presets:', err));
@@ -58,7 +119,7 @@ export default function BirthChart() {
       const res = await fetch('/api/birth-chart', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, language: selectedLang }),
+        body: JSON.stringify({ ...formData, lat: picked?.lat, lng: picked?.lng, language: selectedLang }),
       });
       const data = await res.json();
 
@@ -128,19 +189,6 @@ export default function BirthChart() {
             </div>
 
             <div className={styles.formGroup}>
-              <label htmlFor="bc-location">{t('bc_place_of_birth')}</label>
-              <input
-                suppressHydrationWarning
-                id="bc-location"
-                type="text"
-                required
-                placeholder={t('bc_place_placeholder')}
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              />
-            </div>
-
-            <div className={styles.formGroup}>
               <label htmlFor="bc-date">{t('bc_date_of_birth')}</label>
               <input
                 suppressHydrationWarning
@@ -163,6 +211,20 @@ export default function BirthChart() {
                 onChange={(e) => setFormData({ ...formData, time: e.target.value })}
               />
             </div>
+          </div>
+
+          <div className={styles.formGroup} style={{ textAlign: 'left' }}>
+            <label>{t('bc_place_of_birth')}</label>
+            <LocationPicker
+              placeholder={t('lp_search_placeholder')}
+              locateLabel={t('lp_use_my_location')}
+              initial={picked}
+              initialName={formData.location || undefined}
+              onPick={(p: LocationPick) => {
+                setFormData((prev) => ({ ...prev, location: p.displayName }));
+                setPicked({ lat: p.lat, lng: p.lng });
+              }}
+            />
           </div>
 
           <button
@@ -193,6 +255,12 @@ export default function BirthChart() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
+            {isTranslating && (
+              <div style={{ marginBottom: '1rem', fontSize: '0.85rem', color: '#fbbf24', fontWeight: 600 }}>
+                ⏳ {t('translating_report')}
+              </div>
+            )}
+
             {/* Structured Astrology Report */}
             <AstrologyReport
               result={result}

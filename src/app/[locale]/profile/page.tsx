@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -8,6 +9,9 @@ import { motion } from 'framer-motion';
 import { useToast } from '@/context/ToastContext';
 import styles from './page.module.css';
 import Loader from '@/components/Loader';
+import type { LocationPick } from '@/components/LocationPicker';
+
+const LocationPicker = dynamic(() => import('@/components/LocationPicker'), { ssr: false });
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -16,6 +20,7 @@ export default function ProfilePage() {
   const { t } = useTranslation();
   
   const [formData, setFormData] = useState({ name: '', date: '', time: '', location: '' });
+  const [picked, setPicked] = useState<{ lat: number; lng: number } | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -27,7 +32,15 @@ export default function ProfilePage() {
         .then(res => res.json())
         .then(data => {
           if (data.birthDetails) {
-            setFormData(data.birthDetails);
+            setFormData({
+              name: data.birthDetails.name ?? '',
+              date: data.birthDetails.date ?? '',
+              time: data.birthDetails.time ?? '',
+              location: data.birthDetails.location ?? '',
+            });
+            if (typeof data.birthDetails.lat === 'number' && typeof data.birthDetails.lng === 'number') {
+              setPicked({ lat: data.birthDetails.lat, lng: data.birthDetails.lng });
+            }
           }
           setLoading(false);
         })
@@ -39,13 +52,17 @@ export default function ProfilePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.location.trim()) {
+      showToast(t('profile_pob_required'), 'warning', t('profile_pob_required_title'));
+      return;
+    }
     setSaving(true);
     
     try {
       const res = await fetch('/api/user/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, lat: picked?.lat, lng: picked?.lng })
       });
       
       if (!res.ok) throw new Error('Failed to save profile');
@@ -115,14 +132,17 @@ export default function ProfilePage() {
               onChange={e => setFormData({ ...formData, time: e.target.value })}
             />
           </div>
-          <div className={styles.formGroup}>
+          <div className={styles.formGroup} style={{ textAlign: 'left' }}>
             <label>{t('profile_pob')}</label>
-            <input 
-              type="text" 
-              required 
-              value={formData.location}
-              onChange={e => setFormData({ ...formData, location: e.target.value })}
-              placeholder={t('profile_pob_ph')}
+            <LocationPicker
+              placeholder={t('lp_search_placeholder')}
+              locateLabel={t('lp_use_my_location')}
+              initial={picked}
+              initialName={formData.location || undefined}
+              onPick={(p: LocationPick) => {
+                setFormData((prev) => ({ ...prev, location: p.displayName }));
+                setPicked({ lat: p.lat, lng: p.lng });
+              }}
             />
           </div>
 

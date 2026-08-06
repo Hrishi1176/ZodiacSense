@@ -13,11 +13,13 @@
  */
 
 import { computeBirthChart } from '@/lib/ephemeris';
-import { analyzeChart } from '@/lib/vedic/chart-analysis';
+import { analyzeChart, analyzeManglik } from '@/lib/vedic/chart-analysis';
 import { detectAllDoshas } from '@/lib/vedic/doshas';
 import { computeAllDivisionalCharts, getVargottamaPlanets } from '@/lib/vedic/divisional-charts';
 import { computeAllPlanetStrengths } from '@/lib/vedic/planet-strength';
 import { buildStructuredAnalysis, buildAnalysisJSON } from '@/lib/vedic/structured-analysis';
+import { computeMarriageMuhurtas } from '@/lib/vedic/muhurta';
+import { SIGNS, signIndex } from '@/lib/vedic/constants';
 
 // ─── Test Cases ─────────────────────────────────────────────────────────────
 
@@ -229,10 +231,130 @@ function runSingleTest(tc: TestCase): TestResult {
   };
 }
 
+// ─── Manglik house regression cases (synthetic sign overrides) ─────────────
+
+function withSigns(
+  base: ReturnType<typeof computeBirthChart>,
+  overrides: { asc?: string; moon?: string; mars?: string; jupiter?: string; venus?: string },
+): ReturnType<typeof computeBirthChart> {
+  return {
+    ...base,
+    ascendant: { ...base.ascendant, sign: overrides.asc ?? base.ascendant.sign },
+    moon: { ...base.moon, sign: overrides.moon ?? base.moon.sign },
+    mars: { ...base.mars, sign: overrides.mars ?? base.mars.sign },
+    jupiter: { ...base.jupiter, sign: overrides.jupiter ?? base.jupiter.sign },
+    venus: { ...base.venus, sign: overrides.venus ?? base.venus.sign },
+  };
+}
+
+const EMPTY_SUMMARY: TestResult['summary'] = {
+  ascendant: '-', moonSign: '-', sunSign: '-', nakshatra: '-',
+  yogaCount: 0, yogaNames: [], doshaNames: [], vargottamaPlanets: [],
+};
+
+function runManglikTests(): TestResult[] {
+  // Base chart only used as a structural shell — signs are overridden
+  const base = computeBirthChart('1993-05-10', '08:30', 28.6139, 77.209, 330);
+  const results: TestResult[] = [];
+
+  // Mars in each Manglik house from Lagna
+  for (const house of [1, 4, 7, 8, 12]) {
+    const marsSign = SIGNS[(signIndex('Aries') + house - 1) % 12];
+    const chart = withSigns(base, { asc: 'Aries', moon: 'Gemini', mars: marsSign, jupiter: 'Pisces', venus: 'Taurus' });
+    const m = analyzeManglik(chart);
+    const failures: string[] = [];
+    if (m.marsHouseFromLagna !== house) failures.push(`Mars house from Lagna: expected ${house}, got ${m.marsHouseFromLagna}`);
+    if (!m.isManglik) failures.push(`Expected Manglik for Mars in house ${house} from Lagna`);
+    results.push({ name: `Manglik: Mars in house ${house} from Lagna`, passed: failures.length === 0, failures, summary: EMPTY_SUMMARY });
+  }
+
+  // Non-Manglik house (Mars in 3rd from both Lagna and Moon)
+  {
+    const chart = withSigns(base, { asc: 'Aries', moon: 'Aries', mars: 'Gemini', jupiter: 'Pisces', venus: 'Taurus' });
+    const m = analyzeManglik(chart);
+    const failures: string[] = [];
+    if (m.isManglik) failures.push('Expected Non-Manglik for Mars in 3rd from Lagna and Moon');
+    if (m.severity !== 'None') failures.push(`Expected severity None, got ${m.severity}`);
+    results.push({ name: 'Manglik: Mars in 3rd → Non-Manglik', passed: failures.length === 0, failures, summary: EMPTY_SUMMARY });
+  }
+
+  // Manglik via Moon only (Partial severity)
+  {
+    const chart = withSigns(base, { asc: 'Aries', moon: 'Taurus', mars: 'Leo', jupiter: 'Pisces', venus: 'Taurus' });
+    const m = analyzeManglik(chart);
+    const failures: string[] = [];
+    if (!m.isManglik) failures.push('Expected Manglik via Moon (Mars 4th from Moon)');
+    if (m.marsHouseFromMoon !== 4) failures.push(`Mars from Moon: expected 4, got ${m.marsHouseFromMoon}`);
+    if (m.severity !== 'Partial') failures.push(`Expected Partial severity, got ${m.severity}`);
+    results.push({ name: 'Manglik: Mars 4th from Moon → Partial', passed: failures.length === 0, failures, summary: EMPTY_SUMMARY });
+  }
+
+  // Known cancellation case: Mars conjunct Jupiter in 7th
+  {
+    const chart = withSigns(base, { asc: 'Aries', moon: 'Aries', mars: 'Libra', jupiter: 'Libra', venus: 'Taurus' });
+    const m = analyzeManglik(chart);
+    const failures: string[] = [];
+    if (!m.isManglik) failures.push('Expected Manglik for Mars in 7th');
+    if (!m.cancellation.includes('Mars conjunct Jupiter')) failures.push(`Expected Jupiter cancellation, got: ${m.cancellation}`);
+    results.push({ name: 'Manglik: Mars-Jupiter conjunct cancellation', passed: failures.length === 0, failures, summary: EMPTY_SUMMARY });
+  }
+
+  return results;
+}
+
+// ─── Vivah Muhurta regression cases ─────────────────────────────────────────
+
+function runMuhurtaTests(): TestResult[] {
+  const results: TestResult[] = [];
+
+  const chart1 = computeBirthChart('1993-05-10', '08:30', 28.6139, 77.209, 330);
+  const chart2 = computeBirthChart('1995-11-22', '14:45', 22.5726, 88.3639, 330);
+
+  const muhurtas = computeMarriageMuhurtas(chart1, chart2, { months: 12, topN: 8 });
+  const failures: string[] = [];
+
+  if (muhurtas.length === 0) failures.push('No muhurta dates returned');
+  if (muhurtas.length > 8) failures.push(`More than topN dates returned: ${muhurtas.length}`);
+
+  const tomorrow = new Date();
+  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+  tomorrow.setUTCHours(0, 0, 0, 0);
+  const maxDate = new Date(tomorrow);
+  maxDate.setUTCMonth(maxDate.getUTCMonth() + 12);
+  maxDate.setUTCDate(maxDate.getUTCDate() + 2); // small boundary tolerance
+
+  const rejectedTithiPattern = /Amavasya|Purnima|Ashtami|Chaturthi|Navami|Chaturdashi/i;
+  for (const m of muhurtas) {
+    const d = new Date(`${m.date}T00:00:00Z`);
+    if (d < tomorrow || d > maxDate) failures.push(`Date out of window: ${m.date}`);
+    if (m.weekday === 'Tuesday' || m.weekday === 'Saturday') failures.push(`Rejected weekday present: ${m.date} (${m.weekday})`);
+    if (rejectedTithiPattern.test(m.tithi)) failures.push(`Rejected tithi present: ${m.date} (${m.tithi})`);
+  }
+
+  // Chronological order
+  for (let i = 1; i < muhurtas.length; i++) {
+    if (muhurtas[i].date <= muhurtas[i - 1].date) failures.push(`Dates not chronological at index ${i}`);
+  }
+
+  results.push({ name: 'Muhurta: window, weekday & tithi filters', passed: failures.length === 0, failures, summary: EMPTY_SUMMARY });
+
+  // Determinism: identical rerun
+  const rerun = computeMarriageMuhurtas(chart1, chart2, { months: 12, topN: 8 });
+  const detFailures: string[] = [];
+  if (JSON.stringify(rerun) !== JSON.stringify(muhurtas)) detFailures.push('Rerun produced different muhurta results');
+  results.push({ name: 'Muhurta: deterministic rerun', passed: detFailures.length === 0, failures: detFailures, summary: EMPTY_SUMMARY });
+
+  return results;
+}
+
 // ─── Main ───────────────────────────────────────────────────────────────────
 
 export function runAllRegressionTests(): { total: number; passed: number; failed: number; results: TestResult[] } {
-  const results = TEST_CASES.map(runSingleTest);
+  const results = [
+    ...TEST_CASES.map(runSingleTest),
+    ...runManglikTests(),
+    ...runMuhurtaTests(),
+  ];
   const passed = results.filter((r) => r.passed).length;
   const failed = results.length - passed;
 

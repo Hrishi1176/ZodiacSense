@@ -63,7 +63,7 @@ function isTrikona(house: number): boolean {
   return TRIKONA.includes(house);
 }
 
-function analyzeManglik(chart: BirthChartData): ManglikAnalysis {
+export function analyzeManglik(chart: BirthChartData): ManglikAnalysis {
   const lagna = chart.ascendant.sign;
   const moonSign = chart.moon.sign;
   const marsFromLagna = getHouseFromLagna(chart.mars.sign, lagna);
