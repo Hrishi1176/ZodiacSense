@@ -295,6 +295,54 @@ export function computeBirthChart(
   };
 }
 
+// ─── Daily Panchang (for muhurta scanning) ──────────────────────────────────
+
+export interface DailyPanchang {
+  date: string;          // YYYY-MM-DD
+  weekday: number;       // 0 = Sunday … 6 = Saturday (UTC)
+  moonSign: string;
+  moonNakshatra: string;
+  tithiIndex: number;    // 0–29 (0 = Shukla Pratipada … 29 = Amavasya)
+  tithiName: string;     // e.g. "Shukla Paksha Dwitiya"
+  yogaName: string;
+  jupiterSign: string;
+  venusSign: string;
+}
+
+/**
+ * Location-independent panchang snapshot for a calendar date, evaluated at
+ * 06:00 IST (00:30 UTC) — stable for scoring whole-day muhurta suitability.
+ */
+export function computeDailyPanchang(dateISO: string): DailyPanchang {
+  const [year, month, day] = dateISO.split('-').map(Number);
+  const jd = sw.julday(year, month, day, 0.5, 1);
+
+  const sunInfo = getPlanet(jd, SE_SUN);
+  const moonRes = getPlanet(jd, SE_MOON);
+
+  const NAK_SPAN = 360 / 27;
+  const nakIdx = Math.floor(moonRes.longitude / NAK_SPAN) % 27;
+
+  const diff = normDeg(moonRes.longitude - sunInfo.longitude);
+  const tithiIdx = Math.floor(diff / 12);
+  const paksha = tithiIdx < 15 ? 'Shukla Paksha' : 'Krishna Paksha';
+
+  const sum = normDeg(moonRes.longitude + sunInfo.longitude);
+  const yogaIdx = Math.floor(sum / (13 + 1 / 3)) % 27;
+
+  return {
+    date: dateISO,
+    weekday: new Date(Date.UTC(year, month - 1, day)).getUTCDay(),
+    moonSign: moonRes.sign,
+    moonNakshatra: NAKSHATRA_NAMES[nakIdx],
+    tithiIndex: tithiIdx,
+    tithiName: `${paksha} ${TITHI_NAMES[tithiIdx]}`,
+    yogaName: YOGA_NAMES[yogaIdx],
+    jupiterSign: getPlanet(jd, SE_JUPITER).sign,
+    venusSign: getPlanet(jd, SE_VENUS).sign,
+  };
+}
+
 export function formatChartForPrompt(chart: BirthChartData, name: string, date: string, time: string, location: string): string {
   const p = (info: PlanetPosition & { isRetrograde?: boolean }) =>
     `${info.sign} ${info.degree}${info.isRetrograde ? ' (R)' : ''}`;

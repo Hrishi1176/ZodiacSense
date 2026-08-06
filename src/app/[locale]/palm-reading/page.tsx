@@ -9,6 +9,7 @@ import remarkGfm from 'remark-gfm';
 import CameraCapture from '@/components/CameraCapture';
 import AuthModal from '@/components/AuthModal';
 import Loader from '@/components/Loader';
+import useLiveTranslation from '@/hooks/useLiveTranslation';
 import { useToast } from '@/context/ToastContext';
 import styles from './page.module.css';
 
@@ -24,6 +25,9 @@ export default function PalmReading() {
   const [loading, setLoading] = useState(false);
   const [remainingQuota, setRemainingQuota] = useState<number | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // Live-translate the generated reading when the UI language changes
+  const isTranslating = useLiveTranslation(result, setResult);
 
   const analyzeHands = async () => {
     if (!session) {
@@ -188,6 +192,11 @@ export default function PalmReading() {
             transition={{ duration: 0.4 }}
             style={{ marginTop: '2rem' }}
           >
+            {isTranslating && (
+              <div style={{ marginBottom: '1rem', fontSize: '0.85rem', color: '#fbbf24', fontWeight: 600 }}>
+                ⏳ {t('translating_report')}
+              </div>
+            )}
             <div style={{ marginBottom: '1.5rem' }}>
               <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-color-strong)', margin: 0 }}>
                 {t('palm_result_title')}

@@ -29,8 +29,10 @@ const DEFAULT_LOCATION: GeoLocation = {
 /**
  * Find the IANA timezone name closest to a given lat/lng using the offline tzdb.
  * Picks the timezone whose largest city is geographically nearest.
+ *
+ * Note: `lat` is accepted for API stability; the current heuristic uses only lng.
  */
-function getTimezoneForCoords(lat: number, lng: number): { timezone: string; utcOffsetMinutes: number } {
+export function getTimezoneForCoords(lat: number, lng: number): { timezone: string; utcOffsetMinutes: number } {
   const timezones = getTimeZones();
 
   let bestTz = 'UTC';

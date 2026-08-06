@@ -6,13 +6,15 @@ import { authOptions } from '@/lib/auth';
 import { checkAndIncrementQuota } from '@/lib/quota';
 import { connectToDatabase } from '@/lib/db';
 import Reading from '@/models/Reading';
-import { geocodeCity } from '@/lib/geocode';
+import User from '@/models/User';
+import { geocodeCity, getTimezoneForCoords } from '@/lib/geocode';
 import { computeBirthChart, formatChartForPrompt } from '@/lib/ephemeris';
 import { callGrokText, fillTemplate } from '@/lib/ai';
 import { retrieveVedicContext } from '@/lib/rag';
 import { buildStructuredAnalysis, buildAnalysisJSON } from '@/lib/vedic/structured-analysis';
 import { verifyResponse } from '@/lib/verify';
-import { languageDirective, resolveLanguage } from '@/lib/language';
+import { resolveLanguage } from '@/lib/language';
+import { translateToLocale } from '@/lib/serverTranslate';
 import birthChartPrompt from '@/config/prompts/birth-chart.prompt.json';
 
 export async function POST(req: Request) {
@@ -37,17 +39,20 @@ export async function POST(req: Request) {
       );
     }
 
-    const { name, date, time, location, language } = await req.json();
-
-    // Strict language directive (name + native script) injected into all prompts
-    const langDirective = languageDirective(language);
+    const { name, date, time, location, lat, lng, language } = await req.json();
 
     if (!name || !date || !time || !location) {
       return NextResponse.json({ error: 'All birth details are required (name, date, time, location).' }, { status: 400 });
     }
 
-    // ─── Step 1: Geocode ──────────────────────────────────────────────────
-    const geo = await geocodeCity(location);
+    // ─── Step 1: Geocode (map-picked coordinates skip Nominatim) ───────────
+    let geo;
+    if (typeof lat === 'number' && typeof lng === 'number') {
+      const tz = getTimezoneForCoords(lat, lng);
+      geo = { lat, lng, displayName: location, timezone: tz.timezone, utcOffsetMinutes: tz.utcOffsetMinutes };
+    } else {
+      geo = await geocodeCity(location);
+    }
     console.log(`[birth-chart] Geocoded "${location}" → ${geo.lat.toFixed(4)}, ${geo.lng.toFixed(4)} (${geo.timezone})`);
 
     // ─── Step 2: Compute planetary positions (Swiss Ephemeris) ────────────
@@ -87,11 +92,9 @@ export async function POST(req: Request) {
       confidenceTable: analysis.formatted.confidenceTable,
       currentDasha: chart.currentDasha,
       dashaEndsAt: chart.dashaEndsAt,
-      language: langDirective,
     });
 
     const finalSystemPrompt = fillTemplate(birthChartPrompt.systemPrompt, {
-      language: langDirective,
       vedicContext,
       structuredAnalysis: analysisJSON,
     });
@@ -105,8 +108,16 @@ export async function POST(req: Request) {
     );
 
     // ─── Step 7: Self-verification (catch hallucinations) ────────────────
-    const verification = await verifyResponse(aiResponse.text, analysisJSON, resolveLanguage(language));
-    const finalText = verification.correctedText ?? aiResponse.text;
+    const verification = await verifyResponse(aiResponse.text, analysisJSON, 'English');
+    let finalText = verification.correctedText ?? aiResponse.text;
+
+    // Translate the English report to the user's locale (no-op for English)
+    const targetLocale = resolveLanguage(language);
+    try {
+      finalText = await translateToLocale(finalText, targetLocale);
+    } catch (translateError) {
+      console.warn('[birth-chart] Translation failed — returning English report:', translateError);
+    }
 
     // ─── Step 8: Store reading in MongoDB ─────────────────────────────────
     await connectToDatabase();
@@ -144,6 +155,25 @@ export async function POST(req: Request) {
       },
     });
     await newReading.save();
+
+    // ─── Step 9: Auto-save birth details to the user's profile ────────────
+    // So the profile presets + map location stay in sync with the last chart
+    try {
+      await User.findByIdAndUpdate(userId, {
+        $set: {
+          birthDetails: {
+            name,
+            date,
+            time,
+            location: geo.displayName || location,
+            lat: geo.lat,
+            lng: geo.lng,
+          },
+        },
+      });
+    } catch (profileError) {
+      console.warn('[birth-chart] Failed to auto-save birth details to profile:', profileError);
+    }
 
     return NextResponse.json({
       id: newReading._id.toString(),

@@ -32,12 +32,26 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { name, date, time, location } = await req.json();
+    const { name, date, time, location, lat, lng } = await req.json();
+
+    // Persist map-picked coordinates alongside the place name when provided
+    const birthDetails: {
+      name: string;
+      date: string;
+      time: string;
+      location: string;
+      lat?: number;
+      lng?: number;
+    } = { name, date, time, location };
+    if (typeof lat === 'number' && typeof lng === 'number') {
+      birthDetails.lat = lat;
+      birthDetails.lng = lng;
+    }
 
     await connectToDatabase();
     const user = await User.findByIdAndUpdate(
       (session.user as any).id,
-      { $set: { birthDetails: { name, date, time, location } } },
+      { $set: { birthDetails } },
       { new: true }
     );
 
