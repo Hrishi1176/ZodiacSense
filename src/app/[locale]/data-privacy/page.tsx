@@ -1,11 +1,14 @@
 'use client';
 
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Database, Lock, Cpu, CheckCircle } from 'lucide-react';
 import styles from '../legal.module.css';
 
 export default function DataPrivacyPage() {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.container}>
       <motion.h1
@@ -13,7 +16,7 @@ export default function DataPrivacyPage() {
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        Data Privacy &amp; Security
+        {t('legal_data_privacy')}
       </motion.h1>
 
       <motion.p
@@ -22,7 +25,7 @@ export default function DataPrivacyPage() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
       >
-        Detailed commitment to zero-data monetization and camera security.
+        {t('legal_data_privacy_sub')}
       </motion.p>
 
       <motion.div

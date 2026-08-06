@@ -27,12 +27,12 @@ export default function PalmReading() {
 
   const analyzeHands = async () => {
     if (!session) {
-      showToast('Please sign in to access AI Palm Reading.', 'warning', 'Sign In Required');
+      showToast(t('palm_toast_signin'), 'warning', t('palm_toast_signin_title'));
       setIsAuthModalOpen(true);
       return;
     }
     if (!leftHand || !rightHand) {
-      showToast('Please capture both palms first.', 'info', 'Missing Images');
+      showToast(t('palm_toast_missing'), 'info', t('palm_toast_missing_title'));
       return;
     }
 
@@ -66,19 +66,19 @@ export default function PalmReading() {
       if (!res.ok) {
         const msg = data.error || data.message || `Server error ${res.status}`;
         if (res.status === 413 || msg.includes('Entity Too Large') || msg.includes('too large')) {
-          showToast('Images are too large. Please retake with less detail or upload smaller photos.', 'error', 'Image Too Large');
+          showToast(t('palm_toast_large'), 'error', t('palm_toast_large_title'));
         } else {
-          showToast(typeof msg === 'string' ? msg : 'Failed to analyze palms', 'error', 'Analysis Failed');
+          showToast(typeof msg === 'string' ? msg : t('palm_toast_fail'), 'error', t('palm_toast_fail_title'));
         }
       } else {
         setResult(data.result);
         if (data.remainingQuota !== undefined) setRemainingQuota(data.remainingQuota);
-        showToast('Palm reading complete!', 'success', 'Cosmic Insight Unlocked');
+        showToast(t('palm_toast_success'), 'success', t('palm_toast_success_title'));
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }
     } catch (error: any) {
       console.error('Palm Reading Error:', error);
-      showToast(`Network error: ${error.message || 'Please try again.'}`, 'error', 'Connection Error');
+      showToast(t('palm_toast_network', { message: error.message || t('bc_try_again') }), 'error', t('palm_toast_network_title'));
     } finally {
       setLoading(false);
     }
@@ -102,18 +102,18 @@ export default function PalmReading() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
       >
-        Show both palms to the camera. Our AI analyzes your Life Line, Heart Line, Head Line, and more to reveal insights about your destiny.
+        {t('palm_subtitle')}
       </motion.p>
 
       {!('mediaDevices' in navigator) && (
         <div style={{ marginBottom: '1rem', padding: '0.75rem 1rem', background: 'rgba(251,191,36,0.12)', border: '1px solid rgba(251,191,36,0.3)', borderRadius: '12px', color: '#fbbf24', fontSize: '0.85rem', maxWidth: '500px', textAlign: 'center' }}>
-          Camera requires a secure connection (HTTPS). If camera doesn't work, use "Upload from Gallery" instead.
+          {t('palm_https_warning')}
         </div>
       )}
 
       {remainingQuota !== null && (
         <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#38bdf8', fontWeight: 600 }}>
-          ✦ Remaining readings today: {remainingQuota}
+          {t('palm_remaining', { count: remainingQuota })}
         </div>
       )}
 
@@ -129,33 +129,33 @@ export default function PalmReading() {
             className={`${styles.mobileTabBtn} ${activeMobileHand === 'left' ? styles.active : ''}`}
             onClick={() => setActiveMobileHand('left')}
           >
-            {leftHand ? '✓ Left Palm' : '🤚 Left Palm'}
+            {leftHand ? t('palm_left_tab_done') : t('palm_left_tab')}
           </button>
           <button
             className={`${styles.mobileTabBtn} ${activeMobileHand === 'right' ? styles.active : ''}`}
             onClick={() => setActiveMobileHand('right')}
           >
-            {rightHand ? '✓ Right Palm' : '✋ Right Palm'}
+            {rightHand ? t('palm_right_tab_done') : t('palm_right_tab')}
           </button>
         </div>
 
         {/* Camera captures */}
         <div className={styles.cameraGrid}>
           <div className={`${styles.cameraSlot} ${activeMobileHand !== 'left' ? styles.hideMobile : ''}`}>
-            <CameraCapture label="Left Hand (Past &amp; Potential)" onCapture={setLeftHand} />
+            <CameraCapture label={t('palm_cam_left')} onCapture={setLeftHand} />
           </div>
           <div className={`${styles.cameraSlot} ${activeMobileHand !== 'right' ? styles.hideMobile : ''}`}>
-            <CameraCapture label="Right Hand (Present &amp; Destiny)" onCapture={setRightHand} />
+            <CameraCapture label={t('palm_cam_right')} onCapture={setRightHand} />
           </div>
         </div>
 
         {/* Status row */}
         <div className={styles.statusRow}>
           <span className={`${styles.statusBadge} ${leftHand ? styles.statusBadgeActive : ''}`}>
-            {leftHand ? '✓ Left Palm Captured' : '○ Left Palm'}
+            {leftHand ? t('palm_left_captured') : t('palm_left_status')}
           </span>
           <span className={`${styles.statusBadge} ${rightHand ? styles.statusBadgeActive : ''}`}>
-            {rightHand ? '✓ Right Palm Captured' : '○ Right Palm'}
+            {rightHand ? t('palm_right_captured') : t('palm_right_status')}
           </span>
         </div>
 
@@ -165,18 +165,18 @@ export default function PalmReading() {
           onClick={analyzeHands}
         >
           {!session
-            ? '🔒 Sign In to Reveal Destiny'
+            ? t('palm_btn_signin')
             : loading
-              ? '🔮 Reading Your Palm Lines...'
+              ? t('palm_btn_loading')
               : !bothCaptured
-                ? '📸 Capture Both Palms First'
-                : '✨ Reveal My Destiny'}
+                ? t('palm_btn_capture')
+                : t('palm_btn_reveal')}
         </button>
       </motion.div>
 
       <AnimatePresence mode="wait">
         {loading && (
-          <Loader key="loader" text="Reading Your Palm Lines..." />
+          <Loader key="loader" text={t('palm_loader')} />
         )}
         {!loading && result && (
           <motion.div
@@ -190,7 +190,7 @@ export default function PalmReading() {
           >
             <div style={{ marginBottom: '1.5rem' }}>
               <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-color-strong)', margin: 0 }}>
-                🖐️ Your Palm Reading
+                {t('palm_result_title')}
               </h2>
             </div>
 

@@ -50,8 +50,7 @@ export default function Navbar({ locale }: { locale: string }) {
     };
   }, [isMobileMenuOpen]);
 
-  const changeLocale = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLocale = e.target.value;
+  const changeLocale = (newLocale: string) => {
     const days = 30;
     const date = new Date();
     date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
@@ -64,6 +63,10 @@ export default function Navbar({ locale }: { locale: string }) {
       router.push(currentPathname.replace(`/${currentLocale}`, `/${newLocale}`));
     }
     router.refresh();
+  };
+
+  const changeLocaleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    changeLocale(e.target.value);
   };
 
   const navLinks = [
@@ -95,11 +98,11 @@ export default function Navbar({ locale }: { locale: string }) {
               <>
                 <Link href="/dashboard" className={styles.dashboardLink}>
                   <LayoutDashboard size={16} />
-                  <span>Dashboard</span>
+                  <span>{t('nav_dashboard')}</span>
                 </Link>
                 <Link href="/profile" className={styles.dashboardLink} style={{ marginLeft: '1rem' }}>
                   <UserIcon size={16} />
-                  <span>Profile</span>
+                  <span>{t('nav_profile')}</span>
                 </Link>
               </>
             )}
@@ -112,7 +115,7 @@ export default function Navbar({ locale }: { locale: string }) {
               onClick={toggleTheme}
               className={styles.themeToggle}
               aria-label="Toggle theme"
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              title={theme === 'dark' ? t('nav_theme_light') : t('nav_theme_dark')}
             >
               <span className={styles.toggleKnob}>
                 {theme === 'dark' ? '🌙' : '☀️'}
@@ -122,7 +125,7 @@ export default function Navbar({ locale }: { locale: string }) {
             <select
               suppressHydrationWarning
               value={currentLocale}
-              onChange={changeLocale}
+              onChange={changeLocaleSelect}
               className={styles.langSelect}
               aria-label="Select Language"
             >
@@ -141,16 +144,16 @@ export default function Navbar({ locale }: { locale: string }) {
                   suppressHydrationWarning
                   onClick={() => setIsLogoutModalOpen(true)}
                   className={styles.signOutBtn}
-                  title="Sign Out"
+                  title={t('nav_signout')}
                   aria-label="Sign Out"
                 >
                   <LogOut size={15} />
-                  <span className={styles.signOutText}>Logout</span>
+                  <span className={styles.signOutText}>{t('nav_logout')}</span>
                 </button>
               </div>
             ) : (
               <button suppressHydrationWarning onClick={() => setIsAuthOpen(true)} className={styles.signInBtn}>
-                Sign In
+                {t('nav_signin')}
               </button>
             )}
 
@@ -177,6 +180,36 @@ export default function Navbar({ locale }: { locale: string }) {
             transition={{ duration: 0.25, ease: 'easeOut' }}
           >
             <div className={styles.mobileMenuInner}>
+              {/* Language selector — always available on mobile */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+              >
+                <div className={styles.mobileLangRow} role="radiogroup" aria-label="Select Language">
+                  <span className={styles.mobileLangLabel}>🌐 {t('select_language')}</span>
+                  <div className={styles.mobileLangBtns}>
+                    {[
+                      { code: 'en', label: 'English' },
+                      { code: 'hi', label: 'हिन्दी' },
+                      { code: 'bn', label: 'বাংলা' },
+                    ].map((lang) => (
+                      <button
+                        key={lang.code}
+                        suppressHydrationWarning
+                        role="radio"
+                        aria-checked={currentLocale === lang.code}
+                        className={`${styles.mobileLangBtn} ${currentLocale === lang.code ? styles.mobileLangBtnActive : ''}`}
+                        onClick={() => {
+                          if (currentLocale !== lang.code) changeLocale(lang.code);
+                        }}
+                      >
+                        {lang.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.href}
@@ -199,7 +232,7 @@ export default function Navbar({ locale }: { locale: string }) {
                   >
                     <Link href="/dashboard" className={styles.mobileNavLink}>
                       <LayoutDashboard size={18} />
-                      <span>Dashboard</span>
+                      <span>{t('nav_dashboard')}</span>
                     </Link>
                   </motion.div>
                   <motion.div
@@ -209,7 +242,7 @@ export default function Navbar({ locale }: { locale: string }) {
                   >
                     <Link href="/profile" className={styles.mobileNavLink}>
                       <UserIcon size={18} />
-                      <span>My Profile</span>
+                      <span>{t('nav_my_profile')}</span>
                     </Link>
                   </motion.div>
                   <motion.button
@@ -224,7 +257,7 @@ export default function Navbar({ locale }: { locale: string }) {
                     style={{ color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.3)', width: '100%', cursor: 'pointer' }}
                   >
                     <LogOut size={18} />
-                    <span>Sign Out</span>
+                    <span>{t('nav_signout')}</span>
                   </motion.button>
                 </>
               )}
@@ -240,7 +273,7 @@ export default function Navbar({ locale }: { locale: string }) {
                   }}
                   className={`${styles.signInBtn} ${styles.mobileSignIn}`}
                 >
-                  Sign In
+                  {t('nav_signin')}
                 </motion.button>
               )}
             </div>

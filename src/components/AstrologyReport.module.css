@@ -1,0 +1,863 @@
+/* =============================================
+   ASTROLOGY REPORT — Standard Vedic Report UI
+   ============================================= */
+
+.report {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  color: var(--text-color);
+  animation: reportFadeIn 0.5s ease-out;
+}
+
+@keyframes reportFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Section Card ────────────────────────────── */
+.section {
+  background: var(--glass-bg);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Premium glass for the chart section — the live video shines through */
+.chartSection {
+  background: linear-gradient(160deg, rgba(139, 92, 246, 0.09), rgba(255, 255, 255, 0.03) 45%, rgba(56, 189, 248, 0.06));
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+[data-theme='light'] .chartSection {
+  background: linear-gradient(160deg, rgba(139, 92, 246, 0.08), rgba(255, 255, 255, 0.45) 45%, rgba(56, 189, 248, 0.05));
+}
+
+/* Plain-language explainer under the chart */
+.chartHint {
+  max-width: 640px;
+  margin: 1rem auto 0.25rem;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  color: rgba(148, 163, 184, 0.85);
+  text-align: center;
+}
+
+[data-theme='light'] .chartHint {
+  color: rgba(71, 85, 105, 0.9);
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #8b5cf6, #38bdf8);
+  opacity: 0.7;
+}
+
+.sectionTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-color-strong);
+  margin: 0 0 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sectionTitle .icon {
+  font-size: 1.25rem;
+}
+
+/* ─── Report Header ───────────────────────────── */
+.reportHeader {
+  background: linear-gradient(135deg, rgba(139,92,246,0.12), rgba(56,189,248,0.08));
+  border: 1px solid rgba(139,92,246,0.25);
+}
+
+.reportHeader::before {
+  background: linear-gradient(90deg, #f59e0b, #ec4899, #8b5cf6);
+}
+
+.birthDetails {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.birthDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.birthLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(148, 163, 184, 0.7);
+  font-weight: 600;
+}
+
+.birthValue {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-color-strong);
+}
+
+/* ─── Overview Grid ────────────────────────────── */
+.overviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.overviewItem {
+  background: rgba(139, 92, 246, 0.06);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.overviewLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: rgba(148, 163, 184, 0.65);
+  font-weight: 600;
+}
+
+.overviewValue {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #a78bfa;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* ─── Zodiac sign icons — premium metallic gold (gradient via GoldDefs) ── */
+.signIcon {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+  stroke: url(#zsGold);
+  filter: drop-shadow(0 0 4px rgba(232, 182, 76, 0.5));
+  vertical-align: -0.18em;
+}
+
+.signIconCenter {
+  width: 1.6em;
+  height: 1.6em;
+  stroke: url(#zsGold);
+  filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.6));
+}
+
+.chartCellSign .signIcon,
+.miniCellSign .signIcon {
+  opacity: 0.85;
+  filter: none;
+}
+
+[data-theme='light'] .signIcon {
+  stroke: url(#zsGoldDeep);
+}
+
+[data-theme='light'] .signIconCenter {
+  stroke: url(#zsGoldDeep);
+}
+
+/* ─── Chart Header + View Tabs ────────────────── */
+.chartHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.25rem;
+}
+
+.chartHeaderRow .sectionTitle {
+  margin-bottom: 0;
+}
+
+.chartViewTabs {
+  display: inline-flex;
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border-radius: 10px;
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+[data-theme='light'] .chartViewTabs {
+  background: rgba(139, 92, 246, 0.06);
+}
+
+.chartViewTab {
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--muted-color, #94a3b8);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.chartViewTab:hover {
+  color: var(--text-color, #e2e8f0);
+  background: rgba(139, 92, 246, 0.12);
+}
+
+.chartViewTabActive {
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(139, 92, 246, 0.4);
+}
+
+.chartViewTabActive:hover {
+  color: #fff;
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+}
+
+/* ─── South Indian Chart Grid ─────────────────── */
+.chartGridWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.chartGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(139, 92, 246, 0.2);
+  border: 2px solid rgba(139, 92, 246, 0.35);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 1;
+}
+
+.chartCell {
+  background: rgba(8, 10, 30, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 0;
+  position: relative;
+}
+
+[data-theme='light'] .chartCell {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.chartCellCenter {
+  background: rgba(139, 92, 246, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chartCellSign {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: rgba(148, 163, 184, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.15rem;
+}
+
+.chartCellHouse {
+  font-size: 0.55rem;
+  color: rgba(139, 92, 246, 0.5);
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-weight: 600;
+}
+
+.chartCellPlanets {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  line-height: 1.3;
+}
+
+[data-theme='light'] .chartCellPlanets {
+  color: #1e293b;
+}
+
+.chartCellPlanets .retrograde {
+  color: #f87171;
+  font-size: 0.6rem;
+}
+
+.chartCellPlanets .exalted {
+  color: #34d399;
+}
+
+.chartCellPlanets .debilitated {
+  color: #f87171;
+}
+
+.chartCellPlanets .ownSign {
+  color: #fbbf24;
+}
+
+/* Planet icon chips inside South Indian grid cells */
+.gridPlanetChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0 1px;
+}
+
+.gridPlanetIcon {
+  width: 0.95em;
+  height: 0.95em;
+}
+
+.centerLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #a78bfa;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.centerLabelSmall {
+  font-size: 0.65rem;
+  color: rgba(148, 163, 184, 0.6);
+  font-weight: 500;
+}
+
+/* ─── Planet Table ────────────────────────────── */
+.tableScroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.planetTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.planetTable th {
+  text-align: left;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(148, 163, 184, 0.6);
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.planetTable td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-color);
+}
+
+.planetTable tr:last-child td {
+  border-bottom: none;
+}
+
+.planetTable .planetName {
+  font-weight: 700;
+  color: var(--text-color-strong);
+}
+
+.planetTable .planetIconSm {
+  width: 1.05em;
+  height: 1.05em;
+  margin-right: 0.45rem;
+  vertical-align: -0.15em;
+  filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.35));
+}
+
+/* ─── Strength Bar ────────────────────────────── */
+.strengthBar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.strengthTrack {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.strengthFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.strengthValue {
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ─── Dignity Badge ───────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.badgeExalted {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.badgeOwnSign {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.badgeMoolatrikona {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.25);
+}
+
+.badgeDebilitated {
+  background: rgba(248, 113, 113, 0.12);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.badgeNeutral {
+  background: rgba(148, 163, 184, 0.1);
+  color: rgba(148, 163, 184, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.badgeRetrograde {
+  background: rgba(248, 113, 113, 0.1);
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+  margin-left: 0.3rem;
+}
+
+/* ─── Yoga Cards ──────────────────────────────── */
+.yogaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+
+.yogaCard {
+  background: rgba(139, 92, 246, 0.06);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.yogaCard:hover {
+  border-color: rgba(139, 92, 246, 0.35);
+}
+
+.yogaCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.yogaName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-color-strong);
+}
+
+.yogaStrength {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+}
+
+.yogaStrong {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+}
+
+.yogaModerate {
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+}
+
+.yogaWeak {
+  background: rgba(148, 163, 184, 0.1);
+  color: rgba(148, 163, 184, 0.7);
+}
+
+.yogaDesc {
+  font-size: 0.8rem;
+  color: rgba(148, 163, 184, 0.8);
+  line-height: 1.5;
+}
+
+.yogaConfidence {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  color: rgba(148, 163, 184, 0.55);
+}
+
+.confidenceBar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.confidenceFill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b5cf6, #38bdf8);
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+/* ─── Dosha Cards ─────────────────────────────── */
+.doshaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.75rem;
+}
+
+.doshaCard {
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  border: 1px solid;
+}
+
+.doshaSevere {
+  background: rgba(248, 113, 113, 0.06);
+  border-color: rgba(248, 113, 113, 0.25);
+}
+
+.doshaModerate {
+  background: rgba(251, 191, 36, 0.06);
+  border-color: rgba(251, 191, 36, 0.2);
+}
+
+.doshaMild {
+  background: rgba(148, 163, 184, 0.05);
+  border-color: rgba(148, 163, 184, 0.15);
+}
+
+.doshaHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.doshaName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-color-strong);
+}
+
+.doshaSeverity {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sevSevere { background: rgba(248,113,113,0.15); color: #f87171; }
+.sevModerate { background: rgba(251,191,36,0.12); color: #fbbf24; }
+.sevMild { background: rgba(148,163,184,0.1); color: rgba(148,163,184,0.7); }
+
+.doshaDesc {
+  font-size: 0.8rem;
+  color: rgba(148, 163, 184, 0.75);
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+.doshaRemedy {
+  font-size: 0.78rem;
+  color: #38bdf8;
+  font-style: italic;
+}
+
+.doshaCancellation {
+  font-size: 0.72rem;
+  color: #34d399;
+  margin-top: 0.3rem;
+}
+
+/* ─── Ratings ─────────────────────────────────── */
+.ratingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.ratingCard {
+  background: rgba(139, 92, 246, 0.05);
+  border: 1px solid rgba(139, 92, 246, 0.12);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+}
+
+.ratingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.ratingArea {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-color-strong);
+}
+
+.ratingStars {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.ratingConfidence {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  color: rgba(148, 163, 184, 0.55);
+}
+
+.ratingConfBar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.ratingConfFill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b5cf6, #38bdf8);
+  border-radius: 2px;
+}
+
+/* ─── Dasha Card ──────────────────────────────── */
+.dashaCard {
+  background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(245,158,11,0.08));
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dashaTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+.dashaPeriod {
+  font-size: 0.8rem;
+  color: rgba(148, 163, 184, 0.7);
+}
+
+/* ─── Divisional Mini Charts ──────────────────── */
+.divisionalRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.divisionalCard {
+  background: rgba(139, 92, 246, 0.04);
+  border: 1px solid rgba(139, 92, 246, 0.12);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.divisionalTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #a78bfa;
+  margin-bottom: 0.75rem;
+}
+
+.miniChartGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+.miniCell {
+  background: rgba(8, 10, 30, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.55rem;
+}
+
+[data-theme='light'] .miniCell {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.miniCellSign {
+  font-size: 0.5rem;
+  color: rgba(148, 163, 184, 0.5);
+  font-weight: 600;
+}
+
+.miniCellPlanets {
+  font-size: 0.55rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  line-height: 1.2;
+}
+
+[data-theme='light'] .miniCellPlanets {
+  color: #1e293b;
+}
+
+.miniCellCenter {
+  background: rgba(139, 92, 246, 0.05);
+}
+
+/* ─── Remedies ────────────────────────────────── */
+.remedyList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.remedyItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+.remedyIcon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+/* ─── AI Analysis Toggle ──────────────────────── */
+.aiToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #a78bfa;
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.aiToggle:hover {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.35);
+}
+
+.aiContent {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(139, 92, 246, 0.1);
+}
+
+/* ─── No Doshas Message ───────────────────────── */
+.noIssues {
+  text-align: center;
+  padding: 1.5rem;
+  color: #34d399;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* ─── Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+  .section { padding: 1.25rem; }
+  .chartGrid { max-width: 100%; }
+  .divisionalRow { grid-template-columns: 1fr; }
+  .yogaGrid { grid-template-columns: 1fr; }
+  .ratingsGrid { grid-template-columns: 1fr 1fr; }
+  .overviewGrid { grid-template-columns: 1fr 1fr; }
+  .birthDetails { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .ratingsGrid { grid-template-columns: 1fr; }
+  .overviewGrid { grid-template-columns: 1fr; }
+  .birthDetails { grid-template-columns: 1fr; }
+  .section { padding: 1rem; }
+  .sectionTitle { font-size: 1.02rem; }
+  .planetTable { font-size: 0.78rem; min-width: 340px; }
+  .chartHeaderRow { flex-direction: column; align-items: flex-start; }
+}

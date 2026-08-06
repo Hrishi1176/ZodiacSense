@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, Star, Zap, Heart } from 'lucide-react';
+import Cosmic3DScene from '@/components/Cosmic3DScene';
 import styles from './page.module.css';
 
 const fadeUp = {
@@ -24,28 +25,25 @@ const cards = [
   {
     icon: '/palm_icon.png',
     key: 'palm_reading',
-    desc: 'AI scans both palms via camera to reveal your life path, heart line, and fate line.',
-    tag: '✋ Real-Time Camera',
+    descKey: 'home_card_palm_desc',
+    tagKey: 'home_card_palm_tag',
     href: '/palm-reading',
-    alt: 'Palm Reading',
     gradient: 'linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)',
   },
   {
     icon: '/chart_icon.png',
     key: 'birth_chart',
-    desc: 'Generate your complete Vedic & Western birth chart based on your exact birth details.',
-    tag: '🌌 Planetary Positions',
+    descKey: 'home_card_bc_desc',
+    tagKey: 'home_card_bc_tag',
     href: '/birth-chart',
-    alt: 'Birth Chart',
     gradient: 'linear-gradient(135deg, #38bdf8 0%, #8b5cf6 100%)',
   },
   {
     icon: '/marriage_icon.png',
     key: 'marriage_bichar',
-    desc: 'Discover cosmic compatibility and auspicious timing for your marriage.',
-    tag: '💍 Cosmic Synergy',
+    descKey: 'home_card_mb_desc',
+    tagKey: 'home_card_mb_tag',
     href: '/marriage-bichar',
-    alt: 'Marriage Bichar',
     gradient: 'linear-gradient(135deg, #f59e0b 0%, #ec4899 100%)',
   },
 ];
@@ -71,20 +69,25 @@ export default function Home() {
   }, []);
 
   const stats = [
-    { value: totalReadings, label: 'Readings Done', icon: <Star size={14} /> },
-    { value: '98%', label: 'Accuracy Rate', icon: <Zap size={14} /> },
-    { value: '3', label: 'Languages', icon: <Sparkles size={14} /> },
-    { value: 'AI', label: 'Powered by Grok', icon: <Heart size={14} /> },
+    { value: totalReadings, label: t('home_stat_readings'), icon: <Star size={14} /> },
+    { value: '98%', label: t('home_stat_accuracy'), icon: <Zap size={14} /> },
+    { value: '3', label: t('home_stat_languages'), icon: <Sparkles size={14} /> },
+    { value: 'AI', label: t('home_stat_grok'), icon: <Heart size={14} /> },
   ];
 
   return (
     <div className={styles.container}>
+      {/* Live 3D Navagraha + Rashi scene floating over the background video */}
+      <div className={styles.cosmicStage}>
+        <Cosmic3DScene />
+      </div>
+
       <motion.main className={styles.main} initial="hidden" animate="visible">
         {/* Badge */}
         <motion.div custom={0} variants={fadeUp}>
           <span className={styles.badge}>
             <Sparkles size={14} className={styles.badgeIcon} />
-            AI-Powered Astrology
+            {t('home_badge')}
           </span>
         </motion.div>
 
@@ -146,7 +149,7 @@ export default function Home() {
 
               <div className={styles.cardHeader}>
                 <span className={styles.cardTag} style={{ background: card.gradient }}>
-                  {card.tag}
+                  {t(card.tagKey)}
                 </span>
                 <span className={styles.cardArrow}>
                   <ArrowRight size={20} />
@@ -155,11 +158,11 @@ export default function Home() {
 
               <div className={styles.cardContent}>
                 <h3>{t(card.key)}</h3>
-                <p>{card.desc}</p>
+                <p>{t(card.descKey)}</p>
               </div>
 
               <div className={styles.cardFooter}>
-                <span className={styles.cardCta}>Explore Feature</span>
+                <span className={styles.cardCta}>{t('home_explore')}</span>
               </div>
             </motion.div>
           ))}

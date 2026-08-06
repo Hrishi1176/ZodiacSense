@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './Background.module.css';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import CosmicCollisionCanvas from './CosmicCollisionCanvas';
 import ZodiacOverlay from './ZodiacOverlay';
 
 export default function Background() {
+  const { t } = useTranslation();
   const blobRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
 
@@ -72,7 +74,7 @@ export default function Background() {
         animate={{ y: [0, -18, 0], opacity: [0.4, 0.8, 0.4] }}
         transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <span>✧ Cosmic Energy</span>
+        <span>{t('bg_widget_energy')}</span>
       </motion.div>
 
       <motion.div
@@ -81,7 +83,7 @@ export default function Background() {
         animate={{ y: [0, 22, 0], opacity: [0.5, 0.9, 0.5] }}
         transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
       >
-        <span>✦ Aligning Stars</span>
+        <span>{t('bg_widget_stars')}</span>
       </motion.div>
 
       <motion.div
@@ -90,7 +92,7 @@ export default function Background() {
         animate={{ y: [0, -14, 0], opacity: [0.35, 0.7, 0.35] }}
         transition={{ duration: 13, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
       >
-        <span>☥ Cosmic Wisdom</span>
+        <span>{t('bg_widget_wisdom')}</span>
       </motion.div>
     </div>
   );

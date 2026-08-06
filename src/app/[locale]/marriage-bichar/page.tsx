@@ -28,7 +28,7 @@ export default function MarriageBichar() {
     e.preventDefault();
 
     if (!session) {
-      showToast('Please sign in to check Marriage Compatibility.', 'warning', 'Sign In Required');
+      showToast(t('mb_toast_signin'), 'warning', t('mb_toast_signin_title'));
       setIsAuthModalOpen(true);
       return;
     }
@@ -53,17 +53,17 @@ export default function MarriageBichar() {
       const data = await res.json();
 
       if (!res.ok) {
-        showToast(data.error || 'Failed to check compatibility', 'error', 'Calculation Error');
+        showToast(data.error || t('mb_toast_err'), 'error', t('mb_toast_err_title'));
       } else {
         setResult(data.result);
         setMetadata(data.metadata ?? null);
         if (data.remainingQuota !== undefined) setRemainingQuota(data.remainingQuota);
-        showToast('Compatibility report generated!', 'success', 'Gun Milan Complete');
+        showToast(t('mb_toast_success'), 'success', t('mb_toast_success_title'));
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }
     } catch (error: any) {
       console.error('Marriage Bichar Error:', error);
-      showToast(`Network error: ${error.message || 'Please try again.'}`, 'error', 'Connection Error');
+      showToast(t('mb_toast_network', { message: error.message || t('bc_try_again') }), 'error', t('mb_toast_network_title'));
     } finally {
       setLoading(false);
     }
@@ -85,12 +85,12 @@ export default function MarriageBichar() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
       >
-        Discover your cosmic compatibility through Vedic Gun Milan (Ashtakoota), Mangalik analysis, and planetary synastry.
+        {t('mb_subtitle')}
       </motion.p>
 
       {remainingQuota !== null && (
         <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: '#38bdf8', fontWeight: 600 }}>
-          ✦ Remaining checks today: {remainingQuota}
+          {t('mb_remaining', { count: remainingQuota })}
         </div>
       )}
 
@@ -104,20 +104,20 @@ export default function MarriageBichar() {
           <div className={styles.partnerRow}>
             {/* Partner 1 */}
             <div className={styles.partnerCard}>
-              <h3>Partner 1</h3>
+              <h3>{t('mb_partner1')}</h3>
               <div className={styles.formGroup}>
-                <label htmlFor="p1-name">Full Name</label>
+                <label htmlFor="p1-name">{t('mb_full_name')}</label>
                 <input
                   id="p1-name"
                   type="text"
                   required
-                  placeholder="e.g. Priya Sharma"
+                  placeholder={t('mb_name_ph1')}
                   value={partner1.name}
                   onChange={(e) => setPartner1({ ...partner1, name: e.target.value })}
                 />
               </div>
               <div className={styles.formGroup}>
-                <label htmlFor="p1-date">Date of Birth</label>
+                <label htmlFor="p1-date">{t('mb_dob')}</label>
                 <input
                   id="p1-date"
                   type="date"
@@ -130,20 +130,20 @@ export default function MarriageBichar() {
 
             {/* Partner 2 */}
             <div className={styles.partnerCard}>
-              <h3>Partner 2</h3>
+              <h3>{t('mb_partner2')}</h3>
               <div className={styles.formGroup}>
-                <label htmlFor="p2-name">Full Name</label>
+                <label htmlFor="p2-name">{t('mb_full_name')}</label>
                 <input
                   id="p2-name"
                   type="text"
                   required
-                  placeholder="e.g. Rahul Verma"
+                  placeholder={t('mb_name_ph2')}
                   value={partner2.name}
                   onChange={(e) => setPartner2({ ...partner2, name: e.target.value })}
                 />
               </div>
               <div className={styles.formGroup}>
-                <label htmlFor="p2-date">Date of Birth</label>
+                <label htmlFor="p2-date">{t('mb_dob')}</label>
                 <input
                   id="p2-date"
                   type="date"
@@ -161,17 +161,17 @@ export default function MarriageBichar() {
             disabled={loading}
           >
             {!session
-              ? '🔒 Sign In to Check Compatibility'
+              ? t('mb_btn_signin')
               : loading
-                ? '💫 Analyzing Cosmic Synergy...'
-                : '💑 Calculate Compatibility'}
+                ? t('mb_btn_loading')
+                : t('mb_btn_calc')}
           </button>
         </form>
       </motion.div>
 
       <AnimatePresence mode="wait">
         {loading && (
-          <Loader key="loader" text="Analyzing Cosmic Synergy..." />
+          <Loader key="loader" text={t('mb_loader')} />
         )}
         {!loading && result && (
           <motion.div
@@ -204,12 +204,12 @@ export default function MarriageBichar() {
                       <div style={{ fontWeight: 700, color: 'var(--text-color)', marginBottom: '0.4rem' }}>
                         {p.name}
                       </div>
-                      <div>☀ Sun: {p.sunSign}</div>
-                      <div>🌙 Moon: {p.moonSign}</div>
-                      <div>⭐ Nakshatra: {p.nakshatra}</div>
+                      <div>☀ {t('mb_sun')}: {p.sunSign}</div>
+                      <div>🌙 {t('mb_moon')}: {p.moonSign}</div>
+                      <div>⭐ {t('mb_nakshatra')}: {p.nakshatra}</div>
                       {p.timeAssumed && (
                         <div style={{ color: '#f59e0b', marginTop: '0.3rem', fontSize: '0.75rem' }}>
-                          ⚠ Time not provided — noon assumed
+                          {t('mb_time_assumed')}
                         </div>
                       )}
                     </div>
@@ -220,7 +220,7 @@ export default function MarriageBichar() {
 
             <div style={{ marginBottom: '1.5rem' }}>
               <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-color-strong)', margin: 0 }}>
-                💑 Compatibility Report
+                {t('mb_report_title')}
               </h2>
             </div>
 

@@ -141,30 +141,11 @@
 
 .result {
   width: 100%;
-  max-width: 800px;
+  max-width: 960px;
   margin: 0 auto;
-  padding: 2.5rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl);
+  padding: 0;
   text-align: left;
-  white-space: pre-wrap;
-  line-height: 1.7;
-  color: var(--text-color);
   position: relative;
-  overflow: hidden;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
-}
-
-.result::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #f59e0b 0%, #ec4899 50%, #8b5cf6 100%);
-  opacity: 0.8;
 }
 
 .error {
@@ -185,8 +166,7 @@
   .container {
     padding: 1.5rem 1.25rem 3rem;
   }
-  .formCard,
-  .result {
+  .formCard {
     padding: 2rem 1.5rem;
   }
 }
@@ -201,8 +181,7 @@
   .subtitle {
     margin-bottom: 2rem;
   }
-  .formCard,
-  .result {
+  .formCard {
     padding: 1.5rem 1.25rem;
     border-radius: var(--radius-lg);
   }
@@ -220,8 +199,7 @@
   .container {
     padding: 0.75rem 0.75rem 2rem;
   }
-  .formCard,
-  .result {
+  .formCard {
     padding: 1.25rem 1rem;
   }
   .button {

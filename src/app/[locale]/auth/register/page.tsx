@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { signIn } from 'next-auth/react';
 import styles from '../login/page.module.css';
 
 export default function Register() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +32,7 @@ export default function Register() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Failed to create account');
+        setError(data.error || t('reg_err_default'));
       } else {
         // Auto sign in after register
         const signInRes = await signIn('credentials', {
@@ -47,7 +49,7 @@ export default function Register() {
         }
       }
     } catch (err: any) {
-      setError('An unexpected error occurred.');
+      setError(t('login_err_unexpected'));
     } finally {
       setLoading(false);
     }
@@ -62,8 +64,8 @@ export default function Register() {
         transition={{ duration: 0.4 }}
       >
         <div className={styles.header}>
-          <h1 className={styles.title}>Join ZodiacSense</h1>
-          <p className={styles.subtitle}>Create your account for daily AI astrology readings</p>
+          <h1 className={styles.title}>{t('reg_title')}</h1>
+          <p className={styles.subtitle}>{t('reg_subtitle')}</p>
         </div>
 
         {error && <div className={styles.error}>{error}</div>}
@@ -87,19 +89,19 @@ export default function Register() {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
             />
           </svg>
-          <span>Sign up with Google</span>
+          <span>{t('reg_google')}</span>
         </button>
 
         <div className={styles.divider}>
-          <span>or register with email</span>
+          <span>{t('reg_divider')}</span>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
-            <label>Full Name</label>
+            <label>{t('reg_name_label')}</label>
             <input
               type="text"
-              placeholder="Your Name"
+              placeholder={t('reg_name_ph')}
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -107,7 +109,7 @@ export default function Register() {
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Email Address</label>
+            <label>{t('reg_email_label')}</label>
             <input
               type="email"
               placeholder="you@example.com"
@@ -118,10 +120,10 @@ export default function Register() {
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Password</label>
+            <label>{t('reg_password_label')}</label>
             <input
               type="password"
-              placeholder="At least 6 characters"
+              placeholder={t('reg_password_ph')}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -129,14 +131,14 @@ export default function Register() {
           </div>
 
           <button type="submit" className={styles.submitBtn} disabled={loading}>
-            {loading ? 'Creating Account...' : 'Create Account'}
+            {loading ? t('reg_btn_loading') : t('reg_btn')}
           </button>
         </form>
 
         <div className={styles.footer}>
-          Already have an account?{' '}
+          {t('reg_have_account')}{' '}
           <Link href="/auth/login" className={styles.link}>
-            Sign in
+            {t('reg_signin')}
           </Link>
         </div>
       </motion.div>

@@ -1,0 +1,452 @@
+/* ─── Zodiac Wheel Chart (end-user friendly) ─────────────────────────────── */
+
+.wheelWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  width: 100%;
+}
+
+.wheel {
+  width: 100%;
+  max-width: 540px;
+  height: auto;
+  filter: drop-shadow(0 0 26px rgba(139, 92, 246, 0.22))
+    drop-shadow(0 0 60px rgba(56, 189, 248, 0.1));
+  animation: wheelBreath 6s ease-in-out infinite;
+}
+
+@keyframes wheelBreath {
+  0%, 100% {
+    filter: drop-shadow(0 0 26px rgba(139, 92, 246, 0.22))
+      drop-shadow(0 0 60px rgba(56, 189, 248, 0.1));
+  }
+  50% {
+    filter: drop-shadow(0 0 34px rgba(139, 92, 246, 0.34))
+      drop-shadow(0 0 74px rgba(56, 189, 248, 0.18));
+  }
+}
+
+[data-theme='light'] .wheel {
+  filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.18));
+}
+
+/* Opaque dark disc behind the wheel — keeps it readable over the live video */
+.wheelDisc {
+  fill: rgba(5, 8, 22, 0.92);
+}
+
+[data-theme='light'] .wheelDisc {
+  fill: rgba(255, 255, 255, 0.94);
+}
+
+/* ─── Spinning "live" rings ─────────────────────────────────────────────── */
+
+.spinRing {
+  transform-origin: 220px 220px;
+  transform-box: view-box;
+  animation: spinCW 60s linear infinite;
+}
+
+.spinRingReverse {
+  transform-origin: 220px 220px;
+  transform-box: view-box;
+  stroke-dasharray: 1 5;
+  animation: spinCCW 90s linear infinite;
+}
+
+@keyframes spinCW {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinCCW {
+  to { transform: rotate(-360deg); }
+}
+
+/* ─── Sign sectors ──────────────────────────────────────────────────────── */
+
+.sector {
+  opacity: 0;
+  cursor: pointer;
+  animation: sectorIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes sectorIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sectorFill {
+  fill: rgba(139, 92, 246, 0.07);
+  stroke: rgba(139, 92, 246, 0.18);
+  stroke-width: 0.6;
+  transition: fill 0.3s ease;
+}
+
+.sector:hover .sectorFill {
+  fill: rgba(139, 92, 246, 0.16);
+}
+
+.sectorFillAsc {
+  fill: rgba(251, 191, 36, 0.14);
+  stroke: rgba(251, 191, 36, 0.45);
+  stroke-width: 0.8;
+  animation: ascGlow 3s ease-in-out infinite;
+}
+
+@keyframes ascGlow {
+  0%, 100% { fill: rgba(251, 191, 36, 0.12); }
+  50% { fill: rgba(251, 191, 36, 0.22); }
+}
+
+[data-theme='light'] .sectorFill {
+  fill: rgba(139, 92, 246, 0.06);
+  stroke: rgba(139, 92, 246, 0.22);
+}
+
+[data-theme='light'] .sectorFillAsc {
+  fill: rgba(245, 158, 11, 0.14);
+  stroke: rgba(245, 158, 11, 0.5);
+}
+
+/* Rashi names in the sign band — premium gold text in the user's language */
+.signNameText {
+  font-size: 8.5px;
+  font-weight: 700;
+  fill: url(#zsGold);
+  filter: drop-shadow(0 0 4px rgba(232, 182, 76, 0.4));
+}
+
+.signNameTextAsc {
+  filter: drop-shadow(0 0 7px rgba(251, 191, 36, 0.85));
+}
+
+[data-theme='light'] .signNameText {
+  fill: url(#zsGoldDeep);
+}
+
+[data-theme='light'] .signNameTextAsc {
+  filter: drop-shadow(0 0 6px rgba(168, 125, 26, 0.6));
+}
+
+@keyframes glyphPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.72;
+    transform: scale(1.12);
+  }
+}
+
+.signNameText,
+.centerGlyphIcon,
+.planetIcon {
+  transform-box: fill-box;
+  transform-origin: center;
+  overflow: visible;
+}
+
+[data-theme='light'] .centerGlyphIcon {
+  stroke: url(#zsGoldDeep);
+}
+
+/* Localized zodiac names moved to the sign band (see .signNameText above) */
+
+.houseNum {
+  font-size: 10px;
+  font-weight: 700;
+  fill: rgba(148, 163, 184, 0.75);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+[data-theme='light'] .houseNum {
+  fill: rgba(71, 85, 105, 0.85);
+}
+
+/* ─── Planets ───────────────────────────────────────────────────────────── */
+
+.planet {
+  opacity: 0;
+  cursor: pointer;
+  animation: planetIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes planetIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.planetHalo {
+  fill: rgba(139, 92, 246, 0.12);
+  stroke: rgba(139, 92, 246, 0.4);
+  stroke-width: 0.8;
+  animation: haloPulse 3s ease-in-out infinite;
+}
+
+.planet:nth-of-type(even) .planetHalo {
+  animation-delay: 1.2s;
+}
+
+@keyframes haloPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+/* Planet icons — colour coded by dignity */
+.planetIcon {
+  transition: transform 0.25s ease;
+}
+
+.planet:hover .planetIcon {
+  transform: scale(1.2);
+}
+
+.piNeutral {
+  color: #e2e8f0;
+  filter: drop-shadow(0 0 4px rgba(226, 232, 240, 0.5));
+}
+
+.piStrong {
+  color: #34d399;
+  filter: drop-shadow(0 0 5px rgba(52, 211, 153, 0.7));
+}
+
+.piOwn {
+  color: #38bdf8;
+  filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.7));
+}
+
+.piWeak {
+  color: #f87171;
+  filter: drop-shadow(0 0 5px rgba(248, 113, 113, 0.7));
+}
+
+[data-theme='light'] .piNeutral {
+  color: #334155;
+}
+
+[data-theme='light'] .piStrong {
+  color: #059669;
+}
+
+[data-theme='light'] .piOwn {
+  color: #0284c7;
+}
+
+[data-theme='light'] .piWeak {
+  color: #dc2626;
+}
+
+/* Halo colour coding by dignity */
+.plExalted {
+  fill: rgba(52, 211, 153, 0.14);
+  stroke: rgba(52, 211, 153, 0.55);
+}
+
+.plOwnSign {
+  fill: rgba(56, 189, 248, 0.14);
+  stroke: rgba(56, 189, 248, 0.55);
+}
+
+.plDebilitated {
+  fill: rgba(248, 113, 113, 0.14);
+  stroke: rgba(248, 113, 113, 0.55);
+}
+
+.plNeutral {
+  fill: rgba(148, 163, 184, 0.1);
+  stroke: rgba(148, 163, 184, 0.4);
+}
+
+/* Localized planet name + house under the icon */
+.planetLabel {
+  font-size: 7px;
+  font-weight: 700;
+  fill: rgba(226, 232, 240, 0.92);
+}
+
+.planetHouse {
+  font-size: 5.5px;
+  font-weight: 600;
+  fill: rgba(148, 163, 184, 0.7);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+[data-theme='light'] .planetLabel {
+  fill: #334155;
+}
+
+[data-theme='light'] .planetHouse {
+  fill: #64748b;
+}
+
+/* Small "R" retrograde badge */
+.retroBadge {
+  fill: rgba(15, 15, 40, 0.92);
+  stroke: rgba(248, 113, 113, 0.6);
+  stroke-width: 0.7;
+}
+
+[data-theme='light'] .retroBadge {
+  fill: rgba(255, 255, 255, 0.95);
+}
+
+.retroBadgeText {
+  font-size: 6px;
+  font-weight: 800;
+  fill: #fb7185;
+}
+
+/* ─── Lagna center core ─────────────────────────────────────────────────── */
+
+.centerCore {
+  animation: coreIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+@keyframes coreIn {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.centerCore {
+  transform-box: view-box;
+  transform-origin: 220px 220px;
+}
+
+.centerFill {
+  fill: rgba(10, 10, 34, 0.55);
+}
+
+[data-theme='light'] .centerFill {
+  fill: rgba(255, 255, 255, 0.8);
+}
+
+.centerGlyphIcon {
+  stroke: url(#zsGold);
+  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.75));
+  animation: glyphPulse 3s ease-in-out infinite;
+}
+
+.centerLabel {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  fill: rgba(139, 92, 246, 0.95);
+}
+
+.centerSub {
+  font-size: 10px;
+  font-weight: 600;
+  fill: rgba(148, 163, 184, 0.9);
+}
+
+[data-theme='light'] .centerLabel {
+  fill: #7c3aed;
+}
+
+[data-theme='light'] .centerSub {
+  fill: #475569;
+}
+
+/* ─── Legend ────────────────────────────────────────────────────────────── */
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.9rem 1.4rem;
+  font-size: 0.8rem;
+  color: var(--muted-color, #94a3b8);
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legendDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.lgExalted {
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+}
+
+.lgOwnSign {
+  background: #38bdf8;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.8);
+}
+
+.lgDebilitated {
+  background: #f87171;
+  box-shadow: 0 0 8px rgba(248, 113, 113, 0.8);
+}
+
+.legendRetro {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(248, 113, 113, 0.15);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  color: #fb7185;
+  font-size: 0.6rem;
+  font-weight: 800;
+}
+
+/* ─── Responsive ────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .wheel {
+    max-width: 100%;
+  }
+
+  .planetLabel {
+    font-size: 7.5px;
+  }
+
+  .legend {
+    gap: 0.5rem 0.9rem;
+    font-size: 0.72rem;
+  }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .spinRing,
+  .spinRingReverse,
+  .centerGlyphIcon,
+  .planetHalo,
+  .wheel {
+    animation: none;
+  }
+
+  .sector,
+  .planet,
+  .centerCore {
+    animation-duration: 0.01s;
+  }
+}

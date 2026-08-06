@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -12,6 +13,7 @@ export default function ProfilePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { showToast } = useToast();
+  const { t } = useTranslation();
   
   const [formData, setFormData] = useState({ name: '', date: '', time: '', location: '' });
   const [loading, setLoading] = useState(true);
@@ -48,16 +50,16 @@ export default function ProfilePage() {
       
       if (!res.ok) throw new Error('Failed to save profile');
       
-      showToast('Profile presets saved successfully!', 'success', 'Saved');
+      showToast(t('profile_toast_saved'), 'success', t('profile_toast_saved_title'));
     } catch (err) {
-      showToast('Failed to save profile', 'error');
+      showToast(t('profile_toast_error'), 'error');
     } finally {
       setSaving(false);
     }
   };
 
   if (loading || status === 'loading') {
-    return <Loader text="Loading Profile..." />;
+    return <Loader text={t('profile_loading')} />;
   }
 
   return (
@@ -67,7 +69,7 @@ export default function ProfilePage() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        My Profile
+        {t('profile_title')}
       </motion.h1>
       <motion.p 
         className={styles.subtitle}
@@ -75,7 +77,7 @@ export default function ProfilePage() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.1 }}
       >
-        Set your default birth details to auto-fill the forms.
+        {t('profile_subtitle')}
       </motion.p>
 
       <motion.div 
@@ -86,17 +88,17 @@ export default function ProfilePage() {
       >
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <label>Full Name</label>
+            <label>{t('profile_full_name')}</label>
             <input 
               type="text" 
               required 
               value={formData.name}
               onChange={e => setFormData({ ...formData, name: e.target.value })}
-              placeholder="e.g. Arjun Sharma"
+              placeholder={t('profile_name_ph')}
             />
           </div>
           <div className={styles.formGroup}>
-            <label>Date of Birth</label>
+            <label>{t('profile_dob')}</label>
             <input 
               type="date" 
               required 
@@ -105,7 +107,7 @@ export default function ProfilePage() {
             />
           </div>
           <div className={styles.formGroup}>
-            <label>Time of Birth</label>
+            <label>{t('profile_tob')}</label>
             <input 
               type="time" 
               required 
@@ -114,18 +116,18 @@ export default function ProfilePage() {
             />
           </div>
           <div className={styles.formGroup}>
-            <label>Place of Birth</label>
+            <label>{t('profile_pob')}</label>
             <input 
               type="text" 
               required 
               value={formData.location}
               onChange={e => setFormData({ ...formData, location: e.target.value })}
-              placeholder="e.g. Kolkata, India"
+              placeholder={t('profile_pob_ph')}
             />
           </div>
 
           <button type="submit" className={styles.button} disabled={saving}>
-            {saving ? 'Saving...' : 'Save Presets'}
+            {saving ? t('profile_saving') : t('profile_save')}
           </button>
         </form>
       </motion.div>

@@ -9,6 +9,10 @@ import Reading from '@/models/Reading';
 import { geocodeCity } from '@/lib/geocode';
 import { computeBirthChart, formatChartForPrompt } from '@/lib/ephemeris';
 import { callGrokText, fillTemplate } from '@/lib/ai';
+import { retrieveVedicContext } from '@/lib/rag';
+import { buildStructuredAnalysis, buildAnalysisJSON } from '@/lib/vedic/structured-analysis';
+import { verifyResponse } from '@/lib/verify';
+import { languageDirective, resolveLanguage } from '@/lib/language';
 import birthChartPrompt from '@/config/prompts/birth-chart.prompt.json';
 
 export async function POST(req: Request) {
@@ -35,32 +39,64 @@ export async function POST(req: Request) {
 
     const { name, date, time, location, language } = await req.json();
 
+    // Strict language directive (name + native script) injected into all prompts
+    const langDirective = languageDirective(language);
+
     if (!name || !date || !time || !location) {
       return NextResponse.json({ error: 'All birth details are required (name, date, time, location).' }, { status: 400 });
     }
 
-    // Step 1: Geocode the birth location to get accurate lat/lng + UTC offset
+    // ─── Step 1: Geocode ──────────────────────────────────────────────────
     const geo = await geocodeCity(location);
     console.log(`[birth-chart] Geocoded "${location}" → ${geo.lat.toFixed(4)}, ${geo.lng.toFixed(4)} (${geo.timezone})`);
 
-    // Step 2: Compute accurate planetary positions using VSOP87 ephemeris + Lahiri ayanamsha
+    // ─── Step 2: Compute planetary positions (Swiss Ephemeris) ────────────
     const chart = computeBirthChart(date, time, geo.lat, geo.lng, geo.utcOffsetMinutes);
     const chartData = formatChartForPrompt(chart, name, date, time, geo.displayName || location);
 
-    // Step 3: Fill prompt template with computed chart data
+    // ─── Step 3: Run ALL deterministic rule engines ───────────────────────
+    const analysis = buildStructuredAnalysis(chart);
+    const analysisJSON = buildAnalysisJSON(analysis);
+
+    // ─── Step 4: Retrieve Vedic knowledge (RAG) ──────────────────────────
+    const vedicContext = retrieveVedicContext(chart);
+
+    // ─── Step 5: Build explanation-only prompt ────────────────────────────
+    const ratingTable = Object.entries(analysis.ratings)
+      .map(([area, score]) => `| ${area.charAt(0).toUpperCase() + area.slice(1)} | ${'⭐'.repeat(score)} (${score}/5) |`)
+      .join('\n');
+
     const userPrompt = fillTemplate(birthChartPrompt.userPromptTemplate, {
+      name,
+      date,
+      time,
+      location: geo.displayName || location,
       chartData,
-      nakshatra: chart.nakshatra.name,
-      pada: chart.nakshatra.pada,
-      nakshatraLord: chart.nakshatra.lord,
+      yogaSection: analysis.formatted.yogaSection,
+      doshaSection: analysis.formatted.doshaSection,
+      planetStrengthTable: analysis.formatted.planetStrengthTable,
+      navamsaAscendant: analysis.navamsa.ascendant,
+      vargottamaPlanets: analysis.navamsa.vargottamaPlanets.length > 0
+        ? analysis.navamsa.vargottamaPlanets.join(', ')
+        : 'None',
+      marriageStrength: `${analysis.navamsa.marriageStrength.score}/5 (Venus: ${analysis.navamsa.marriageStrength.venusDignity}, 7th lord: ${analysis.navamsa.marriageStrength.seventhLordDignity})`,
+      dashamsaAscendant: analysis.dashamsa.ascendant,
+      careerStrength: `${analysis.dashamsa.careerStrength.score}/5 (Sun: ${analysis.dashamsa.careerStrength.sunDignity}, 10th lord: ${analysis.dashamsa.careerStrength.tenthLordDignity}, Saturn: ${analysis.dashamsa.careerStrength.saturnDignity})`,
+      houseTable: analysis.formatted.houseTable,
+      ratingTable,
+      confidenceTable: analysis.formatted.confidenceTable,
       currentDasha: chart.currentDasha,
       dashaEndsAt: chart.dashaEndsAt,
-      language: language || 'English',
+      language: langDirective,
     });
 
-    const finalSystemPrompt = fillTemplate(birthChartPrompt.systemPrompt, { language: language || 'English' });
+    const finalSystemPrompt = fillTemplate(birthChartPrompt.systemPrompt, {
+      language: langDirective,
+      vedicContext,
+      structuredAnalysis: analysisJSON,
+    });
 
-    // Step 4: Call Grok AI for interpretation
+    // ─── Step 6: AI explanation (NOT reasoning) ─────────────────────────
     const aiResponse = await callGrokText(
       birthChartPrompt.model,
       finalSystemPrompt,
@@ -68,13 +104,17 @@ export async function POST(req: Request) {
       birthChartPrompt.maxTokens,
     );
 
-    // Step 5: Store reading in MongoDB
+    // ─── Step 7: Self-verification (catch hallucinations) ────────────────
+    const verification = await verifyResponse(aiResponse.text, analysisJSON, resolveLanguage(language));
+    const finalText = verification.correctedText ?? aiResponse.text;
+
+    // ─── Step 8: Store reading in MongoDB ─────────────────────────────────
     await connectToDatabase();
     const newReading = new Reading({
       userId,
       type: 'birth_chart',
       inputData: { name, date, time, location },
-      result: aiResponse.text,
+      result: finalText,
       metadata: {
         geo: { lat: geo.lat, lng: geo.lng, timezone: geo.timezone },
         chart: {
@@ -86,6 +126,20 @@ export async function POST(req: Request) {
           currentDasha: chart.currentDasha,
           dashaEndsAt: chart.dashaEndsAt,
         },
+        // Store structured analysis for future reference (chat, dashboard, regression tests)
+        structuredAnalysis: {
+          yogas: analysis.yogas,
+          doshas: analysis.doshas,
+          ratings: analysis.ratings,
+          confidenceScores: analysis.confidenceScores,
+          navamsa: analysis.navamsa,
+          dashamsa: analysis.dashamsa,
+          planetCount: analysis.planets.length,
+        },
+        verification: {
+          verified: verification.verified,
+          issueCount: verification.issues.length,
+        },
         tokens: aiResponse.usage,
       },
     });
@@ -93,7 +147,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       id: newReading._id.toString(),
-      result: aiResponse.text,
+      result: finalText,
       metadata: {
         ascendant: chart.ascendant.sign,
         sunSign: chart.sun.sign,
@@ -103,6 +157,20 @@ export async function POST(req: Request) {
         ayanamsha: chart.ayanamsha,
         geocodedLocation: geo.displayName,
         timezone: geo.timezone,
+        // Deterministic planet positions (language-independent, drives the chart wheel)
+        planets: analysis.planets.map((p) => ({
+          planet: p.planet,
+          sign: p.sign,
+          house: p.house,
+          dignity: p.dignity,
+          isRetrograde: p.isRetrograde,
+        })),
+        // Return structured data to frontend
+        yogas: analysis.yogas.map((y) => ({ name: y.name, strength: y.strength, confidence: y.confidence })),
+        doshas: analysis.doshas.map((d) => ({ name: d.name, severity: d.severity })),
+        ratings: analysis.ratings,
+        confidenceScores: analysis.confidenceScores,
+        verified: verification.verified,
       },
       remainingQuota: quotaResult.remaining,
       limit: quotaResult.limit,
