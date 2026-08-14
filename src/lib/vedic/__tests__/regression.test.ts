@@ -143,7 +143,7 @@ function runSingleTest(tc: TestCase): TestResult {
   const doshas = detectAllDoshas(chart);
   const divisional = computeAllDivisionalCharts(chart);
   const strengths = computeAllPlanetStrengths(chart);
-  const vargottama = getVargottamaPlanets(chart, divisional.d9);
+  const vargottama = getVargottamaPlanets(chart);
 
   // Step 3: Validate expectations
   const exp = tc.expectations;

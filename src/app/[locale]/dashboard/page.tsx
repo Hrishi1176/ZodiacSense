@@ -16,6 +16,7 @@ import GoldDefs from '@/components/GoldDefs';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import ChatbotComponent from '@/components/ChatbotComponent';
 import styles from './page.module.css';
 
 // Premium gold rashi strip shown under the welcome header
@@ -256,6 +257,14 @@ export default function Dashboard() {
                       className={`${styles.historyContent} markdown-body`}
                     >
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>{item.result}</ReactMarkdown>
+                      {item.type === 'birth_chart' && (
+                        <div style={{ marginTop: '1.5rem' }}>
+                          <ChatbotComponent
+                            readingId={item._id}
+                            language={i18n.language === 'hi' ? 'Hindi' : i18n.language === 'bn' ? 'Bengali' : 'English'}
+                          />
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </div>

@@ -29,10 +29,15 @@ export async function POST(req: Request) {
     }
 
     await connectToDatabase();
-    const reading = await Reading.findOne({ _id: readingId, userId }).lean();
-    
+    let reading;
+    if (readingId === 'latest' || !readingId.match(/^[0-9a-fA-F]{24}$/)) {
+      reading = await Reading.findOne({ userId, type: 'birth_chart' }).sort({ createdAt: -1 }).lean();
+    } else {
+      reading = await Reading.findOne({ _id: readingId, userId }).lean();
+    }
+
     if (!reading) {
-      return NextResponse.json({ error: 'Reading context not found.' }, { status: 404 });
+      return NextResponse.json({ error: 'No birth chart reading found to consult with.' }, { status: 404 });
     }
 
     const quotaStatus = await checkQuotaAvailability(userId, 'chatbot');
@@ -82,8 +87,10 @@ export async function POST(req: Request) {
       chartContext = readingResult + rawChart;
     }
 
-    // Retrieve relevant Vedic knowledge from chart metadata
-    const vedicContext = chartMeta ? retrieveVedicContext(chartMeta as any) : 'No chart metadata available for reference.';
+    // Retrieve relevant Vedic knowledge targeted to both the chart and the user's specific question
+    const vedicContext = chartMeta
+      ? retrieveVedicContext(chartMeta as any, trimmedMessage, 10)
+      : retrieveVedicContext({} as any, trimmedMessage, 10);
     const currentTime = new Date().toISOString(); // kept for logging
     const preferredLanguage = languageDirective(language);
     const finalSystemPrompt = fillTemplate(chatPrompt.systemPrompt, {
