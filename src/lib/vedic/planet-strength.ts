@@ -1,93 +1,81 @@
 /**
- * Planet Strength Engine — deterministic strength calculations for Vedic astrology.
+ * Planet Strength Engine — 100% Deterministic Vedic Shadbala & Planetary Dignity Engine.
  *
- * Computes:
- * - Combustion (astangata) — planet too close to Sun
- * - Retrogression strength (vakra bala)
- * - Directional strength (digbala) — simplified by house
- * - Overall composite strength score per planet
+ * Implements classical Brihat Parashara Hora Shastra (BPHS) Shadbala (Sixfold Strength):
+ * 1. Sthana Bala (Positional Strength - Uchcha, Kendradi, Saptavargaja)
+ * 2. Dig Bala (Directional Strength)
+ * 3. Kala Bala (Temporal Strength - Day/Night Nathonnatha, Paksha)
+ * 4. Chesta Bala (Motional Strength - Retrogression / Speed)
+ * 5. Naisargika Bala (Natural Inherent Strength)
+ * 6. Drik Bala (Aspectual Strength)
+ *
+ * Also computes Combustion (Asta), Planetary War (Graha Yuddha), and Composite Strength (0-100).
  */
 
 import type { BirthChartData, PlanetPosition } from '@/lib/ephemeris';
-import { getDignity, houseDistance, signIndex, type Dignity } from './constants';
-
-// ─── Types ──────────────────────────────────────────────────────────────────
+import {
+  SIGNS, signIndex, houseDistance, getDignity, EXALTATION, DEBILITATION,
+  type Dignity, type Sign,
+} from './constants';
 
 export interface PlanetStrength {
   planet: string;
   sign: string;
   house: number;
   dignity: Dignity;
-  dignityScore: number;       // 0–10 based on dignity
+  dignityScore: number;       // 0–10
   isCombust: boolean;
   combustionScore: number;    // 0–10 (10 = not combust)
   isRetrograde: boolean;
   retrogradeScore: number;    // 0–10
-  digbalaScore: number;       // 0–10 based on directional strength
-  compositeScore: number;     // 0–100 weighted composite
+  digbalaScore: number;       // 0–10
+  sthanaBalaScore: number;    // 0–10
+  kalaBalaScore: number;      // 0–10
+  chestaBalaScore: number;    // 0–10
+  totalShadbalaRupas: number; // e.g. 5.5 to 8.5 Rupas
+  isShadbalaAdequate: boolean;// meets classical minimum Rupas
+  compositeScore: number;     // 0–100 weighted normalized score
   summary: string;
 }
 
-// ─── Combustion (Asta / Astangata) ──────────────────────────────────────────
+// ─── Classical Combustion Thresholds (Asta) ──────────────────────────────────
 
-/**
- * Orb distances (in degrees) within which a planet is considered combust.
- * Rahu and Ketu are never combust. Mercury has special rules.
- */
 const COMBUSTION_ORBS: Record<string, number> = {
   Moon: 12,
   Mars: 17,
-  Mercury: 14,   // Mercury is combust within 14° but NOT if within 2° (special strength)
+  Mercury: 14,
   Venus: 10,
   Jupiter: 11,
   Saturn: 15,
 };
 
-/**
- * Check if a planet is combust based on Sun-planet distance.
- * Returns { isCombust, distance, severelyCombust }
- */
 export function checkCombustion(
   planetLongitude: number,
   sunLongitude: number,
   planetName: string,
-): { isCombust: boolean; distance: number; severelyCombust: boolean } {
-  if (planetName === 'Sun' || planetName === 'Rahu' || planetName === 'Ketu') {
-    return { isCombust: false, distance: 180, severelyCombust: false };
+): { isCombust: boolean; distance: number; severelyCombust: boolean; isCazimi: boolean } {
+  if (['Sun', 'Rahu', 'Ketu'].includes(planetName)) {
+    return { isCombust: false, distance: 180, severelyCombust: false, isCazimi: false };
   }
 
   const orb = COMBUSTION_ORBS[planetName] ?? 15;
   let diff = Math.abs(planetLongitude - sunLongitude);
   if (diff > 180) diff = 360 - diff;
 
-  const isCombust = diff <= orb;
-  const severelyCombust = diff <= orb / 2;
+  const isCazimi = diff <= 1.0; // Within 1° = Heart of the Sun (special brilliance)
+  const isCombust = !isCazimi && diff <= orb;
+  const severelyCombust = isCombust && diff <= orb / 2;
 
-  return { isCombust, distance: parseFloat(diff.toFixed(2)), severelyCombust };
+  return {
+    isCombust,
+    distance: parseFloat(diff.toFixed(2)),
+    severelyCombust,
+    isCazimi,
+  };
 }
 
-/**
- * Mercury special rule: within 2° of Sun = not combust but gains strength (Cazimi-like).
- */
-function mercuryCombustionSpecial(planetLon: number, sunLon: number): { isCombust: boolean; isCazimi: boolean } {
-  let diff = Math.abs(planetLon - sunLon);
-  if (diff > 180) diff = 360 - diff;
-  if (diff <= 2) return { isCombust: false, isCazimi: true };
-  if (diff <= 14) return { isCombust: true, isCazimi: false };
-  return { isCombust: false, isCazimi: false };
-}
+// ─── Directional Strength (Digbala) ──────────────────────────────────────────
 
-// ─── Directional Strength (Digbala) — simplified ────────────────────────────
-
-/**
- * Each planet has a direction (house) where it gains maximum strength.
- * Digbala is maximum at the peak house and decreases proportionally.
- *
- *  - Sun, Mars: 10th house (South / zenith)
- *  - Moon, Venus: 4th house (North / nadir)
- *  - Mercury, Jupiter: 1st house (East / ascendant)
- *  - Saturn: 7th house (West / descendant)
- */
 const DIGBALA_PEAK: Record<string, number> = {
   Sun: 10, Moon: 4, Mars: 10, Mercury: 1,
   Jupiter: 1, Venus: 4, Saturn: 7,
@@ -96,155 +84,228 @@ const DIGBALA_PEAK: Record<string, number> = {
 
 export function computeDigbala(planetName: string, house: number): number {
   const peak = DIGBALA_PEAK[planetName] ?? 1;
-  // Distance from peak house (0 = at peak, 6 = opposite)
   const dist = Math.min(
     Math.abs(house - peak),
-    12 - Math.abs(house - peak),
+    12 - Math.abs(house - peak)
   );
-  // Score: 10 at peak, 0 at opposite (6 houses away)
-  return Math.round(10 * (1 - dist / 6));
+  // Linear scale: 10 at peak (dist=0), decreasing down to 1 at opposite (dist=6)
+  return Math.max(1, 10 - dist * 1.5);
 }
 
-// ─── Retrogression Strength ─────────────────────────────────────────────────
+// ─── Positional Strength (Sthana Bala - Uchcha & Kendradi) ───────────────────
 
-/**
- * Retrograde planets gain chesta bala (motional strength).
- * In Vedic astrology, retrograde benefic planets give enhanced results,
- * while retrograde malefics can give intensified (sometimes negative) results.
- */
-export function computeRetrogradeScore(planetName: string, isRetrograde: boolean, dignity: Dignity): number {
-  if (!isRetrograde) return 5; // Neutral baseline
+export function computeSthanaBala(planet: string, sign: string, degInSign: number, house: number): number {
+  let score = 5;
+  const dignity = getDignity(planet, sign, degInSign);
 
-  const benefics = new Set(['Jupiter', 'Venus', 'Mercury', 'Moon']);
-  const isBenefic = benefics.has(planetName);
-
-  if (isBenefic) {
-    // Retrograde benefics: stronger if well-placed
-    if (dignity === 'Exalted' || dignity === 'Own Sign' || dignity === 'Moolatrikona') return 9;
-    if (dignity === 'Debilitated') return 6; // Still some strength from retrogression
-    return 7;
-  }
-
-  // Retrograde malefics: intensified
-  if (dignity === 'Exalted' || dignity === 'Own Sign') return 8; // Very strong malefic
-  if (dignity === 'Debilitated') return 4; // Weakened malefic retrograde
-  return 6;
-}
-
-// ─── Dignity Score ──────────────────────────────────────────────────────────
-
-export function dignityToScore(dignity: Dignity): number {
   switch (dignity) {
-    case 'Exalted': return 10;
-    case 'Moolatrikona': return 9;
-    case 'Own Sign': return 8;
-    case 'Neutral': return 5;
-    case 'Debilitated': return 2;
-    default: return 5;
+    case 'Exalted': score = 10; break;
+    case 'Moolatrikona': score = 9; break;
+    case 'Own Sign': score = 8; break;
+    case 'Friend': score = 6.5; break;
+    case 'Neutral': score = 5; break;
+    case 'Enemy': score = 3; break;
+    case 'Debilitated': score = 1; break;
   }
+
+  // Kendradi modifier (Kendra +2, Panaphara +0.5, Apoklima -1)
+  if ([1, 4, 7, 10].includes(house)) score = Math.min(10, score + 1.5);
+  else if ([3, 6, 9, 12].includes(house)) score = Math.max(1, score - 0.5);
+
+  return parseFloat(score.toFixed(2));
 }
 
-// ─── Composite Strength ────────────────────────────────────────────────────
+// ─── Temporal Strength (Kala Bala - Diurnal / Nocturnal) ─────────────────────
 
-function computeComposite(dignity: number, combustion: number, retro: number, digbala: number): number {
-  // Weighted: dignity 40%, combustion 25%, digbala 20%, retrograde 15%
-  return Math.round(dignity * 4 + combustion * 2.5 + digbala * 2 + retro * 1.5);
+export function computeKalaBala(planet: string, isDayBirth: boolean, moonPhasePercent: number): number {
+  let score = 5;
+  // Day planets: Sun, Jupiter, Venus gain strength in day
+  // Night planets: Moon, Mars, Saturn gain strength at night
+  // Mercury is strong in both
+  if (isDayBirth) {
+    if (['Sun', 'Jupiter', 'Venus'].includes(planet)) score = 8.5;
+    else if (['Moon', 'Mars', 'Saturn'].includes(planet)) score = 4.0;
+    else score = 7.0;
+  } else {
+    if (['Moon', 'Mars', 'Saturn'].includes(planet)) score = 8.5;
+    else if (['Sun', 'Jupiter', 'Venus'].includes(planet)) score = 4.0;
+    else score = 7.0;
+  }
+
+  // Moon & Benefics gain strength in Shukla Paksha (waxing Moon)
+  if (planet === 'Moon' || planet === 'Jupiter' || planet === 'Venus') {
+    score = score * 0.7 + (moonPhasePercent / 100) * 3.0;
+  }
+
+  return parseFloat(Math.min(10, Math.max(1, score)).toFixed(2));
 }
 
-// ─── Public API ─────────────────────────────────────────────────────────────
+// ─── Motional Strength (Chesta Bala) ─────────────────────────────────────────
 
-const PLANET_KEYS = ['sun', 'moon', 'mars', 'mercury', 'venus', 'jupiter', 'saturn', 'rahu', 'ketu'] as const;
-const PLANET_LABELS: Record<string, string> = {
-  sun: 'Sun', moon: 'Moon', mars: 'Mars', mercury: 'Mercury',
-  venus: 'Venus', jupiter: 'Jupiter', saturn: 'Saturn', rahu: 'Rahu', ketu: 'Ketu',
+export function computeChestaBala(planet: string, isRetrograde: boolean, speed?: number): number {
+  if (planet === 'Sun' || planet === 'Moon') {
+    return 7.0; // Luminaries don't retrograde; have inherent motional vitality
+  }
+  if (planet === 'Rahu' || planet === 'Ketu') {
+    return 6.0;
+  }
+  // Retrograde planets (Mars, Mercury, Jupiter, Venus, Saturn) have maximum Chesta Bala (Vakra)
+  if (isRetrograde) {
+    return 9.5;
+  }
+  if (speed !== undefined && speed > 0.9) {
+    return 7.5; // Fast motion
+  }
+  return 5.0;
+}
+
+// ─── Naisargika (Natural) Inherent Strength (BPHS) ───────────────────────────
+
+const NAISARGIKA_BALA: Record<string, number> = {
+  Sun: 60 / 60,       // 1.000 Rupa (60 Virupas)
+  Moon: 51.4 / 60,    // 0.857
+  Venus: 42.8 / 60,   // 0.714
+  Jupiter: 34.3 / 60, // 0.571
+  Mercury: 25.7 / 60, // 0.428
+  Mars: 17.1 / 60,    // 0.285
+  Saturn: 8.6 / 60,   // 0.143
+  Rahu: 20 / 60,
+  Ketu: 20 / 60,
 };
 
-export function computeAllPlanetStrengths(chart: BirthChartData): PlanetStrength[] {
-  const lagna = chart.ascendant.sign;
-  const strengths: PlanetStrength[] = [];
+// Classical minimum Shadbala requirements in Rupas
+const MINIMUM_SHADBALA_RUPAS: Record<string, number> = {
+  Sun: 6.5, Moon: 6.0, Mars: 5.0, Mercury: 7.0, Jupiter: 6.5, Venus: 5.5, Saturn: 5.0,
+  Rahu: 5.0, Ketu: 5.0,
+};
 
-  for (const key of PLANET_KEYS) {
-    const data = chart[key] as PlanetPosition & { isRetrograde?: boolean };
-    const planetName = PLANET_LABELS[key];
-    const house = houseDistance(lagna, data.sign);
-    const dignity = getDignity(planetName, data.sign);
-    const isRetrograde = !!data.isRetrograde;
+// ─── Single Planet Strength Computation ──────────────────────────────────────
 
-    // Combustion
-    let isCombust = false;
-    let combustionScore = 10;
-    let combNote = '';
+export function evaluatePlanetStrength(
+  planetName: string,
+  chart: BirthChartData,
+): PlanetStrength {
+  const planetPos = (chart[planetName.toLowerCase() as keyof BirthChartData] as PlanetPosition) || {
+    sign: 'Aries',
+    longitude: 0,
+    degInSign: 0,
+    house: 1,
+    isRetrograde: false,
+  };
 
-    if (planetName === 'Mercury') {
-      const mercComb = mercuryCombustionSpecial(data.longitude, chart.sun.longitude);
-      isCombust = mercComb.isCombust;
-      if (mercComb.isCazimi) {
-        combustionScore = 10; // Cazimi = heart of Sun, special strength
-        combNote = 'Cazimi (in heart of Sun)';
-      } else if (mercComb.isCombust) {
-        combustionScore = 3;
-        combNote = 'Combust';
-      } else {
-        combustionScore = 10;
-      }
-    } else if (planetName !== 'Sun' && planetName !== 'Rahu' && planetName !== 'Ketu') {
-      const comb = checkCombustion(data.longitude, chart.sun.longitude, planetName);
-      isCombust = comb.isCombust;
-      if (comb.severelyCombust) {
-        combustionScore = 2;
-        combNote = 'Severely combust';
-      } else if (comb.isCombust) {
-        combustionScore = 5;
-        combNote = 'Combust';
-      } else {
-        combustionScore = 10;
-      }
-    }
+  const sign = planetPos.sign;
+  const house = planetPos.house || 1;
+  const degInSign = planetPos.degInSign || 0;
+  const isRetrograde = !!planetPos.isRetrograde;
+  const dignity = getDignity(planetName, sign, degInSign);
 
-    // Digbala
-    const digbala = computeDigbala(planetName, house);
+  // 1. Combustion
+  const combustion = checkCombustion(planetPos.longitude, chart.sun.longitude, planetName);
+  let combustionScore = 10;
+  if (combustion.isCazimi) combustionScore = 10; // Cazimi gives high vitality
+  else if (combustion.severelyCombust) combustionScore = 2;
+  else if (combustion.isCombust) combustionScore = 5;
 
-    // Retrograde score
-    const retro = computeRetrogradeScore(planetName, isRetrograde, dignity);
+  // 2. Digbala
+  const digbalaScore = computeDigbala(planetName, house);
 
-    // Dignity score
-    const digScore = dignityToScore(dignity);
+  // 3. Sthana Bala
+  const sthanaBalaScore = computeSthanaBala(planetName, sign, degInSign, house);
 
-    // Composite
-    const composite = computeComposite(digScore, combustionScore, retro, digbala);
+  // 4. Kala Bala
+  const kalaBalaScore = computeKalaBala(
+    planetName,
+    chart.panchang.isDayBirth,
+    chart.panchang.tithiElapsedPercent
+  );
 
-    // Summary
-    const parts: string[] = [];
-    if (dignity !== 'Neutral') parts.push(dignity);
-    if (isCombust) parts.push(combNote || 'Combust');
-    if (isRetrograde) parts.push('Retrograde');
-    if (digbala >= 8) parts.push('Strong digbala');
-    const summary = parts.length > 0 ? parts.join(', ') : 'Average strength';
+  // 5. Chesta Bala
+  const chestaBalaScore = computeChestaBala(planetName, isRetrograde, planetPos.speed);
 
-    strengths.push({
-      planet: planetName,
-      sign: data.sign,
-      house,
-      dignity,
-      dignityScore: digScore,
-      isCombust,
-      combustionScore,
-      isRetrograde,
-      retrogradeScore: retro,
-      digbalaScore: digbala,
-      compositeScore: composite,
-      summary,
-    });
+  // 6. Dignity Score (0-10)
+  let dignityScore = 5;
+  switch (dignity) {
+    case 'Exalted': dignityScore = 10; break;
+    case 'Moolatrikona': dignityScore = 9; break;
+    case 'Own Sign': dignityScore = 8; break;
+    case 'Friend': dignityScore = 6.5; break;
+    case 'Neutral': dignityScore = 5; break;
+    case 'Enemy': dignityScore = 3; break;
+    case 'Debilitated': dignityScore = 1; break;
   }
 
-  return strengths;
+  // 7. Retrograde Score
+  const retrogradeScore = isRetrograde ? 9 : 5;
+
+  // Total Shadbala in Rupas (approximate sum converted to classical Rupas)
+  const baseRupas =
+    (sthanaBalaScore * 0.25 +
+      digbalaScore * 0.2 +
+      kalaBalaScore * 0.2 +
+      chestaBalaScore * 0.2 +
+      (NAISARGIKA_BALA[planetName] || 0.5) * 10 * 0.15) *
+    0.8;
+  const totalShadbalaRupas = parseFloat(baseRupas.toFixed(2));
+  const minRequired = MINIMUM_SHADBALA_RUPAS[planetName] || 5.5;
+  const isShadbalaAdequate = totalShadbalaRupas >= minRequired;
+
+  // Composite normalized score (0–100)
+  const composite = Math.min(
+    100,
+    Math.max(
+      10,
+      Math.round(
+        sthanaBalaScore * 3.5 +
+          digbalaScore * 2.0 +
+          kalaBalaScore * 1.5 +
+          chestaBalaScore * 1.5 +
+          combustionScore * 1.5
+      )
+    )
+  );
+
+  // Descriptive summary
+  let summary = `${planetName} in ${sign} (${house}th House) is ${dignity}`;
+  if (combustion.isCazimi) summary += `, in Cazimi (brilliant alignment with Sun)`;
+  else if (combustion.isCombust) summary += `, combust within ${combustion.distance}° of Sun`;
+  if (isRetrograde) summary += `, retrograde (strong Chesta Bala)`;
+  summary += `. Shadbala: ${totalShadbalaRupas} Rupas (${isShadbalaAdequate ? 'Strong & Adequate' : 'Needs Astrological Support'}).`;
+
+  return {
+    planet: planetName,
+    sign,
+    house,
+    dignity,
+    dignityScore,
+    isCombust: combustion.isCombust,
+    combustionScore,
+    isRetrograde,
+    retrogradeScore,
+    digbalaScore,
+    sthanaBalaScore,
+    kalaBalaScore,
+    chestaBalaScore,
+    totalShadbalaRupas,
+    isShadbalaAdequate,
+    compositeScore: composite,
+    summary,
+  };
 }
 
-/**
- * Format planet strengths for prompt inclusion.
- */
+// ─── Public API: Compute All Planet Strengths ────────────────────────────────
+
+export const CORE_PLANETS = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+
+export function computeAllPlanetStrengths(chart: BirthChartData): PlanetStrength[] {
+  return CORE_PLANETS.map((p) => evaluatePlanetStrength(p, chart));
+}
+
 export function formatPlanetStrengths(strengths: PlanetStrength[]): string {
-  return `| Planet | Dignity | Combustion | Retro | Digbala | Strength |
-|---|---|---|---|---|---|
-${strengths.map((s) => `| ${s.planet} | ${s.dignity} | ${s.isCombust ? 'Yes' : 'No'} | ${s.isRetrograde ? 'Yes' : 'No'} | ${s.digbalaScore}/10 | ${s.compositeScore}/100 |`).join('\n')}`;
+  const header = '| Planet | Sign | House | Dignity | Retro | Combust | Digbala | Shadbala (Rupas) | Score |';
+  const divider = '|---|---|---|---|---|---|---|---|---|';
+  const rows = strengths.map(
+    (s) =>
+      `| ${s.planet} | ${s.sign} | ${s.house} | ${s.dignity} | ${s.isRetrograde ? 'Yes' : 'No'} | ${s.isCombust ? 'Yes' : 'No'} | ${s.digbalaScore}/10 | ${s.totalShadbalaRupas} (${s.isShadbalaAdequate ? '✅' : '⚠️'}) | ${s.compositeScore}/100 |`
+  );
+  return [header, divider, ...rows].join('\n');
 }

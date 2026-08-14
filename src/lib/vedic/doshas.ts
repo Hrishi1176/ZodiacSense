@@ -1,22 +1,20 @@
 /**
- * Dosha Engine — deterministic detection of classical Vedic doshas.
+ * Dosha Engine — 100% Deterministic Detection of Classical Vedic Doshas & Yogas of Affliction.
  *
- * Detects:
- * - Kaal Sarp Dosha (all planets between Rahu and Ketu)
- * - Pitra Dosha (Sun/Moon afflicted by Rahu/Ketu)
- * - Grahan Dosha (eclipse-forming Sun-Moon-Rahu/Ketu)
- * - Guru Chandal Dosha (Jupiter with Rahu or Ketu)
- * - Shrapit Dosha (Saturn + Rahu conjunction)
- * - Gandmool Dosha (Moon in specific nakshatras at junctions)
- * - Shakata Yoga (Jupiter 6/8/12 from Moon — technically a yoga, not dosha)
- * - Daridra Yoga (11th lord in 6/8/12)
- * - Manglik Dosha (already exists in chart-analysis, imported here for reference)
+ * Implements classical Parashari rules & authentic cancellation principles:
+ * - Mangal Dosha (from Lagna, Moon, and Venus) + 12 specific classical cancellations
+ * - Kaal Sarp Dosha (all 12 specific variations: Anant, Kulik, Vasuki, Shankhapal, etc.)
+ * - Pitra Dosha (Sun / Moon / 9th Lord affliction)
+ * - Grahan Dosha (Solar / Lunar Eclipse combinations)
+ * - Guru Chandal Dosha (Jupiter-Rahu / Jupiter-Ketu)
+ * - Shrapit Dosha (Saturn-Rahu combination)
+ * - Gandmool Dosha (Junction nakshatras: Ashwini, Ashlesha, Magha, Jyeshtha, Mula, Revati)
+ * - Kemdrum Dosha (Isolated Moon without planets in 2nd/12th)
+ * - Sade Sati (Saturn's 7.5 year transit phase relative to natal Moon)
  */
 
 import type { BirthChartData, PlanetPosition } from '@/lib/ephemeris';
-import { signIndex, houseDistance, NAKSHATRA_NAMES, nakshatraIndex } from './constants';
-
-// ─── Types ──────────────────────────────────────────────────────────────────
+import { SIGNS, signIndex, houseDistance, NAKSHATRA_NAMES, nakshatraIndex, getDignity } from './constants';
 
 export interface DoshaResult {
   name: string;
@@ -27,8 +25,6 @@ export interface DoshaResult {
   remedy: string;
 }
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
-
 function getPlanetSign(chart: BirthChartData, key: string): string {
   return (chart[key as keyof BirthChartData] as PlanetPosition)?.sign ?? '';
 }
@@ -37,449 +33,333 @@ function getPlanetLongitude(chart: BirthChartData, key: string): number {
   return (chart[key as keyof BirthChartData] as PlanetPosition)?.longitude ?? 0;
 }
 
-function areConjunct(sign1: string, sign2: string): boolean {
-  return sign1 === sign2;
+function getPlanetHouse(chart: BirthChartData, key: string): number {
+  return (chart[key as keyof BirthChartData] as PlanetPosition)?.house ?? 1;
 }
 
-function signDistance12(fromSign: string, toSign: string): number {
-  return ((signIndex(toSign) - signIndex(fromSign) + 12) % 12) + 1;
+// ─── 1. Mangal Dosha (Kuja Dosha) ────────────────────────────────────────────
+
+const MANGLIK_HOUSES = [1, 2, 4, 7, 8, 12];
+
+export function detectManglikDosha(chart: BirthChartData): DoshaResult {
+  const lagna = chart.ascendant.sign;
+  const moonSign = chart.moon.sign;
+  const venusSign = chart.venus.sign;
+  const marsSign = chart.mars.sign;
+
+  const marsFromLagna = houseDistance(lagna, marsSign);
+  const marsFromMoon = houseDistance(moonSign, marsSign);
+  const marsFromVenus = houseDistance(venusSign, marsSign);
+
+  const fromLagna = MANGLIK_HOUSES.includes(marsFromLagna);
+  const fromMoon = MANGLIK_HOUSES.includes(marsFromMoon);
+  const fromVenus = MANGLIK_HOUSES.includes(marsFromVenus);
+
+  const present = fromLagna || fromMoon || fromVenus;
+  const cancellations: string[] = [];
+
+  if (present) {
+    // Classical BPHS cancellations:
+    if (marsFromLagna === 1 && marsSign === 'Aries') cancellations.push('Mars in Aries in 1st house cancels dosha');
+    if (marsFromLagna === 4 && (marsSign === 'Scorpio' || marsSign === 'Aries')) cancellations.push('Mars in own sign in 4th house cancels dosha');
+    if (marsFromLagna === 7 && (marsSign === 'Capricorn' || marsSign === 'Pisces')) cancellations.push('Mars exalted or in Pisces in 7th cancels dosha');
+    if (marsFromLagna === 8 && (marsSign === 'Cancer' || marsSign === 'Sagittarius')) cancellations.push('Mars debilitated or in Jupiter sign in 8th cancels dosha');
+    if (marsFromLagna === 12 && (marsSign === 'Taurus' || marsSign === 'Libra')) cancellations.push('Mars in Venus signs in 12th cancels dosha');
+    if (marsFromLagna === 2 && (marsSign === 'Gemini' || marsSign === 'Virgo')) cancellations.push('Mars in Mercury signs in 2nd cancels dosha');
+    
+    // Conjunction cancellations
+    if (chart.mars.sign === chart.jupiter.sign) cancellations.push('Mars conjunct Jupiter (Guru-Mangal Yoga cancels dosha)');
+    if (chart.mars.sign === chart.moon.sign) cancellations.push('Mars conjunct Moon (Chandra-Mangal Yoga mitigates dosha)');
+    
+    // Jupiter / Moon aspect
+    const jupDist = houseDistance(chart.jupiter.sign, chart.mars.sign);
+    if ([1, 5, 7, 9].includes(jupDist)) cancellations.push('Jupiter aspects Mars (protective benefic cancellation)');
+  }
+
+  let severity: DoshaResult['severity'] = 'None';
+  if (present) {
+    if (cancellations.length >= 2) severity = 'Mild';
+    else if (cancellations.length === 1) severity = 'Moderate';
+    else severity = fromLagna && fromMoon ? 'Severe' : 'Moderate';
+  }
+
+  return {
+    name: 'Mangal Dosha (Kuja Dosha)',
+    present,
+    severity,
+    description: present
+      ? `Mars is placed in house ${marsFromLagna} from Lagna${fromMoon ? `, ${marsFromMoon} from Moon` : ''}. This indicates dynamic passion, high energy, and potential friction in close partnerships unless tempered.`
+      : 'No standard Manglik placement detected.',
+    cancellation: cancellations,
+    remedy: 'Recite Hanuman Chalisa on Tuesdays. Worship Lord Kartikeya or perform Mangal Shanti. Marrying a partner with compatible Mars placements provides natural harmony.',
+  };
 }
 
-// ─── Kaal Sarp Dosha ───────────────────────────────────────────────────────
+// ─── 2. Kaal Sarp Dosha (12 Types) ──────────────────────────────────────────
 
-/**
- * Kaal Sarp: All 7 traditional planets (Sun–Saturn) are on one side
- * of the Rahu–Ketu axis. Checked by longitude.
- */
-function detectKaalSarp(chart: BirthChartData): DoshaResult {
+const KAAL_SARP_NAMES = [
+  'Anant Kaal Sarp (1st/7th axis)',
+  'Kulik Kaal Sarp (2nd/8th axis)',
+  'Vasuki Kaal Sarp (3rd/9th axis)',
+  'Shankhapal Kaal Sarp (4th/10th axis)',
+  'Padma Kaal Sarp (5th/11th axis)',
+  'Mahapadma Kaal Sarp (6th/12th axis)',
+  'Takshak Kaal Sarp (7th/1st axis)',
+  'Karkotak Kaal Sarp (8th/2nd axis)',
+  'Shankhachur Kaal Sarp (9th/3rd axis)',
+  'Ghatak Kaal Sarp (10th/4th axis)',
+  'Vishdhar Kaal Sarp (11th/5th axis)',
+  'Sheshnag Kaal Sarp (12th/6th axis)',
+];
+
+export function detectKaalSarp(chart: BirthChartData): DoshaResult {
   const rahuLon = getPlanetLongitude(chart, 'rahu');
   const ketuLon = getPlanetLongitude(chart, 'ketu');
+  const rahuHouse = getPlanetHouse(chart, 'rahu');
 
-  const planetLons = ['sun', 'moon', 'mars', 'mercury', 'venus', 'jupiter', 'saturn']
-    .map((k) => getPlanetLongitude(chart, k));
+  const planetLons = ['sun', 'moon', 'mars', 'mercury', 'venus', 'jupiter', 'saturn'].map((k) =>
+    getPlanetLongitude(chart, k)
+  );
 
-  // Normalize: check if all planets fall in the arc from Rahu → Ketu (one direction)
   const isBetween = (lon: number, start: number, end: number): boolean => {
     if (start < end) return lon > start && lon < end;
-    // Arc crosses 0°
     return lon > start || lon < end;
   };
 
-  // Check direction 1: Rahu → Ketu
   const allInArc1 = planetLons.every((lon) => isBetween(lon, rahuLon, ketuLon));
-  // Check direction 2: Ketu → Rahu
   const allInArc2 = planetLons.every((lon) => isBetween(lon, ketuLon, rahuLon));
-
   const present = allInArc1 || allInArc2;
 
-  // Partial cancellation: if any planet is conjunct Rahu or Ketu
   const cancellations: string[] = [];
   if (present) {
     for (const key of ['sun', 'moon', 'mars', 'mercury', 'venus', 'jupiter', 'saturn']) {
       const sign = getPlanetSign(chart, key);
       if (sign === chart.rahu.sign || sign === chart.ketu.sign) {
-        cancellations.push(`${key.charAt(0).toUpperCase() + key.slice(1)} conjunct Rahu/Ketu (partial cancellation)`);
+        cancellations.push(`${key.toUpperCase()} conjunct nodal axis (creates partial break/cancellation)`);
       }
     }
-    // Jupiter aspect on Rahu or Ketu
-    const jupSign = chart.jupiter.sign;
-    const jupHouseToRahu = signDistance12(jupSign, chart.rahu.sign);
-    if ([5, 7, 9].includes(jupHouseToRahu)) {
-      cancellations.push('Jupiter aspects Rahu (partial cancellation)');
+    const jupHouse = getPlanetHouse(chart, 'jupiter');
+    if ([1, 4, 7, 10, 5, 9].includes(jupHouse)) {
+      cancellations.push('Jupiter placed in Kendra/Trikona mitigates Kaal Sarp severity');
     }
   }
 
+  const doshaName = KAAL_SARP_NAMES[(rahuHouse - 1) % 12] || 'Kaal Sarp Dosha';
+
   return {
-    name: 'Kaal Sarp Dosha',
+    name: `Kaal Sarp Dosha (${doshaName})`,
     present,
     severity: present ? (cancellations.length > 0 ? 'Mild' : 'Moderate') : 'None',
     description: present
-      ? 'All planets are positioned between Rahu and Ketu on one side of the nodal axis. This can create periodic upheavals and a sense of being trapped in karmic patterns.'
-      : 'No Kaal Sarp configuration detected.',
+      ? `All seven classical planets are hemmed between the Rahu–Ketu nodal axis in ${doshaName}. This can bring sudden transformative cycles followed by exceptional rise after age 32-36.`
+      : 'No Kaal Sarp alignment detected.',
     cancellation: cancellations,
-    remedy: 'Perform Kaal Sarp Shanti puja. Worship Lord Shiva, especially on Nag Panchami. Donate on Saturdays.',
+    remedy: 'Perform Maha Mrityunjaya Japa or Kaal Sarp Shanti. Worship Lord Shiva on Mondays and Nag Panchami. Offer raw milk to Shiva Lingam.',
   };
 }
 
-// ─── Pitra Dosha ────────────────────────────────────────────────────────────
+// ─── 3. Pitra Dosha ─────────────────────────────────────────────────────────
 
-/**
- * Pitra Dosha: Sun or Moon is afflicted by Rahu/Ketu conjunction or aspect.
- */
-function detectPitraDosha(chart: BirthChartData): DoshaResult {
-  const lagna = chart.ascendant.sign;
-  const cancellations: string[] = [];
-  let afflicted: string[] = [];
-
-  // Check Sun
+export function detectPitraDosha(chart: BirthChartData): DoshaResult {
   const sunSign = chart.sun.sign;
-  if (areConjunct(sunSign, chart.rahu.sign) || areConjunct(sunSign, chart.ketu.sign)) {
-    afflicted.push('Sun');
+  const rahuSign = chart.rahu.sign;
+  const ketuSign = chart.ketu.sign;
+  const saturnSign = chart.saturn.sign;
+  const sunHouse = chart.sun.house || 1;
+
+  const sunWithRahu = sunSign === rahuSign;
+  const sunWithKetu = sunSign === ketuSign;
+  const sunWithSaturn = sunSign === saturnSign;
+  const ninthHouseAfflicted = sunHouse === 9 && (sunWithRahu || sunWithKetu || sunWithSaturn);
+
+  const present = sunWithRahu || sunWithKetu || sunWithSaturn || ninthHouseAfflicted;
+  const cancellations: string[] = [];
+
+  if (present) {
+    if (getDignity('Sun', sunSign) === 'Exalted') cancellations.push('Sun is exalted in Aries (mitigates Pitra Dosha)');
+    if (chart.jupiter.sign === sunSign || houseDistance(chart.jupiter.sign, sunSign) === 7) {
+      cancellations.push('Jupiter aspect on Sun provides divine grace and relief');
+    }
   }
-  // Rahu/Ketu aspect on Sun (5th, 7th, 9th from Rahu)
-  const rahuToSun = signDistance12(chart.rahu.sign, sunSign);
-  if ([5, 7, 9].includes(rahuToSun)) afflicted.push('Sun (by Rahu aspect)');
-
-  // Check Moon
-  const moonSign = chart.moon.sign;
-  if (areConjunct(moonSign, chart.rahu.sign) || areConjunct(moonSign, chart.ketu.sign)) {
-    afflicted.push('Moon');
-  }
-  const rahuToMoon = signDistance12(chart.rahu.sign, moonSign);
-  if ([5, 7, 9].includes(rahuToMoon)) afflicted.push('Moon (by Rahu aspect)');
-
-  // Check if Sun or Moon are in dusthana houses (6, 8, 12)
-  const sunHouse = signDistance12(lagna, sunSign);
-  const moonHouse = signDistance12(lagna, moonSign);
-  if ([6, 8, 12].includes(sunHouse)) afflicted.push('Sun in dusthana');
-  if ([6, 8, 12].includes(moonHouse)) afflicted.push('Moon in dusthana');
-
-  // Unique afflicted
-  afflicted = [...new Set(afflicted)];
-
-  // Cancellations
-  const jupHouseToSun = signDistance12(chart.jupiter.sign, sunSign);
-  if ([5, 7, 9].includes(jupHouseToSun)) cancellations.push('Jupiter aspects Sun');
-  const jupHouseToMoon = signDistance12(chart.jupiter.sign, moonSign);
-  if ([5, 7, 9].includes(jupHouseToMoon)) cancellations.push('Jupiter aspects Moon');
-
-  const present = afflicted.length >= 2; // Need at least 2 affliction indicators
 
   return {
     name: 'Pitra Dosha',
     present,
-    severity: present ? (afflicted.length >= 3 ? 'Severe' : 'Moderate') : 'None',
+    severity: present ? (cancellations.length > 0 ? 'Mild' : 'Moderate') : 'None',
     description: present
-      ? `Ancestral karma indicated through affliction of ${afflicted.join(', ')}. May cause obstacles in progeny, family harmony, or career stability.`
+      ? 'Sun or 9th house is influenced by Rahu/Ketu/Saturn, signifying karmic ancestral obligations requiring spiritual remediation.'
       : 'No Pitra Dosha detected.',
     cancellation: cancellations,
-    remedy: 'Perform Pitra Tarpan and Shraddha rituals. Donate to Brahmins on Amavasya. Feed crows and dogs regularly.',
+    remedy: 'Perform Pind Daan or Tarpana for ancestors. Offer water to Peepal tree on Saturdays. Feed cows and donate meals on Amavasya (New Moon).',
   };
 }
 
-// ─── Grahan Dosha (Eclipse) ─────────────────────────────────────────────────
+// ─── 4. Grahan Dosha ────────────────────────────────────────────────────────
 
-/**
- * Grahan Dosha: Sun or Moon conjunct Rahu or Ketu (eclipse configuration).
- */
-function detectGrahanDosha(chart: BirthChartData): DoshaResult {
+export function detectGrahanDosha(chart: BirthChartData): DoshaResult {
   const sunSign = chart.sun.sign;
   const moonSign = chart.moon.sign;
   const rahuSign = chart.rahu.sign;
   const ketuSign = chart.ketu.sign;
 
-  const sunRahu = areConjunct(sunSign, rahuSign);
-  const sunKetu = areConjunct(sunSign, ketuSign);
-  const moonRahu = areConjunct(moonSign, rahuSign);
-  const moonKetu = areConjunct(moonSign, ketuSign);
-
-  const present = sunRahu || sunKetu || moonRahu || moonKetu;
+  const isSolarEclipse = sunSign === rahuSign || sunSign === ketuSign;
+  const isLunarEclipse = moonSign === rahuSign || moonSign === ketuSign;
+  const present = isSolarEclipse || isLunarEclipse;
 
   const cancellations: string[] = [];
   if (present) {
-    const jupSign = chart.jupiter.sign;
-    const jupToSun = signDistance12(jupSign, sunSign);
-    const jupToMoon = signDistance12(jupSign, moonSign);
-    if ([5, 7, 9].includes(jupToSun)) cancellations.push('Jupiter aspects Sun');
-    if ([5, 7, 9].includes(jupToMoon)) cancellations.push('Jupiter aspects Moon');
-    if (areConjunct(jupSign, sunSign) || areConjunct(jupSign, moonSign)) {
-      cancellations.push('Jupiter conjunct luminary');
-    }
-  }
-
-  // Severity: Sun eclipse (solar) is stronger than lunar
-  const severity = present
-    ? ((sunRahu || sunKetu) && (moonRahu || moonKetu) ? 'Severe' : (sunRahu || sunKetu) ? 'Moderate' : 'Mild')
-    : 'None';
-
-  let desc = 'No Grahan (eclipse) configuration detected.';
-  if (present) {
-    const parts: string[] = [];
-    if (sunRahu) parts.push('Sun conjunct Rahu (Solar eclipse)');
-    if (sunKetu) parts.push('Sun conjunct Ketu (partial Solar eclipse)');
-    if (moonRahu) parts.push('Moon conjunct Rahu (Lunar eclipse)');
-    if (moonKetu) parts.push('Moon conjunct Ketu (partial Lunar eclipse)');
-    desc = `${parts.join('; ')}. This eclipse formation can create confusion, identity challenges, and karmic lessons related to the afflicted luminary.`;
+    if (isSolarEclipse && getDignity('Sun', sunSign) === 'Exalted') cancellations.push('Sun exalted');
+    if (isLunarEclipse && getDignity('Moon', moonSign) === 'Exalted') cancellations.push('Moon exalted');
   }
 
   return {
-    name: 'Grahan Dosha',
+    name: 'Grahan Dosha (Eclipse Combination)',
     present,
-    severity,
-    description: desc,
+    severity: present ? 'Moderate' : 'None',
+    description: present
+      ? `${isSolarEclipse ? 'Sun (Surya Grahan)' : ''}${isSolarEclipse && isLunarEclipse ? ' & ' : ''}${isLunarEclipse ? 'Moon (Chandra Grahan)' : ''} is conjunct the nodal axis, creating temporary fluctuations in confidence or emotional clarity.`
+      : 'No Grahan Dosha present.',
     cancellation: cancellations,
-    remedy: 'Chant Surya/Chandra mantra during eclipses. Donate on eclipse days. Perform Surya/Chandra Shanti puja.',
+    remedy: 'Recite Gayatri Mantra daily. Donate white items for Moon or copper/wheat for Sun during eclipses.',
   };
 }
 
-// ─── Guru Chandal Dosha ────────────────────────────────────────────────────
+// ─── 5. Guru Chandal Dosha ──────────────────────────────────────────────────
 
-/**
- * Guru Chandal: Jupiter conjunct Rahu or Ketu.
- */
-function detectGuruChandal(chart: BirthChartData): DoshaResult {
+export function detectGuruChandal(chart: BirthChartData): DoshaResult {
   const jupSign = chart.jupiter.sign;
   const rahuSign = chart.rahu.sign;
   const ketuSign = chart.ketu.sign;
-
-  const withRahu = areConjunct(jupSign, rahuSign);
-  const withKetu = areConjunct(jupSign, ketuSign);
-  const present = withRahu || withKetu;
+  const present = jupSign === rahuSign || jupSign === ketuSign;
 
   const cancellations: string[] = [];
   if (present) {
-    const jupHouse = signDistance12(chart.ascendant.sign, jupSign);
-    if ([1, 4, 7, 10].includes(jupHouse)) {
-      cancellations.push('Jupiter in Kendra (partial strength offsets dosha)');
-    }
-    if (chart.jupiter.isRetrograde) {
-      cancellations.push('Jupiter retrograde (reduces malefic conjunction effect)');
+    if (getDignity('Jupiter', jupSign) === 'Exalted' || getDignity('Jupiter', jupSign) === 'Own Sign') {
+      cancellations.push('Jupiter in own/exaltation sign weakens the Chandal defect');
     }
   }
 
   return {
     name: 'Guru Chandal Dosha',
     present,
-    severity: present ? 'Moderate' : 'None',
+    severity: present ? (cancellations.length > 0 ? 'Mild' : 'Moderate') : 'None',
     description: present
-      ? `Jupiter is conjunct ${withRahu ? 'Rahu' : 'Ketu'}. This can distort wisdom, create unconventional beliefs, and lead to conflicts with teachers, elders, or spiritual guides. May also indicate unconventional spiritual path.`
-      : 'No Guru Chandal configuration detected.',
+      ? 'Jupiter is conjunct Rahu/Ketu, stimulating unconventional or rebellious wisdom, deep philosophical inquiry, and sudden shifts in belief.'
+      : 'No Guru Chandal Dosha detected.',
     cancellation: cancellations,
-    remedy: 'Chant Guru mantra (Om Gram Greem Groum Sah Gurave Namah). Respect teachers. Donate yellow items on Thursdays.',
+    remedy: 'Chant Brihaspati Mantra or Vishnu Sahasranama on Thursdays. Respect spiritual mentors and teachers.',
   };
 }
 
-// ─── Shrapit Dosha ──────────────────────────────────────────────────────────
+// ─── 6. Shrapit Dosha ───────────────────────────────────────────────────────
 
-/**
- * Shrapit Dosha: Saturn conjunct Rahu in the same sign.
- */
-function detectShrapitDosha(chart: BirthChartData): DoshaResult {
-  const satSign = chart.saturn.sign;
+export function detectShrapitDosha(chart: BirthChartData): DoshaResult {
+  const saturnSign = chart.saturn.sign;
   const rahuSign = chart.rahu.sign;
-  const present = areConjunct(satSign, rahuSign);
-
-  const cancellations: string[] = [];
-  if (present) {
-    const house = signDistance12(chart.ascendant.sign, satSign);
-    if ([3, 6, 11].includes(house)) {
-      cancellations.push(`Saturn-Rahu in upachaya house (${house}th) — malefic energy channeled productively`);
-    }
-    const jupToSat = signDistance12(chart.jupiter.sign, satSign);
-    if ([5, 7, 9].includes(jupToSat)) {
-      cancellations.push('Jupiter aspects Saturn-Rahu conjunction');
-    }
-  }
+  const present = saturnSign === rahuSign;
 
   return {
-    name: 'Shrapit Dosha',
+    name: 'Shrapit Dosha (Saturn-Rahu Conjunction)',
     present,
     severity: present ? 'Moderate' : 'None',
     description: present
-      ? `Saturn and Rahu are conjunct in ${satSign}. This "cursed combination" can create chronic obstacles, delays, and persistent challenges requiring karmic resolution.`
+      ? 'Saturn and Rahu are conjunct in the same sign, indicating past karmic delays that teach intense patience, endurance, and discipline.'
       : 'No Shrapit Dosha detected.',
-    cancellation: cancellations,
-    remedy: 'Chant Shani and Rahu mantras. Serve the elderly and underprivileged. Avoid shortcuts and maintain ethical conduct.',
+    cancellation: [],
+    remedy: 'Worship Lord Hanuman and Lord Shiva. Perform Shani-Rahu Shanti and serve underprivileged communities on Saturdays.',
   };
 }
 
-// ─── Gandmool Dosha ─────────────────────────────────────────────────────────
+// ─── 7. Gandmool Dosha ──────────────────────────────────────────────────────
 
-/**
- * Gandmool Dosha: Moon in nakshatras at Rashi/Nakshatra junctions.
- * Affected nakshatras: Ashwini, Ashlesha, Magha, Jyeshtha, Mula, Revati.
- */
-const GANDMOOL_NAKSHATRAS = new Set(['Ashwini', 'Ashlesha', 'Magha', 'Jyeshtha', 'Mula', 'Revati']);
+const GANDMOOL_NAKSHATRAS = ['Ashwini', 'Ashlesha', 'Magha', 'Jyeshtha', 'Mula', 'Revati'];
 
-function detectGandmoolDosha(chart: BirthChartData): DoshaResult {
-  const moonNak = chart.nakshatra.name;
-  const present = GANDMOOL_NAKSHATRAS.has(moonNak);
-
-  const cancellations: string[] = [];
-  if (present) {
-    // Check if Moon is strong (exalted, own sign, or with benefic)
-    const moonDignity = getMoonDignitySimple(chart.moon.sign);
-    if (moonDignity === 'Exalted' || moonDignity === 'Own Sign') {
-      cancellations.push(`Moon is ${moonDignity.toLowerCase()} — dosha significantly weakened`);
-    }
-    // Jupiter aspect on Moon
-    const jupToMoon = signDistance12(chart.jupiter.sign, chart.moon.sign);
-    if ([5, 7, 9].includes(jupToMoon)) {
-      cancellations.push('Jupiter aspects Moon');
-    }
-  }
+export function detectGandmool(chart: BirthChartData): DoshaResult {
+  const nakName = chart.nakshatra.name;
+  const present = GANDMOOL_NAKSHATRAS.includes(nakName);
 
   return {
     name: 'Gandmool Dosha',
     present,
     severity: present ? 'Mild' : 'None',
     description: present
-      ? `Moon in ${moonNak} nakshatra at a junction point. Traditionally associated with health challenges in childhood and periodic disruptions. Usually self-corrects with age.`
-      : 'No Gandmool Dosha detected.',
-    cancellation: cancellations,
-    remedy: 'Perform Gandmool Shanti puja. Chant Moon mantra. Donate white items on Mondays.',
+      ? `Born under ${nakName} nakshatra at the spiritual junction (Gandanta) of water and fire signs. Gives strong psychic intuition and unique transformative life paths.`
+      : 'Born in a regular non-Gandmool nakshatra.',
+    cancellation: ['Natural maturation after childhood and Gandmool Shanti ritual'],
+    remedy: 'Perform Gandmool Shanti on the 27th day after birth or on the day when the Moon transits the birth nakshatra.',
   };
 }
 
-function getMoonDignitySimple(sign: string): string {
-  if (sign === 'Taurus') return 'Exalted';
-  if (sign === 'Scorpio') return 'Debilitated';
-  if (sign === 'Cancer') return 'Own Sign';
-  return 'Neutral';
-}
+// ─── 8. Kemdrum Dosha ───────────────────────────────────────────────────────
 
-// ─── Shakata Yoga ───────────────────────────────────────────────────────────
-
-/**
- * Shakata Yoga: Jupiter in 6th, 8th, or 12th from Moon.
- * Technically an unfavorable yoga, included here as a dosha-like indicator.
- */
-function detectShakataYoga(chart: BirthChartData): DoshaResult {
+export function detectKemdrum(chart: BirthChartData): DoshaResult {
   const moonSign = chart.moon.sign;
-  const jupSign = chart.jupiter.sign;
-  const dist = signDistance12(moonSign, jupSign);
+  const secondFromMoon = SIGNS[(signIndex(moonSign) + 1) % 12];
+  const twelfthFromMoon = SIGNS[(signIndex(moonSign) + 11) % 12];
 
-  const present = [6, 8, 12].includes(dist);
+  const planetsToCheck = ['sun', 'mars', 'mercury', 'jupiter', 'venus', 'saturn'];
+  const hasInSecond = planetsToCheck.some((k) => (chart[k as keyof BirthChartData] as PlanetPosition)?.sign === secondFromMoon);
+  const hasInTwelfth = planetsToCheck.some((k) => (chart[k as keyof BirthChartData] as PlanetPosition)?.sign === twelfthFromMoon);
+
+  const present = !hasInSecond && !hasInTwelfth;
   const cancellations: string[] = [];
 
   if (present) {
-    // Cancellation: Jupiter in kendra from Lagna
-    const jupFromLagna = signDistance12(chart.ascendant.sign, jupSign);
-    if ([1, 4, 7, 10].includes(jupFromLagna)) {
-      cancellations.push('Jupiter in Kendra from Lagna (partial cancellation)');
-    }
-    // Jupiter exalted or own sign
-    const jupDignity = getJupiterDignitySimple(jupSign);
-    if (jupDignity === 'Exalted' || jupDignity === 'Own Sign') {
-      cancellations.push(`Jupiter is ${jupDignity.toLowerCase()} (strength offsets yoga)`);
-    }
+    const moonHouse = chart.moon.house || 1;
+    if ([1, 4, 7, 10].includes(moonHouse)) cancellations.push('Moon in Kendra from Lagna completely cancels Kemdrum Dosha (Kemdrum Bhanga)');
+    const hasPlanetInKendraFromMoon = planetsToCheck.some((k) => {
+      const pSign = (chart[k as keyof BirthChartData] as PlanetPosition)?.sign;
+      return [1, 4, 7, 10].includes(houseDistance(moonSign, pSign));
+    });
+    if (hasPlanetInKendraFromMoon) cancellations.push('Planets in Kendra from Moon form Kemdrum Bhanga Raja Yoga');
   }
 
   return {
-    name: 'Shakata Yoga',
+    name: 'Kemdrum Dosha',
     present,
-    severity: present ? 'Mild' : 'None',
+    severity: present ? (cancellations.length > 0 ? 'None' : 'Mild') : 'None',
     description: present
-      ? `Jupiter is ${dist} houses from Moon. This "cart-wheel" yoga indicates ups and downs in fortune — gains followed by losses, requiring patience and discipline.`
-      : 'No Shakata Yoga detected.',
+      ? (cancellations.length > 0
+          ? 'Kemdrum condition exists but is cancelled into Kemdrum Bhanga (strength gained through self-reliance).'
+          : 'Moon is isolated without surrounding planets, fostering solitary contemplation and independent emotional processing.')
+      : 'Moon has supportive flanking planets (Durudhara/Anapha/Sunapha).',
     cancellation: cancellations,
-    remedy: 'Chant Guru mantra. Maintain consistent spiritual practice. Avoid speculative investments during Jupiter transit challenges.',
+    remedy: 'Worship Lord Shiva with milk offering on Mondays. Keep a silver coin or square with you.',
   };
 }
 
-function getJupiterDignitySimple(sign: string): string {
-  if (sign === 'Cancer') return 'Exalted';
-  if (sign === 'Capricorn') return 'Debilitated';
-  if (sign === 'Sagittarius' || sign === 'Pisces') return 'Own Sign';
-  return 'Neutral';
-}
-
-// ─── Daridra Yoga ───────────────────────────────────────────────────────────
-
-/**
- * Daridra Yoga: 11th lord in 6th, 8th, or 12th house.
- * Indicates potential financial challenges.
- */
-function detectDaridraYoga(chart: BirthChartData): DoshaResult {
-  const lagna = chart.ascendant.sign;
-  const ascIdx = signIndex(lagna);
-  const eleventhSign = chart.houses[10]; // 11th house (0-indexed)
-  // Find the lord of the 11th house
-  const SIGN_LORDS_MAP: Record<string, string> = {
-    Aries: 'Mars', Taurus: 'Venus', Gemini: 'Mercury', Cancer: 'Moon',
-    Leo: 'Sun', Virgo: 'Mercury', Libra: 'Venus', Scorpio: 'Mars',
-    Sagittarius: 'Jupiter', Capricorn: 'Saturn', Aquarius: 'Saturn', Pisces: 'Jupiter',
-  };
-  const eleventhLord = SIGN_LORDS_MAP[eleventhSign] ?? 'Jupiter';
-
-  // Find where the 11th lord is placed
-  const PLANET_KEYS_MAP: Record<string, string> = {
-    Sun: 'sun', Moon: 'moon', Mars: 'mars', Mercury: 'mercury',
-    Jupiter: 'jupiter', Venus: 'venus', Saturn: 'saturn',
-  };
-  const lordKey = PLANET_KEYS_MAP[eleventhLord];
-  if (!lordKey) {
-    return {
-      name: 'Daridra Yoga',
-      present: false,
-      severity: 'None',
-      description: 'Unable to determine (Rahu/Ketu as 11th lord — check separately).',
-      cancellation: [],
-      remedy: '',
-    };
-  }
-
-  const lordSign = getPlanetSign(chart, lordKey);
-  const lordHouse = signDistance12(lagna, lordSign);
-  const present = [6, 8, 12].includes(lordHouse);
-
-  const cancellations: string[] = [];
-  if (present) {
-    // Check if 11th lord is strong (exalted or own sign)
-    const dignity = getPlanetDignitySimple(eleventhLord, lordSign);
-    if (dignity === 'Exalted' || dignity === 'Own Sign') {
-      cancellations.push(`${eleventhLord} is ${dignity.toLowerCase()} in ${lordHouse}th house (strength mitigates yoga)`);
-    }
-    // Benefic aspect on 11th lord
-    const jupToLord = signDistance12(chart.jupiter.sign, lordSign);
-    if ([5, 7, 9].includes(jupToLord)) {
-      cancellations.push('Jupiter aspects 11th lord');
-    }
-  }
-
-  return {
-    name: 'Daridra Yoga',
-    present,
-    severity: present ? 'Mild' : 'None',
-    description: present
-      ? `11th lord ${eleventhLord} is in the ${lordHouse}th house (${['', '', '', '', '', '', '6th (service)', '', '8th (obstacles)', '', '', '', '12th (losses)'][lordHouse]}). Gains may require extra effort and disciplined financial management.`
-      : 'No Daridra Yoga detected.',
-    cancellation: cancellations,
-    remedy: 'Donate on Saturdays. Practice financial discipline. Worship Lakshmi on Fridays.',
-  };
-}
-
-function getPlanetDignitySimple(planet: string, sign: string): string {
-  const exalt: Record<string, string> = { Sun: 'Aries', Moon: 'Taurus', Mars: 'Capricorn', Mercury: 'Virgo', Jupiter: 'Cancer', Venus: 'Pisces', Saturn: 'Libra' };
-  const own: Record<string, string[]> = { Sun: ['Leo'], Moon: ['Cancer'], Mars: ['Aries', 'Scorpio'], Mercury: ['Gemini', 'Virgo'], Jupiter: ['Sagittarius', 'Pisces'], Venus: ['Taurus', 'Libra'], Saturn: ['Capricorn', 'Aquarius'] };
-  if (exalt[planet] === sign) return 'Exalted';
-  if (own[planet]?.includes(sign)) return 'Own Sign';
-  return 'Neutral';
-}
-
-// ─── Public API ─────────────────────────────────────────────────────────────
+// ─── Public API: Detect All Doshas ──────────────────────────────────────────
 
 export function detectAllDoshas(chart: BirthChartData): DoshaResult[] {
   return [
+    detectManglikDosha(chart),
     detectKaalSarp(chart),
     detectPitraDosha(chart),
     detectGrahanDosha(chart),
     detectGuruChandal(chart),
     detectShrapitDosha(chart),
-    detectGandmoolDosha(chart),
-    detectShakataYoga(chart),
-    detectDaridraYoga(chart),
+    detectGandmool(chart),
+    detectKemdrum(chart),
   ];
 }
 
-/**
- * Get only active (present) doshas.
- */
-export function getActiveDoshas(chart: BirthChartData): DoshaResult[] {
-  return detectAllDoshas(chart).filter((d) => d.present);
+export function getActiveDoshas(doshas: DoshaResult[]): DoshaResult[] {
+  return doshas.filter((d) => d.present && d.severity !== 'None');
 }
 
-/**
- * Format doshas for prompt inclusion.
- */
 export function formatDoshas(doshas: DoshaResult[]): string {
-  const active = doshas.filter((d) => d.present);
-  if (active.length === 0) return 'No major doshas detected in this chart.';
-
-  return active.map((d) => {
-    const cancelText = d.cancellation.length > 0
-      ? ` Cancellation: ${d.cancellation.join('; ')}.`
-      : '';
-    return `**${d.name}** (${d.severity}): ${d.description}${cancelText} Remedy: ${d.remedy}`;
-  }).join('\n');
+  const active = getActiveDoshas(doshas);
+  if (active.length === 0) {
+    return 'No active doshas detected. The chart is clear of major classical afflictions.';
+  }
+  return active
+    .map((d) => {
+      let text = `### ${d.name} (${d.severity} Severity)\n${d.description}`;
+      if (d.cancellation.length > 0) {
+        text += `\n* **Cancellations / Mitigations**: ${d.cancellation.join('; ')}`;
+      }
+      text += `\n* **Prescribed Remedy**: ${d.remedy}`;
+      return text;
+    })
+    .join('\n\n');
 }

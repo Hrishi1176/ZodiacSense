@@ -1,185 +1,4141 @@
 {
   "entries": [
-    {"tags": ["Sun", "Aries"], "weight": 3, "text": "Sun in Aries is exalted (uchcha). Gives leadership, courage, independence, strong will, and recognition. Can be domineering or impulsive. Favors government, military, sports, surgery."},
-    {"tags": ["Sun", "Taurus"], "weight": 2, "text": "Sun in Taurus is steady, materialistic, and artistic. Values financial security and comfort. Strong determination but can be stubborn."},
-    {"tags": ["Sun", "Gemini"], "weight": 2, "text": "Sun in Gemini is intellectual, communicative, and curious. Good at teaching, writing, business, and multi-tasking. Can be restless."},
-    {"tags": ["Sun", "Cancer"], "weight": 1, "text": "Sun in Cancer is nurturing, protective, and emotionally sensitive. Strong connection to family and homeland. Can be moody."},
-    {"tags": ["Sun", "Leo"], "weight": 3, "text": "Sun in Leo is in own sign (swakshetra). Natural leader, confident, creative, generous, and authoritative. Excellent for politics, arts, and management."},
-    {"tags": ["Sun", "Virgo"], "weight": 2, "text": "Sun in Virgo is analytical, service-oriented, detail-focused, and health-conscious. Good at administration, medicine, and technical fields."},
-    {"tags": ["Sun", "Libra"], "weight": 1, "text": "Sun in Libra is debilitated (neecha). Creates indecision, dependency on partnerships, and self-esteem issues. Gains through diplomacy and relationships after effort."},
-    {"tags": ["Sun", "Scorpio"], "weight": 2, "text": "Sun in Scorpio is intense, secretive, research-oriented, and transformative. Strong willpower and ability to handle crises."},
-    {"tags": ["Sun", "Sagittarius"], "weight": 3, "text": "Sun in Sagittarius is philosophical, righteous, optimistic, and teaching-oriented. Favors teaching, law, spirituality, and higher education."},
-    {"tags": ["Sun", "Capricorn"], "weight": 2, "text": "Sun in Capricorn is disciplined, ambitious, practical, and hardworking. Gains through perseverance and government or large organizations."},
-    {"tags": ["Sun", "Aquarius"], "weight": 2, "text": "Sun in Aquarius is humanitarian, innovative, independent, and intellectual. Good at science, technology, social work, and networking."},
-    {"tags": ["Sun", "Pisces"], "weight": 2, "text": "Sun in Pisces is compassionate, spiritual, imaginative, and intuitive. Favors healing, arts, charity, and spiritual pursuits."},
-
-    {"tags": ["Moon", "Aries"], "weight": 2, "text": "Moon in Aries gives an emotional, impulsive, and enthusiastic nature. Quick reactions, courageous, but can be short-tempered."},
-    {"tags": ["Moon", "Taurus"], "weight": 3, "text": "Moon in Taurus is exalted (uchcha). Emotionally stable, affectionate, artistic, and prosperous. Strong sense of loyalty and comfort."},
-    {"tags": ["Moon", "Gemini"], "weight": 2, "text": "Moon in Gemini is mentally active, communicative, adaptable, and sociable. Needs mental stimulation and variety."},
-    {"tags": ["Moon", "Cancer"], "weight": 3, "text": "Moon in Cancer is in own sign (swakshetra). Deeply nurturing, intuitive, protective, and emotionally rich. Strong family bonds."},
-    {"tags": ["Moon", "Leo"], "weight": 2, "text": "Moon in Leo is proud, generous, creative, and warm-hearted. Needs recognition and expresses emotions dramatically."},
-    {"tags": ["Moon", "Virgo"], "weight": 1, "text": "Moon in Virgo is analytical, health-conscious, and service-oriented. Can be overcritical or anxious emotionally."},
-    {"tags": ["Moon", "Libra"], "weight": 2, "text": "Moon in Libra seeks harmony, partnership, and beauty. Diplomatic, romantic, and indecisive at times."},
-    {"tags": ["Moon", "Scorpio"], "weight": 1, "text": "Moon in Scorpio is debilitated (neecha). Intense, secretive, transformative emotions. Can face emotional turbulence but gains deep insight."},
-    {"tags": ["Moon", "Sagittarius"], "weight": 2, "text": "Moon in Sagittarius is optimistic, freedom-loving, philosophical, and honest. Needs adventure and higher meaning."},
-    {"tags": ["Moon", "Capricorn"], "weight": 1, "text": "Moon in Capricorn is reserved, responsible, disciplined emotionally. May feel emotionally distant but reliable."},
-    {"tags": ["Moon", "Aquarius"], "weight": 2, "text": "Moon in Aquarius is independent, humanitarian, and intellectual. Values friendship and social causes."},
-    {"tags": ["Moon", "Pisces"], "weight": 2, "text": "Moon in Pisces is compassionate, dreamy, intuitive, and spiritually inclined. Highly empathetic and artistic."},
-
-    {"tags": ["Mars", "Aries"], "weight": 3, "text": "Mars in Aries is in own sign. Very energetic, courageous, competitive, and action-oriented. Strong leadership but can be aggressive."},
-    {"tags": ["Mars", "Taurus"], "weight": 2, "text": "Mars in Taurus is determined, practical, and persistent energy. Can be stubborn and possessive."},
-    {"tags": ["Mars", "Gemini"], "weight": 2, "text": "Mars in Gemini is mentally active, argumentative, and versatile. Good at debates, sales, and quick actions."},
-    {"tags": ["Mars", "Cancer"], "weight": 1, "text": "Mars in Cancer is debilitated. Emotional impulsiveness, domestic conflicts, but protective of family."},
-    {"tags": ["Mars", "Leo"], "weight": 3, "text": "Mars in Leo is bold, courageous, ambitious, and authoritative. Excellent leadership and creative drive."},
-    {"tags": ["Mars", "Virgo"], "weight": 2, "text": "Mars in Virgo is disciplined, analytical, and service-oriented energy. Good at technical and health-related work."},
-    {"tags": ["Mars", "Libra"], "weight": 1, "text": "Mars in Libra is indecisive in action but diplomatic. Energy goes into relationships and partnerships."},
-    {"tags": ["Mars", "Scorpio"], "weight": 3, "text": "Mars in Scorpio is in own sign (co-lord). Intense, penetrating, determined, and secretive. Great research, surgery, and investigative ability."},
-    {"tags": ["Mars", "Sagittarius"], "weight": 2, "text": "Mars in Sagittarius is adventurous, philosophical, and energetic. Favors sports, teaching, and exploration."},
-    {"tags": ["Mars", "Capricorn"], "weight": 3, "text": "Mars in Capricorn is exalted. Disciplined, ambitious, hardworking, and strategic. Great for career achievement."},
-    {"tags": ["Mars", "Aquarius"], "weight": 2, "text": "Mars in Aquarius is innovative, rebellious, and humanitarian energy. Good at technology and social reform."},
-    {"tags": ["Mars", "Pisces"], "weight": 1, "text": "Mars in Pisces is diffused energy, spiritual courage, and creative action. Can lack direction or be escapist."},
-
-    {"tags": ["Mercury", "Aries"], "weight": 2, "text": "Mercury in Aries is quick, decisive, and direct communication. Good at leadership roles requiring fast thinking."},
-    {"tags": ["Mercury", "Taurus"], "weight": 2, "text": "Mercury in Taurus is practical, stable, and methodical thinking. Good for finance, arts, and business."},
-    {"tags": ["Mercury", "Gemini"], "weight": 3, "text": "Mercury in Gemini is in own sign. Excellent communication, learning, adaptability, and multi-tasking."},
-    {"tags": ["Mercury", "Cancer"], "weight": 2, "text": "Mercury in Cancer is intuitive, emotional, and memory-oriented thinking. Strong imagination."},
-    {"tags": ["Mercury", "Leo"], "weight": 2, "text": "Mercury in Leo is confident, dramatic, and authoritative communication. Good at teaching and leadership speech."},
-    {"tags": ["Mercury", "Virgo"], "weight": 3, "text": "Mercury in Virgo is exalted. Analytical, precise, detail-oriented, and excellent for medicine, science, and accounting."},
-    {"tags": ["Mercury", "Libra"], "weight": 2, "text": "Mercury in Libra is diplomatic, balanced, and artistic communication. Good at law, negotiation, and design."},
-    {"tags": ["Mercury", "Scorpio"], "weight": 2, "text": "Mercury in Scorpio is penetrating, investigative, and secretive thinking. Good for research and psychology."},
-    {"tags": ["Mercury", "Sagittarius"], "weight": 2, "text": "Mercury in Sagittarius is philosophical, optimistic, and broad thinking. Good at teaching, publishing, and law."},
-    {"tags": ["Mercury", "Capricorn"], "weight": 2, "text": "Mercury in Capricorn is practical, organized, and strategic thinking. Good for business and administration."},
-    {"tags": ["Mercury", "Aquarius"], "weight": 3, "text": "Mercury in Aquarius is innovative, scientific, and unconventional thinking. Excellent for technology and invention."},
-    {"tags": ["Mercury", "Pisces"], "weight": 1, "text": "Mercury in Pisces is debilitated. Intuitive, creative, but can be unclear or impractical in communication."},
-
-    {"tags": ["Jupiter", "Aries"], "weight": 2, "text": "Jupiter in Aries brings wisdom through action, leadership, and initiative. Optimistic and courageous in beliefs."},
-    {"tags": ["Jupiter", "Taurus"], "weight": 3, "text": "Jupiter in Taurus is exalted. Prosperity, wisdom, stability, and artistic appreciation. Strong financial growth potential."},
-    {"tags": ["Jupiter", "Gemini"], "weight": 1, "text": "Jupiter in Gemini is curious, communicative, and learns widely. Can be scattered in wisdom."},
-    {"tags": ["Jupiter", "Cancer"], "weight": 3, "text": "Jupiter in Cancer is exalted. Nurturing wisdom, strong family values, emotional intelligence, and prosperity."},
-    {"tags": ["Jupiter", "Leo"], "weight": 3, "text": "Jupiter in Leo is in own sign (classic). Noble, generous, wise leadership, and creative intelligence."},
-    {"tags": ["Jupiter", "Virgo"], "weight": 2, "text": "Jupiter in Virgo is practical wisdom, service-oriented, and detail-focused spirituality."},
-    {"tags": ["Jupiter", "Libra"], "weight": 2, "text": "Jupiter in Libra brings wisdom through relationships, justice, and balance. Good for counseling and law."},
-    {"tags": ["Jupiter", "Scorpio"], "weight": 2, "text": "Jupiter in Scorpio gives deep, transformative wisdom and interest in occult, research, and healing."},
-    {"tags": ["Jupiter", "Sagittarius"], "weight": 3, "text": "Jupiter in Sagittarius is in own sign. Philosophical, righteous, spiritual teacher, and fortunate."},
-    {"tags": ["Jupiter", "Capricorn"], "weight": 1, "text": "Jupiter in Capricorn is debilitated. Wisdom comes through discipline and hardship. Practical spirituality."},
-    {"tags": ["Jupiter", "Aquarius"], "weight": 2, "text": "Jupiter in Aquarius is humanitarian wisdom, scientific spirituality, and broad social vision."},
-    {"tags": ["Jupiter", "Pisces"], "weight": 3, "text": "Jupiter in Pisces is in own sign. Deep spirituality, compassion, intuition, and artistic inspiration."},
-
-    {"tags": ["Venus", "Aries"], "weight": 1, "text": "Venus in Aries is passionate, impulsive in love, and energetic in arts. Can be competitive in relationships."},
-    {"tags": ["Venus", "Taurus"], "weight": 3, "text": "Venus in Taurus is in own sign. Sensual, artistic, luxurious, stable in love, and financially fortunate."},
-    {"tags": ["Venus", "Gemini"], "weight": 2, "text": "Venus in Gemini is charming, communicative, and playful in love. Loves variety and intellectual connection."},
-    {"tags": ["Venus", "Cancer"], "weight": 2, "text": "Venus in Cancer is nurturing, protective, and emotionally deep in love. Strong family attachment."},
-    {"tags": ["Venus", "Leo"], "weight": 2, "text": "Venus in Leo is dramatic, romantic, generous, and loyal in love. Loves luxury and admiration."},
-    {"tags": ["Venus", "Virgo"], "weight": 1, "text": "Venus in Virgo is debilitated. Practical in love, service-oriented, but can be critical or self-sacrificing."},
-    {"tags": ["Venus", "Libra"], "weight": 3, "text": "Venus in Libra is in own sign. Harmonious, romantic, artistic, diplomatic, and relationship-oriented."},
-    {"tags": ["Venus", "Scorpio"], "weight": 1, "text": "Venus in Scorpio is intense, passionate, secretive, and transformative in love. Can face relationship power struggles."},
-    {"tags": ["Venus", "Sagittarius"], "weight": 2, "text": "Venus in Sagittarius is freedom-loving, philosophical, and adventurous in love. Values honesty and exploration."},
-    {"tags": ["Venus", "Capricorn"], "weight": 2, "text": "Venus in Capricorn is serious, committed, and practical in love. Values status and long-term stability."},
-    {"tags": ["Venus", "Aquarius"], "weight": 2, "text": "Venus in Aquarius is unconventional, friendly, and independent in love. Values friendship in relationships."},
-    {"tags": ["Venus", "Pisces"], "weight": 3, "text": "Venus in Pisces is exalted. Romantic, compassionate, artistic, spiritually loving, and self-sacrificing."},
-
-    {"tags": ["Saturn", "Aries"], "weight": 1, "text": "Saturn in Aries is debilitated. Delays in action, lessons in patience and discipline. Hard-won leadership."},
-    {"tags": ["Saturn", "Taurus"], "weight": 2, "text": "Saturn in Taurus is steady, practical, and disciplined with finances. Slow but stable growth."},
-    {"tags": ["Saturn", "Gemini"], "weight": 2, "text": "Saturn in Gemini is disciplined thinking, serious communication, and methodical learning."},
-    {"tags": ["Saturn", "Cancer"], "weight": 1, "text": "Saturn in Cancer creates emotional restriction and responsibility. Lessons around family and security."},
-    {"tags": ["Saturn", "Leo"], "weight": 1, "text": "Saturn in Leo challenges ego and authority. Disciplined creativity and mature leadership after effort."},
-    {"tags": ["Saturn", "Virgo"], "weight": 2, "text": "Saturn in Virgo is precise, disciplined, and service-oriented work. Excellent for technical and medical fields."},
-    {"tags": ["Saturn", "Libra"], "weight": 3, "text": "Saturn in Libra is exalted. Justice, balance, committed relationships, and fair leadership."},
-    {"tags": ["Saturn", "Scorpio"], "weight": 2, "text": "Saturn in Scorpio is intense, secretive, and transformative discipline. Handles crises and research well."},
-    {"tags": ["Saturn", "Sagittarius"], "weight": 2, "text": "Saturn in Sagittarius is disciplined wisdom, structured belief systems, and practical philosophy."},
-    {"tags": ["Saturn", "Capricorn"], "weight": 3, "text": "Saturn in Capricorn is in own sign. Highly disciplined, ambitious, responsible, and successful through hard work."},
-    {"tags": ["Saturn", "Aquarius"], "weight": 3, "text": "Saturn in Aquarius is in own sign (co-lord). Innovative discipline, humanitarian structures, and scientific approach."},
-    {"tags": ["Saturn", "Pisces"], "weight": 2, "text": "Saturn in Pisces is spiritual discipline, structured compassion, and practical intuition."},
-
-    {"tags": ["Rahu", "Aries"], "weight": 2, "text": "Rahu in Aries amplifies courage, ambition, and impulsiveness. Can create obsession with leadership."},
-    {"tags": ["Rahu", "Taurus"], "weight": 3, "text": "Rahu in Taurus is exalted. Strong desire for wealth, comfort, and material success. Good for business."},
-    {"tags": ["Rahu", "Gemini"], "weight": 3, "text": "Rahu in Gemini is exalted. Cunning communication, technology skills, and versatile intelligence."},
-    {"tags": ["Rahu", "Cancer"], "weight": 1, "text": "Rahu in Cancer creates emotional confusion and unconventional family situations."},
-    {"tags": ["Rahu", "Leo"], "weight": 2, "text": "Rahu in Leo amplifies desire for fame, power, and recognition. Can be dramatic."},
-    {"tags": ["Rahu", "Virgo"], "weight": 2, "text": "Rahu in Virgo gives technical cunning, health focus, and perfectionist tendencies."},
-    {"tags": ["Rahu", "Libra"], "weight": 2, "text": "Rahu in Libra desires relationships, harmony, and social status. Can be manipulative in partnerships."},
-    {"tags": ["Rahu", "Scorpio"], "weight": 2, "text": "Rahu in Scorpio gives intense, secretive, and research-oriented desires. Interest in occult and mysteries."},
-    {"tags": ["Rahu", "Sagittarius"], "weight": 1, "text": "Rahu in Sagittarius creates unconventional beliefs and philosophical restlessness."},
-    {"tags": ["Rahu", "Capricorn"], "weight": 2, "text": "Rahu in Capricorn drives ambition for status, power, and material achievement."},
-    {"tags": ["Rahu", "Aquarius"], "weight": 2, "text": "Rahu in Aquarius amplifies technological, social, and humanitarian ambitions."},
-    {"tags": ["Rahu", "Pisces"], "weight": 1, "text": "Rahu in Pisces creates spiritual confusion or unconventional spiritual pursuits."},
-
-    {"tags": ["Ketu", "Aries"], "weight": 2, "text": "Ketu in Aries reduces ego and impulsiveness. Spiritual lessons around courage and self-identity."},
-    {"tags": ["Ketu", "Taurus"], "weight": 1, "text": "Ketu in Taurus creates detachment from material comforts. Spiritual lessons around value and security."},
-    {"tags": ["Ketu", "Gemini"], "weight": 1, "text": "Ketu in Gemini creates intuitive but scattered communication. Past-life knowledge."},
-    {"tags": ["Ketu", "Cancer"], "weight": 3, "text": "Ketu in Cancer is exalted. Deep intuitive sensitivity, spiritual family connections, detachment from emotions."},
-    {"tags": ["Ketu", "Leo"], "weight": 2, "text": "Ketu in Leo reduces need for recognition. Spiritual lessons around humility and leadership."},
-    {"tags": ["Ketu", "Virgo"], "weight": 2, "text": "Ketu in Virgo gives intuitive healing ability and detachment from perfectionism."},
-    {"tags": ["Ketu", "Libra"], "weight": 1, "text": "Ketu in Libra creates detachment from relationships or karmic partnerships."},
-    {"tags": ["Ketu", "Scorpio"], "weight": 3, "text": "Ketu in Scorpio is exalted. Deep occult intuition, transformative spirituality, and research gifts."},
-    {"tags": ["Ketu", "Sagittarius"], "weight": 2, "text": "Ketu in Sagittarius gives natural wisdom and detachment from dogma. Spiritual teacher potential."},
-    {"tags": ["Ketu", "Capricorn"], "weight": 2, "text": "Ketu in Capricorn reduces attachment to status. Spiritual lessons through responsibility."},
-    {"tags": ["Ketu", "Aquarius"], "weight": 2, "text": "Ketu in Aquarius gives unconventional spiritual insights and detachment from social groups."},
-    {"tags": ["Ketu", "Pisces"], "weight": 3, "text": "Ketu in Pisces is in own sign (co-lord). Highly spiritual, intuitive, detached, and compassionate."},
-
-    {"tags": ["1st house"], "weight": 2, "text": "1st house (Lagna/Ascendant) represents self, body, personality, health, and overall life path. Planets here strongly influence the native."},
-    {"tags": ["2nd house"], "weight": 2, "text": "2nd house represents wealth, family lineage, speech, food, and accumulated resources. Strong planets here support financial stability."},
-    {"tags": ["3rd house"], "weight": 2, "text": "3rd house represents siblings, courage, communication, short travels, skills, and initiative."},
-    {"tags": ["4th house"], "weight": 2, "text": "4th house represents mother, home, vehicles, happiness, education, and landed property."},
-    {"tags": ["5th house"], "weight": 2, "text": "5th house represents intelligence, children, romance, education, speculation, and past merit."},
-    {"tags": ["6th house"], "weight": 2, "text": "6th house represents diseases, enemies, debts, competition, service, and daily obstacles."},
-    {"tags": ["7th house"], "weight": 2, "text": "7th house represents marriage, partnerships, business alliances, and open enemies."},
-    {"tags": ["8th house"], "weight": 2, "text": "8th house represents longevity, sudden events, inheritance, occult, transformation, and in-laws."},
-    {"tags": ["9th house"], "weight": 2, "text": "9th house represents father, fortune, higher education, religion, long travel, and dharma."},
-    {"tags": ["10th house"], "weight": 2, "text": "10th house represents career, profession, status, government, and public reputation."},
-    {"tags": ["11th house"], "weight": 2, "text": "11th house represents gains, friends, elder siblings, ambitions, and network circles."},
-    {"tags": ["12th house"], "weight": 2, "text": "12th house represents losses, expenses, foreign lands, spirituality, isolation, and liberation."},
-
-    {"tags": ["Manglik", "Mangal Dosha"], "weight": 3, "text": "Mangal Dosha occurs when Mars is in 1st, 2nd, 4th, 7th, 8th, or 12th house (some traditions include 1st from Moon/Venus). Creates delays or friction in marriage unless matched with another Manglik or canceled."},
-    {"tags": ["Manglik", "cancellation"], "weight": 3, "text": "Mangal Dosha cancellation can occur if: Mars is in own/exaltation sign, Saturn aspect on Mars, Mars in 1st in Aries, Mars in 8th in Scorpio, Mars in 7th in Capricorn, Mars in 2nd in Virgo, or if partner is also Manglik."},
-
-    {"tags": ["Ashwini"], "weight": 2, "text": "Ashwini nakshatra (Ketu-ruled): Quick, healing, pioneering, energetic. Can be impulsive."},
-    {"tags": ["Bharani"], "weight": 2, "text": "Bharani nakshatra (Venus-ruled): Creative, transformative, bears burdens, intense sexuality."},
-    {"tags": ["Krittika"], "weight": 2, "text": "Krittika nakshatra (Sun-ruled): Sharp, purifying, leadership, critical, transformative."},
-    {"tags": ["Rohini"], "weight": 2, "text": "Rohini nakshatra (Moon-ruled): Beautiful, creative, stable, sensual, fertile."},
-    {"tags": ["Mrigashira"], "weight": 2, "text": "Mrigashira nakshatra (Mars-ruled): Curious, searching, communicative, restless."},
-    {"tags": ["Ardra"], "weight": 2, "text": "Ardra nakshatra (Rahu-ruled): Emotional storms, transformation, research, healing after pain."},
-    {"tags": ["Punarvasu"], "weight": 2, "text": "Punarvasu nakshatra (Jupiter-ruled): Renewal, generosity, forgiveness, spiritual growth."},
-    {"tags": ["Pushya"], "weight": 2, "text": "Pushya nakshatra (Saturn-ruled): Nurturing, spiritual, supportive, teaching. Considered highly auspicious."},
-    {"tags": ["Ashlesha"], "weight": 2, "text": "Ashlesha nakshatra (Mercury-ruled): Secretive, cunning, intuitive, transformative, hypnotic."},
-    {"tags": ["Magha"], "weight": 2, "text": "Magha nakshatra (Ketu-ruled): Ancestral, royal, tradition, pride, leadership."},
-    {"tags": ["Purva Phalguni"], "weight": 2, "text": "Purva Phalguni nakshatra (Venus-ruled): Pleasure, romance, creativity, relaxation, art."},
-    {"tags": ["Uttara Phalguni"], "weight": 2, "text": "Uttara Phalguni nakshatra (Sun-ruled): Responsible, charitable, stable relationships, service."},
-    {"tags": ["Hasta"], "weight": 2, "text": "Hasta nakshatra (Moon-ruled): Skillful, clever, artistic, healing through hands, communication."},
-    {"tags": ["Chitra"], "weight": 2, "text": "Chitra nakshatra (Mars-ruled): Beautiful, architect, creative, sparkling, illusion."},
-    {"tags": ["Swati"], "weight": 2, "text": "Swati nakshatra (Rahu-ruled): Independent, adaptable, business-minded, freedom-loving."},
-    {"tags": ["Vishakha"], "weight": 2, "text": "Vishakha nakshatra (Jupiter-ruled): Focused, determined, dual-natured, ambitious, spiritual seeker."},
-    {"tags": ["Anuradha"], "weight": 2, "text": "Anuradha nakshatra (Saturn-ruled): Devotion, friendship, cooperation, spiritual discipline."},
-    {"tags": ["Jyeshtha"], "weight": 2, "text": "Jyeshtha nakshatra (Mercury-ruled): Senior, protective, occult power, emotional intensity."},
-    {"tags": ["Mula"], "weight": 2, "text": "Mula nakshatra (Ketu-ruled): Root-level transformation, destruction and renewal, research, healing."},
-    {"tags": ["Purva Ashadha"], "weight": 2, "text": "Purva Ashadha nakshatra (Venus-ruled): Invincible, ambitious, water-related, persuasive."},
-    {"tags": ["Uttara Ashadha"], "weight": 2, "text": "Uttara Ashadha nakshatra (Sun-ruled): Victorious, principled, leadership, perseverance."},
-    {"tags": ["Shravana"], "weight": 2, "text": "Shravana nakshatra (Moon-ruled): Listening, learning, teaching, wisdom, travel."},
-    {"tags": ["Dhanishta"], "weight": 2, "text": "Dhanishta nakshatra (Mars-ruled): Musical, wealthy, charitable, multifaceted talents."},
-    {"tags": ["Shatabhisha"], "weight": 2, "text": "Shatabhisha nakshatra (Rahu-ruled): Healing, secret knowledge, science, isolation, hundred physicians."},
-    {"tags": ["Purva Bhadrapada"], "weight": 2, "text": "Purva Bhadrapada nakshatra (Jupiter-ruled): Fiery, passionate, spiritual fire, transformation."},
-    {"tags": ["Uttara Bhadrapada"], "weight": 2, "text": "Uttara Bhadrapada nakshatra (Saturn-ruled): Wise, stable, charitable, deep spirituality, endurance."},
-    {"tags": ["Revati"], "weight": 2, "text": "Revati nakshatra (Mercury-ruled): Nurturing, compassionate, artistic, protection, travel."},
-
-    {"tags": ["Sun", "remedy"], "weight": 1, "text": "Remedies for weak Sun: Surya Namaskar on Sunday, donate wheat/jaggery, recite Aditya Hridayam, wear ruby if suitable."},
-    {"tags": ["Moon", "remedy"], "weight": 1, "text": "Remedies for weak Moon: Chant Chandra mantra, worship Shiva/Parvati, donate rice/milk on Monday, wear pearl if suitable."},
-    {"tags": ["Mars", "remedy"], "weight": 1, "text": "Remedies for afflicted Mars: Hanuman Chalisa on Tuesday, donate red lentils, avoid aggression, wear coral if suitable."},
-    {"tags": ["Mercury", "remedy"], "weight": 1, "text": "Remedies for weak Mercury: Vishnu Sahasranama on Wednesday, donate green vegetables, practice clear communication, wear emerald if suitable."},
-    {"tags": ["Jupiter", "remedy"], "weight": 1, "text": "Remedies for weak Jupiter: Guru mantra on Thursday, donate yellow cloth/gram, serve teachers, wear yellow sapphire if suitable."},
-    {"tags": ["Venus", "remedy"], "weight": 1, "text": "Remedies for weak Venus: Laxmi worship on Friday, donate white items, maintain cleanliness and beauty, wear diamond if suitable."},
-    {"tags": ["Saturn", "remedy"], "weight": 1, "text": "Remedies for afflicted Saturn: Shani mantra on Saturday, donate black sesame/iron/clothes, serve poor/elderly, wear blue sapphire only after proper advice."},
-    {"tags": ["Rahu", "remedy"], "weight": 1, "text": "Remedies for afflicted Rahu: Durga Chalisa on Saturday, donate blue/black items, avoid deception, wear hessonite if suitable."},
-    {"tags": ["Ketu", "remedy"], "weight": 1, "text": "Remedies for afflicted Ketu: Ganesh worship on Tuesday, donate blankets to saints, practice meditation, wear cat's eye only after proper advice."},
-
-    {"tags": ["Vimshottari", "Mahadasha"], "weight": 2, "text": "Vimshottari Mahadasha is calculated from Moon's nakshatra lord. Each planet rules a period: Ketu 7, Venus 20, Sun 6, Moon 10, Mars 7, Rahu 18, Jupiter 16, Saturn 19, Mercury 17 years. Interpretation depends on the dasha lord's house, sign, and aspects."},
-    {"tags": ["Sun", "Mahadasha"], "weight": 2, "text": "Sun Mahadasha brings focus on authority, career, father, recognition, and health. Good if Sun is strong; challenging if afflicted."},
-    {"tags": ["Moon", "Mahadasha"], "weight": 2, "text": "Moon Mahadasha emphasizes emotions, mother, public, mind, and comfort. Favorable if Moon is strong and waxing."},
-    {"tags": ["Mars", "Mahadasha"], "weight": 2, "text": "Mars Mahadasha brings energy, courage, property, siblings, and conflicts. Strong Mars gives success through effort; afflicted Mars creates accidents or disputes."},
-    {"tags": ["Rahu", "Mahadasha"], "weight": 2, "text": "Rahu Mahadasha can bring sudden rise or fall, foreign connections, materialism, and unconventional paths. Results depend heavily on placement."},
-    {"tags": ["Jupiter", "Mahadasha"], "weight": 2, "text": "Jupiter Mahadasha generally brings wisdom, children, wealth, spirituality, and guidance. Highly beneficial if Jupiter is strong."},
-    {"tags": ["Saturn", "Mahadasha"], "weight": 2, "text": "Saturn Mahadasha brings discipline, responsibility, delays, hard work, and karmic lessons. Eventually rewarding if Saturn is well-placed."},
-    {"tags": ["Mercury", "Mahadasha"], "weight": 2, "text": "Mercury Mahadasha emphasizes communication, business, intellect, learning, and trade. Good for education and commerce if Mercury is strong."},
-    {"tags": ["Ketu", "Mahadasha"], "weight": 2, "text": "Ketu Mahadasha brings detachment, spirituality, sudden events, and karmic completion. Can be difficult materially but enlightening spiritually."},
-    {"tags": ["Venus", "Mahadasha"], "weight": 2, "text": "Venus Mahadasha brings relationships, luxury, arts, vehicles, and pleasures. Highly favorable if Venus is strong; problematic if afflicted."}
+    {
+      "tags": [
+        "Aries",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Aries Ascendant (Mesha Lagna): Ruled by Mars. Natural pioneers, energetic, direct, courageous, and ambitious. Sun (5th lord) and Jupiter (9th lord) are key functional benefics forming supreme Raja Yogas. Mercury (3rd/6th lord) is functionally malefic."
+    },
+    {
+      "tags": [
+        "Taurus",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Taurus Ascendant (Vrishabha Lagna): Ruled by Venus. Grounded, practical, artistic, financially driven, and loyal. Saturn is the supreme Yogakaraka (ruling 9th and 10th houses), bestowing tremendous career rise and stability. Jupiter is functionally malefic (8th/11th lord)."
+    },
+    {
+      "tags": [
+        "Gemini",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Gemini Ascendant (Mithuna Lagna): Ruled by Mercury. Inquisitive, versatile, communicative, intellectual, and adaptable. Venus (5th/12th lord) is an auspicious functional benefic. Mars (6th/11th lord) acts as a powerful functional malefic requiring discipline."
+    },
+    {
+      "tags": [
+        "Cancer",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Cancer Ascendant (Karka Lagna): Ruled by Moon. Deeply intuitive, emotionally receptive, protective, and family-oriented. Mars is the supreme Yogakaraka (ruling 5th and 10th houses), giving leadership, property, and career triumph. Jupiter (9th lord) brings spiritual fortune."
+    },
+    {
+      "tags": [
+        "Leo",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Leo Ascendant (Simha Lagna): Ruled by Sun. Authoritative, dignified, generous, charismatic, and natural leader. Mars is the Yogakaraka (ruling 4th and 9th houses), bringing real estate, power, and fortune. Jupiter (5th/8th lord) blesses intellect and purvapunya."
+    },
+    {
+      "tags": [
+        "Virgo",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Virgo Ascendant (Kanya Lagna): Ruled by Mercury. Highly analytical, precise, detail-oriented, service-minded, and health-conscious. Venus (2nd and 9th lord) is the most auspicious planet, giving wealth and fortune. Mars (3rd/8th lord) is the primary malefic."
+    },
+    {
+      "tags": [
+        "Libra",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Libra Ascendant (Tula Lagna): Ruled by Venus. Diplomatic, balanced, refined, aesthetic, and relationship-centric. Saturn is the supreme Yogakaraka (ruling 4th and 5th houses), granting fixed assets, brilliant intellect, and long-term status."
+    },
+    {
+      "tags": [
+        "Scorpio",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Scorpio Ascendant (Vrishchika Lagna): Ruled by Mars. Intense, penetrating, secretive, transformative, and emotionally resilient. Jupiter (2nd/5th lord), Sun (10th lord), and Moon (9th lord) form powerful auspicious Raja and Dhana Yogas."
+    },
+    {
+      "tags": [
+        "Sagittarius",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Sagittarius Ascendant (Dhanu Lagna): Ruled by Jupiter. Philosophical, optimistic, truth-seeking, expansive, and righteous. Sun (9th lord) and Mars (5th/12th lord) act as premier functional benefics, driving spiritual growth and higher learning."
+    },
+    {
+      "tags": [
+        "Capricorn",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Capricorn Ascendant (Makara Lagna): Ruled by Saturn. Ambitious, methodical, disciplined, enduring, and pragmatic. Venus is the supreme Yogakaraka (ruling 5th and 10th houses), bestowing creative brilliance, professional honors, and luxury."
+    },
+    {
+      "tags": [
+        "Aquarius",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Aquarius Ascendant (Kumbha Lagna): Ruled by Saturn. Visionary, humanitarian, unconventional, scientific, and egalitarian. Venus is the supreme Yogakaraka (ruling 4th and 9th houses), blessing the native with education, fixed property, and immense good fortune."
+    },
+    {
+      "tags": [
+        "Pisces",
+        "Lagna",
+        "Ascendant"
+      ],
+      "weight": 3,
+      "text": "Pisces Ascendant (Meena Lagna): Ruled by Jupiter. Compassionate, imaginative, deeply spiritual, empathetic, and intuitive. Moon (5th lord) and Mars (2nd/9th lord) are highly auspicious, driving creative intuition, wealth, and spiritual wisdom."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Aries"
+      ],
+      "weight": 3,
+      "text": "Sun in Aries: Exalted (Uchcha). Gives supreme executive courage, radiant leadership, high vitality, government favors, and victorious willpower."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Taurus"
+      ],
+      "weight": 3,
+      "text": "Sun in Taurus: Fixed, artistic, financially pragmatic, patient, and persistent. Strong material values with stubborn determination."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Gemini"
+      ],
+      "weight": 3,
+      "text": "Sun in Gemini: Intellectual, witty, multi-talented, communicative, versatile, and curious. Excels in media, writing, sales, and analytics."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Cancer"
+      ],
+      "weight": 3,
+      "text": "Sun in Cancer: Protective, emotional, patriotic, nurturing, and family-oriented. Strong intuitive mind but prone to fluctuating confidence."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Leo"
+      ],
+      "weight": 3,
+      "text": "Sun in Leo: Own Sign (Swakshetra / Moolatrikona). Magnanimous, regal, confident, commanding, creative, and authoritative in career."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Virgo"
+      ],
+      "weight": 3,
+      "text": "Sun in Virgo: Analytical, methodical, service-oriented, precise, detail-focused, and health-conscious. Excels in technical and administrative roles."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Libra"
+      ],
+      "weight": 3,
+      "text": "Sun in Libra: Debilitated (Neecha). Seeks approval, struggles with self-assertion, partnership dependency, but gains diplomacy through perseverance."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Scorpio"
+      ],
+      "weight": 3,
+      "text": "Sun in Scorpio: Intense, secretive, research-oriented, transformative willpower, and investigative depth. Handles crises with fearless resolve."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Sagittarius"
+      ],
+      "weight": 3,
+      "text": "Sun in Sagittarius: Philosophical, righteous, optimistic, visionary, and moral leader. Favors law, higher education, mentorship, and dharma."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Capricorn"
+      ],
+      "weight": 3,
+      "text": "Sun in Capricorn: Hardworking, pragmatic, disciplined, ambitious, and enduring. Steady rise in large corporations or government institutions."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Aquarius"
+      ],
+      "weight": 3,
+      "text": "Sun in Aquarius: Humanitarian, scientific, independent, innovative, and socially progressive. Excels in technology, networking, and public causes."
+    },
+    {
+      "tags": [
+        "Sun",
+        "Pisces"
+      ],
+      "weight": 3,
+      "text": "Sun in Pisces: Intuitive, compassionate, spiritual, imaginative, and reflective. Favors healing arts, creative pursuits, and charitable endeavors."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Aries"
+      ],
+      "weight": 3,
+      "text": "Moon in Aries: Quick-thinking, spontaneous, energetic, pioneering, and passionate. Needs action and independence; can be emotionally impulsive."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Taurus"
+      ],
+      "weight": 3,
+      "text": "Moon in Taurus: Exalted (Uchcha / Moolatrikona). Emotionally serene, affectionate, prosperous, artistic, and stable. Strong sense of comfort and fidelity."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Gemini"
+      ],
+      "weight": 3,
+      "text": "Moon in Gemini: Sociable, mentally agile, communicative, witty, and adaptable. Thrives on diverse ideas, conversation, and intellectual variety."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Cancer"
+      ],
+      "weight": 3,
+      "text": "Moon in Cancer: Own Sign (Swakshetra). Deeply empathetic, nurturing, maternal, highly intuitive, and emotionally rich with strong ancestral ties."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Leo"
+      ],
+      "weight": 3,
+      "text": "Moon in Leo: Warm-hearted, proud, dramatic, generous, and loyal. Desires recognition, appreciation, and expresses emotions with creative flair."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Virgo"
+      ],
+      "weight": 3,
+      "text": "Moon in Virgo: Analytical, detail-conscious, practical, and service-oriented. Tends to overthink emotions; excels in organizing and problem-solving."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Libra"
+      ],
+      "weight": 3,
+      "text": "Moon in Libra: Diplomatic, charming, romantic, peace-loving, and partnership-focused. Seeks harmony and aesthetic balance in all relationships."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Scorpio"
+      ],
+      "weight": 3,
+      "text": "Moon in Scorpio: Debilitated (Neecha). Deeply passionate, secretive, intuitive, and emotionally intense. Faces psychological transformations to gain wisdom."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Sagittarius"
+      ],
+      "weight": 3,
+      "text": "Moon in Sagittarius: Optimistic, freedom-loving, philosophical, honest, and adventurous. Guided by moral principles and thirst for higher knowledge."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Capricorn"
+      ],
+      "weight": 3,
+      "text": "Moon in Capricorn: Reserved, disciplined, pragmatic, and responsible. Expresses emotional loyalty through practical support and endurance."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Aquarius"
+      ],
+      "weight": 3,
+      "text": "Moon in Aquarius: Humanitarian, unconventional, intellectual, and friendly. Values emotional freedom, progressive ideas, and universal brotherhood."
+    },
+    {
+      "tags": [
+        "Moon",
+        "Pisces"
+      ],
+      "weight": 3,
+      "text": "Moon in Pisces: Deeply empathetic, poetic, spiritual, psychic, and artistic. Compassionate soul connected to meditation and subtle realms."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Aries"
+      ],
+      "weight": 3,
+      "text": "Mars in Aries: Own Sign (Moolatrikona). Dynamic vitality, pioneering leadership, fearless initiative, athletic endurance, and assertive drive."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Taurus"
+      ],
+      "weight": 3,
+      "text": "Mars in Taurus: Enduring, persistent, stubborn energy, and possessive drive. Channelizes strength into financial building and tangible security."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Gemini"
+      ],
+      "weight": 3,
+      "text": "Mars in Gemini: Mentally agile, sharp debater, strategic planner, and multi-skilled. Excels in technical sales, law, and digital engineering."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Cancer"
+      ],
+      "weight": 3,
+      "text": "Mars in Cancer: Debilitated (Neecha). Emotional defensiveness, internal friction, domestic restlessness; requires conscious anger management."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Leo"
+      ],
+      "weight": 3,
+      "text": "Mars in Leo: Bold, charismatic, ambitious, commanding, and heroic. Excellent for military, executive administration, and theatrical arts."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Virgo"
+      ],
+      "weight": 3,
+      "text": "Mars in Virgo: Methodical, critical, precise, technical, and service-driven energy. Excels in surgery, data analysis, and engineering."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Libra"
+      ],
+      "weight": 3,
+      "text": "Mars in Libra: Diplomatic fighter, channelizes energy into partnerships and justice. Can experience indecision when choosing battles."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Scorpio"
+      ],
+      "weight": 3,
+      "text": "Mars in Scorpio: Own Sign (Swakshetra). Penetrating, strategic, intense, relentless, and secretive. Great investigative and surgical acumen."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Sagittarius"
+      ],
+      "weight": 3,
+      "text": "Mars in Sagittarius: Righteous warrior, philosophical crusader, energetic explorer, and enthusiastic athlete. Guided by dharmic zeal."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Capricorn"
+      ],
+      "weight": 3,
+      "text": "Mars in Capricorn: Exalted (Uchcha). Supreme strategic discipline, unshakeable stamina, executive command, and exceptional career triumphs."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Aquarius"
+      ],
+      "weight": 3,
+      "text": "Mars in Aquarius: Rebellious, scientific, humanitarian reformer, and inventive innovator. Fights for progressive collective causes."
+    },
+    {
+      "tags": [
+        "Mars",
+        "Pisces"
+      ],
+      "weight": 3,
+      "text": "Mars in Pisces: Diffused, artistic, spiritual crusader, and compassionate defender. Actions guided by intuitive and imaginative currents."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Aries"
+      ],
+      "weight": 3,
+      "text": "Mercury in Aries: Quick-witted, decisive, direct, sharp verbal reflexes, and inventive thinker. Good at initiating intellectual projects."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Taurus"
+      ],
+      "weight": 3,
+      "text": "Mercury in Taurus: Methodical, practical, prudent financial thinker, and articulate speaker. Good for accounting, business, and fine arts."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Gemini"
+      ],
+      "weight": 3,
+      "text": "Mercury in Gemini: Own Sign (Swakshetra). Versatile communicator, brilliant writer, multi-tasker, witty, and scientifically curious."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Cancer"
+      ],
+      "weight": 3,
+      "text": "Mercury in Cancer: Intuitive memory, emotional intelligence, imaginative reasoning, and empathetic communicator."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Leo"
+      ],
+      "weight": 3,
+      "text": "Mercury in Leo: Authoritative speaker, creative thinker, dramatic communicator, and confident leader in educational or media fields."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Virgo"
+      ],
+      "weight": 3,
+      "text": "Mercury in Virgo: Exalted (Uchcha / Moolatrikona). Supreme analytical intellect, detail mastery, statistical precision, and medical/scientific genius."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Libra"
+      ],
+      "weight": 3,
+      "text": "Mercury in Libra: Diplomatic, charming negotiator, fair-minded arbiter, and aesthetic writer. Excels in law, design, and commerce."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Scorpio"
+      ],
+      "weight": 3,
+      "text": "Mercury in Scorpio: Penetrating intellect, investigative researcher, psychological acumen, and secretive strategic planner."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Sagittarius"
+      ],
+      "weight": 3,
+      "text": "Mercury in Sagittarius: Philosophical, broad-minded, optimistic thinker, and moral teacher. Prefers grand vision over minutiae."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Capricorn"
+      ],
+      "weight": 3,
+      "text": "Mercury in Capricorn: Organized, systematic, realistic, strategic business acumen, and disciplined planner."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Aquarius"
+      ],
+      "weight": 3,
+      "text": "Mercury in Aquarius: Innovative, unconventional, visionary scientific mind, and progressive communicator."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "Pisces"
+      ],
+      "weight": 3,
+      "text": "Mercury in Pisces: Debilitated (Neecha). Poetic, highly intuitive, imaginative, but may overlook mundane details. Needs structured focus."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Aries"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Aries: Inspiring teacher, courageous leader, righteous initiative, and optimistic trailblazer in spiritual and educational spheres."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Taurus"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Taurus: Steady prosperity, generous wealth management, ethical materialist, and patron of classical arts and family values."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Gemini"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Gemini: Curious philosopher, diverse learner, intellectual mentor, and prolific writer across multiple disciplines."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Cancer"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Cancer: Exalted (Uchcha). Supreme spiritual grace, profound wisdom, immense benevolence, moral purity, and extraordinary prosperity."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Leo"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Leo: Dignified mentor, magnanimous leader, regal spiritual advisor, and creator of noble educational/social institutions."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Virgo"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Virgo: Practical philosopher, ethical healer, service-minded teacher, and meticulous student of sacred/scientific scriptures."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Libra"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Libra: Balanced counselor, righteous arbiter, diplomatic philosopher, and champion of fairness in relationships and law."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Scorpio"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Scorpio: Deep occult wisdom, transformative spiritual teacher, esoteric researcher, and master of life-death mysteries."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Sagittarius"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Sagittarius: Own Sign (Moolatrikona). Dharmic preceptor, supreme philosophical thinker, spiritual guide, and fortunate mentor."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Capricorn"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Capricorn: Debilitated (Neecha). Practical spirituality learned through discipline and perseverance. Gains wisdom after tests."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Aquarius"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Aquarius: Humanitarian guru, progressive spiritual thinker, universal philosopher, and social reformer."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "Pisces"
+      ],
+      "weight": 3,
+      "text": "Jupiter in Pisces: Own Sign (Swakshetra). Mystical sage, boundless compassion, oceanic meditation, intuitive grace, and divine wisdom."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Aries"
+      ],
+      "weight": 3,
+      "text": "Venus in Aries: Spontaneous, passionate, artistic trailblazer, and dynamic in romantic courtship. Seeks excitement in love."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Taurus"
+      ],
+      "weight": 3,
+      "text": "Venus in Taurus: Own Sign (Swakshetra). Sensual, luxurious, devoted partner, wealthy, artistic connoisseur, and enduring in affection."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Gemini"
+      ],
+      "weight": 3,
+      "text": "Venus in Gemini: Playful, charming, intellectually stimulating partner, witty flirt, and versatile in literature, fashion, and social arts."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Cancer"
+      ],
+      "weight": 3,
+      "text": "Venus in Cancer: Deeply romantic, nurturing lover, emotionally devoted, home-loving, and attached to family happiness."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Leo"
+      ],
+      "weight": 3,
+      "text": "Venus in Leo: Magnificent, dramatic romance, generous partner, lover of high luxury, royalty, and grand creative expressions."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Virgo"
+      ],
+      "weight": 3,
+      "text": "Venus in Virgo: Debilitated (Neecha). Analytical in love, service-oriented devotion, modest; learns that unconditional love transcends perfection."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Libra"
+      ],
+      "weight": 3,
+      "text": "Venus in Libra: Own Sign (Moolatrikona). Supreme relationship harmony, refined aesthetic taste, graceful partner, and artistic elegance."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Scorpio"
+      ],
+      "weight": 3,
+      "text": "Venus in Scorpio: Passionate, transformative intimacy, deeply loyal, magnetic allure, and profound emotional bonding."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Sagittarius"
+      ],
+      "weight": 3,
+      "text": "Venus in Sagittarius: Adventurous, freedom-loving, honest partner, philosophical romantic, and lover of cultural explorations."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Capricorn"
+      ],
+      "weight": 3,
+      "text": "Venus in Capricorn: Committed, pragmatic, faithful partner, values social status, and builds lasting long-term wealth together."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Aquarius"
+      ],
+      "weight": 3,
+      "text": "Venus in Aquarius: Unconventional, progressive romance, values intellectual friendship, and supports humanitarian beauty."
+    },
+    {
+      "tags": [
+        "Venus",
+        "Pisces"
+      ],
+      "weight": 3,
+      "text": "Venus in Pisces: Exalted (Uchcha). Supreme unconditional love, spiritual romance, poetic genius, boundless empathy, and divine artistic grace."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Aries"
+      ],
+      "weight": 3,
+      "text": "Saturn in Aries: Debilitated (Neecha). Impatience tested by delays; builds unshakeable resilience and humility through dedicated effort."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Taurus"
+      ],
+      "weight": 3,
+      "text": "Saturn in Taurus: Prudent, enduring builder of financial wealth, patient investor, and disciplined keeper of material resources."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Gemini"
+      ],
+      "weight": 3,
+      "text": "Saturn in Gemini: Disciplined intellect, serious communicator, structured researcher, and methodical technical writer."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Cancer"
+      ],
+      "weight": 3,
+      "text": "Saturn in Cancer: Emotional maturity developed through domestic challenges; deeply responsible caretaker with strong protective endurance."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Leo"
+      ],
+      "weight": 3,
+      "text": "Saturn in Leo: Humbles the ego to forge authentic leadership; disciplined administrator commanding respect through merit."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Virgo"
+      ],
+      "weight": 3,
+      "text": "Saturn in Virgo: Meticulous worker, supreme operational organizer, flawless precision in medicine, accounting, and public service."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Libra"
+      ],
+      "weight": 3,
+      "text": "Saturn in Libra: Exalted (Uchcha). Supreme justice, fair-minded statesman, diplomatic endurance, lasting marriage, and moral authority."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Scorpio"
+      ],
+      "weight": 3,
+      "text": "Saturn in Scorpio: Master of psychological crises, deep resilience, transformative endurance, and unyielding investigative focus."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Sagittarius"
+      ],
+      "weight": 3,
+      "text": "Saturn in Sagittarius: Disciplined seeker of truth, structured philosophy, ethical judge, and dedicated scholar of ancient wisdom."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Capricorn"
+      ],
+      "weight": 3,
+      "text": "Saturn in Capricorn: Own Sign (Swakshetra). Supreme corporate strategist, institutional architect, enduring ambition, and stellar long-term status."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Aquarius"
+      ],
+      "weight": 3,
+      "text": "Saturn in Aquarius: Own Sign (Moolatrikona). Humanitarian organizer, visionary social architect, mass leader, and scientific reformer."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "Pisces"
+      ],
+      "weight": 3,
+      "text": "Saturn in Pisces: Spiritual ascetic, quiet meditator, detached compassion, and enduring worker in charitable or solitary institutions."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Aries"
+      ],
+      "weight": 3,
+      "text": "Rahu in Aries: Obsessive drive for leadership, fearless boldness, independent trailblazer, and unyielding hunger for personal glory."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Taurus"
+      ],
+      "weight": 3,
+      "text": "Rahu in Taurus: Exalted. Intense ambition for wealth, material abundance, luxury assets, and financial dominance."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Gemini"
+      ],
+      "weight": 3,
+      "text": "Rahu in Gemini: Exalted. Genius in modern technology, viral communication, media mastery, and cunning intellectual strategy."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Cancer"
+      ],
+      "weight": 3,
+      "text": "Rahu in Cancer: Deep emotional cravings, unconventional domestic life, psychological complexity, and public mass appeal."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Leo"
+      ],
+      "weight": 3,
+      "text": "Rahu in Leo: Fierce hunger for fame, power, royal status, theatrical impact, and charismatic social prominence."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Virgo"
+      ],
+      "weight": 3,
+      "text": "Rahu in Virgo: Technical cunning, mastery of modern analytical systems, health bio-hacking, and relentless problem-solving."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Libra"
+      ],
+      "weight": 3,
+      "text": "Rahu in Libra: Ambition in social alliances, charismatic networking, unconventional relationships, and public glamour."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Scorpio"
+      ],
+      "weight": 3,
+      "text": "Rahu in Scorpio: Deep occult fascination, psychological power, mastery of hidden systems, and transformative rebirth."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Sagittarius"
+      ],
+      "weight": 3,
+      "text": "Rahu in Sagittarius: Unconventional belief systems, global cross-cultural seeker, and iconoclastic philosophical explorer."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Capricorn"
+      ],
+      "weight": 3,
+      "text": "Rahu in Capricorn: Unstoppable executive ambition, modern institutional disruptor, and relentless ascent up social hierarchies."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Aquarius"
+      ],
+      "weight": 3,
+      "text": "Rahu in Aquarius: Technological innovator, artificial intelligence pioneer, mass networker, and futuristic visionary."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "Pisces"
+      ],
+      "weight": 3,
+      "text": "Rahu in Pisces: Mystical imagination, foreign journey allure, virtual world pioneer, and unconventional spiritual seeker."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Aries"
+      ],
+      "weight": 3,
+      "text": "Ketu in Aries: Spiritual detachment from ego, past-life warrior instincts, introverted courage, and instinctual psychic reflexes."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Taurus"
+      ],
+      "weight": 3,
+      "text": "Ketu in Taurus: Detachment from material hoarding, intuitive discernment of true value, and ascetic financial simplicity."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Gemini"
+      ],
+      "weight": 3,
+      "text": "Ketu in Gemini: Past-life intellectual mastery, telepathic intuition, concise speech, and transcendence of intellectual debate."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Cancer"
+      ],
+      "weight": 3,
+      "text": "Ketu in Cancer: Exalted. Profound psychic sensitivity, spiritual devotion, detachment from domestic clinginess, and emotional transcendence."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Leo"
+      ],
+      "weight": 3,
+      "text": "Ketu in Leo: Ego transcendence, quiet nobility, spiritual leadership without vanity, and natural humility."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Virgo"
+      ],
+      "weight": 3,
+      "text": "Ketu in Virgo: Intuitive healing gifts, past-life medical instinct, and detachment from mundane anxiety."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Libra"
+      ],
+      "weight": 3,
+      "text": "Ketu in Libra: Karmic relationship detachment, spiritual perception of partner, and pursuit of soul-level liberation."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Scorpio"
+      ],
+      "weight": 3,
+      "text": "Ketu in Scorpio: Exalted. Supreme occult mastery, Kundalini awakening, psychic research genius, and absolute spiritual transformation."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Sagittarius"
+      ],
+      "weight": 3,
+      "text": "Ketu in Sagittarius: Natural enlightenment, innate comprehension of Vedas and Upanishads, and direct spiritual realization."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Capricorn"
+      ],
+      "weight": 3,
+      "text": "Ketu in Capricorn: Detachment from worldly titles, past-life administrative skill, and quiet execution of karmic duty."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Aquarius"
+      ],
+      "weight": 3,
+      "text": "Ketu in Aquarius: Detachment from social validation, subtle cosmic insights, and intuitive connection to collective liberation."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "Pisces"
+      ],
+      "weight": 3,
+      "text": "Ketu in Pisces: Own Sign (Moksha Karaka). Supreme spiritual liberation, divine samadhi, detachment from illusions, and boundless transcendence."
+    },
+    {
+      "tags": [
+        "Sun",
+        "1th house",
+        "1st house"
+      ],
+      "weight": 3,
+      "text": "Sun in 1th House: 1st House (Lagna): Bestows radiant vitality, commanding presence, high self-esteem, natural leadership, and noble stature."
+    },
+    {
+      "tags": [
+        "Sun",
+        "2th house",
+        "2nd house"
+      ],
+      "weight": 3,
+      "text": "Sun in 2th House: 2nd House: Strong focus on family wealth, authoritative speech, financial ambition; need to balance sharp speech with diplomacy."
+    },
+    {
+      "tags": [
+        "Sun",
+        "3th house",
+        "3rd house"
+      ],
+      "weight": 3,
+      "text": "Sun in 3th House: 3rd House: High physical courage, entrepreneurial initiative, strong determination, leadership over siblings and teams."
+    },
+    {
+      "tags": [
+        "Sun",
+        "4th house",
+        "4th house"
+      ],
+      "weight": 3,
+      "text": "Sun in 4th House: 4th House (Digbala 0): Deep connection to homeland and lineage, strong domestic presence; potential domestic friction due to fiery nature."
+    },
+    {
+      "tags": [
+        "Sun",
+        "5th house",
+        "5th house"
+      ],
+      "weight": 3,
+      "text": "Sun in 5th House: 5th House: Brilliant creative intelligence, regal purvapunya, interest in political science, high scholarship, and proud children."
+    },
+    {
+      "tags": [
+        "Sun",
+        "6th house",
+        "6th house"
+      ],
+      "weight": 3,
+      "text": "Sun in 6th House: 6th House: Crushes enemies and competitive rivals, robust immune resistance, triumph in legal battles, and supreme service ability."
+    },
+    {
+      "tags": [
+        "Sun",
+        "7th house",
+        "7th house"
+      ],
+      "weight": 3,
+      "text": "Sun in 7th House: 7th House: Dominant or ambitious spouse, high public visibility, government/trade alliances; requires mutual respect in marriage."
+    },
+    {
+      "tags": [
+        "Sun",
+        "8th house",
+        "8th house"
+      ],
+      "weight": 3,
+      "text": "Sun in 8th House: 8th House: Deep interest in occult research, government inheritances, transformative crises; vitality requires mindful rejuvenation."
+    },
+    {
+      "tags": [
+        "Sun",
+        "9th house",
+        "9th house"
+      ],
+      "weight": 3,
+      "text": "Sun in 9th House: 9th House: Righteous character, fortunate connection with father/mentors, philosophical leadership, and patron of spiritual institutions."
+    },
+    {
+      "tags": [
+        "Sun",
+        "10th house",
+        "10th house"
+      ],
+      "weight": 3,
+      "text": "Sun in 10th House: 10th House (Peak Digbala): Supreme career apex, highest executive honors, political authority, immense fame, and government patron."
+    },
+    {
+      "tags": [
+        "Sun",
+        "11th house",
+        "11th house"
+      ],
+      "weight": 3,
+      "text": "Sun in 11th House: 11th House: Vast financial gains, influential connections with elite leaders, fulfillment of grand ambitions, and social influence."
+    },
+    {
+      "tags": [
+        "Sun",
+        "12th house",
+        "12th house"
+      ],
+      "weight": 3,
+      "text": "Sun in 12th House: 12th House: Success in foreign lands, spiritual isolation, charitable expenditure, and detachment from worldly validation."
+    },
+    {
+      "tags": [
+        "Moon",
+        "1th house",
+        "1st house"
+      ],
+      "weight": 3,
+      "text": "Moon in 1th House: 1st House: Sensitive, attractive appearance, socially receptive, intuitive personality, and deeply influenced by environment."
+    },
+    {
+      "tags": [
+        "Moon",
+        "2th house",
+        "2nd house"
+      ],
+      "weight": 3,
+      "text": "Moon in 2th House: 2nd House: Sweet persuasive speech, prosperity through public trade, strong family attachment, and love for fine food."
+    },
+    {
+      "tags": [
+        "Moon",
+        "3th house",
+        "3rd house"
+      ],
+      "weight": 3,
+      "text": "Moon in 3th House: 3rd House: Creative communicator, literary talent, close ties with sisters/brothers, and fondness for frequent travel."
+    },
+    {
+      "tags": [
+        "Moon",
+        "4th house",
+        "4th house"
+      ],
+      "weight": 3,
+      "text": "Moon in 4th House: 4th House (Peak Digbala): Deep domestic happiness, maternal blessings, luxurious vehicles, real estate prosperity, and emotional peace."
+    },
+    {
+      "tags": [
+        "Moon",
+        "5th house",
+        "5th house"
+      ],
+      "weight": 3,
+      "text": "Moon in 5th House: 5th House: Highly creative imagination, speculative intelligence, joyful connection with children, and romantic emotional nature."
+    },
+    {
+      "tags": [
+        "Moon",
+        "6th house",
+        "6th house"
+      ],
+      "weight": 3,
+      "text": "Moon in 6th House: 6th House: Emotionally dedicated to service and caregiving; digestive sensitivity under stress; triumphs through compassionate service."
+    },
+    {
+      "tags": [
+        "Moon",
+        "7th house",
+        "7th house"
+      ],
+      "weight": 3,
+      "text": "Moon in 7th House: 7th House: Attractive, emotionally sensitive spouse, success in public partnerships, and flourishing trade."
+    },
+    {
+      "tags": [
+        "Moon",
+        "8th house",
+        "8th house"
+      ],
+      "weight": 3,
+      "text": "Moon in 8th House: 8th House: Deep psychic sensitivity, interest in occult, fluctuating emotions; gains wisdom through introspective meditation."
+    },
+    {
+      "tags": [
+        "Moon",
+        "9th house",
+        "9th house"
+      ],
+      "weight": 3,
+      "text": "Moon in 9th House: 9th House: Dharmic mind, prosperous pilgrimages, philosophical optimism, and blessed relationship with mother and mentors."
+    },
+    {
+      "tags": [
+        "Moon",
+        "10th house",
+        "10th house"
+      ],
+      "weight": 3,
+      "text": "Moon in 10th House: 10th House: High public popularity, flourishing career in public administration/arts/caregiving, and favorable social standing."
+    },
+    {
+      "tags": [
+        "Moon",
+        "11th house",
+        "11th house"
+      ],
+      "weight": 3,
+      "text": "Moon in 11th House: 11th House: Abundant income, diverse female friends, high social popularity, and fulfillment of heartfelt desires."
+    },
+    {
+      "tags": [
+        "Moon",
+        "12th house",
+        "12th house"
+      ],
+      "weight": 3,
+      "text": "Moon in 12th House: 12th House: Vivid dream life, peaceful solitude, talent for foreign trade/residence, meditation, and spiritual empathy."
+    },
+    {
+      "tags": [
+        "Mars",
+        "1th house",
+        "1st house"
+      ],
+      "weight": 3,
+      "text": "Mars in 1th House: 1st House (Kuja Dosha): Fearless, energetic, athletic, pioneering spirit; can be impatient or prone to head injuries/fevers."
+    },
+    {
+      "tags": [
+        "Mars",
+        "2th house",
+        "2nd house"
+      ],
+      "weight": 3,
+      "text": "Mars in 2th House: 2nd House (Kuja Dosha): Direct and forceful speech, bold financial earner, fiercely protective of family resources."
+    },
+    {
+      "tags": [
+        "Mars",
+        "3th house",
+        "3rd house"
+      ],
+      "weight": 3,
+      "text": "Mars in 3th House: 3rd House: Heroic courage, extraordinary willpower, athletic prowess, technical skills, and victory in bold ventures."
+    },
+    {
+      "tags": [
+        "Mars",
+        "4th house",
+        "4th house"
+      ],
+      "weight": 3,
+      "text": "Mars in 4th House: 4th House (Kuja Dosha): Strong property/real estate acquisition; domestic atmosphere requires calm and patience."
+    },
+    {
+      "tags": [
+        "Mars",
+        "5th house",
+        "5th house"
+      ],
+      "weight": 3,
+      "text": "Mars in 5th House: 5th House: Dynamic intellect, sharp technical/mathematical skill, competitive sportsman, and passionate romantic nature."
+    },
+    {
+      "tags": [
+        "Mars",
+        "6th house",
+        "6th house"
+      ],
+      "weight": 3,
+      "text": "Mars in 6th House: 6th House: Formidable vanquisher of enemies, diseases, and debts; supreme stamina in competitive environments and litigation."
+    },
+    {
+      "tags": [
+        "Mars",
+        "7th house",
+        "7th house"
+      ],
+      "weight": 3,
+      "text": "Mars in 7th House: 7th House (Kuja Dosha): Dynamic, passionate partner; success in bold business partnerships; requires conscious emotional balance."
+    },
+    {
+      "tags": [
+        "Mars",
+        "8th house",
+        "8th house"
+      ],
+      "weight": 3,
+      "text": "Mars in 8th House: 8th House (Kuja Dosha): Passionate nature, hidden financial gains, transformative energy; benefit from calm meditative practices."
+    },
+    {
+      "tags": [
+        "Mars",
+        "9th house",
+        "9th house"
+      ],
+      "weight": 3,
+      "text": "Mars in 9th House: 9th House: Passionate crusader for righteous causes, bold world explorer, independent relationship with mentors."
+    },
+    {
+      "tags": [
+        "Mars",
+        "10th house",
+        "10th house"
+      ],
+      "weight": 3,
+      "text": "Mars in 10th House: 10th House (Peak Digbala / Kula Dipaka): Supreme professional executive, military/police/engineering leader, and unyielding achiever."
+    },
+    {
+      "tags": [
+        "Mars",
+        "11th house",
+        "11th house"
+      ],
+      "weight": 3,
+      "text": "Mars in 11th House: 11th House: Immense financial gains through enterprise, influential bold comrades, and rapid accomplishment of ambitions."
+    },
+    {
+      "tags": [
+        "Mars",
+        "12th house",
+        "12th house"
+      ],
+      "weight": 3,
+      "text": "Mars in 12th House: 12th House (Kuja Dosha): High stamina in foreign ventures, energetic charitable actions; requires disciplined expenditure."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "1th house",
+        "1st house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 1th House: 1st House (Peak Digbala): Highly intelligent, youthful demeanor, articulate speaker, versatile humor, and swift analytical reasoning."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "2th house",
+        "2nd house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 2th House: 2nd House: Master of eloquence, financial mathematician, witty speech, wealth through commerce, consulting, and writing."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "3th house",
+        "3rd house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 3th House: 3rd House: Prolific writer, digital communicator, media wizard, strong ties with siblings, and skilled in technical arts."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "4th house",
+        "4th house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 4th House: 4th House: Excellent formal education, intellectual home atmosphere, library of books, and harmonious vehicle comforts."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "5th house",
+        "5th house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 5th House: 5th House: Prodigious intellect, master of logic, astrology, coding, creative literature, and joyful mentorship of youth."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "6th house",
+        "6th house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 6th House: 6th House: Supreme analytical troubleshooter, legal and accounting expert, detail-oriented healer, and technical optimizer."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "7th house",
+        "7th house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 7th House: 7th House: Intelligent, communicative, youthful spouse; success in commercial trade, negotiation, and joint ventures."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "8th house",
+        "8th house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 8th House: 8th House: Deep research intellect, esoteric analyst, psychological discernment, and gains through joint corporate funds."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "9th house",
+        "9th house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 9th House: 9th House: Scholarly philosopher, author of higher knowledge, publisher, teacher of sacred texts, and righteous communicator."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "10th house",
+        "10th house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 10th House: 10th House: Celebrated business professional, media executive, government secretary, accountant, and strategic consultant."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "11th house",
+        "11th house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 11th House: 11th House: Multiple streams of intellectual income, broad network of scholarly friends, and successful commercial ventures."
+    },
+    {
+      "tags": [
+        "Mercury",
+        "12th house",
+        "12th house"
+      ],
+      "weight": 3,
+      "text": "Mercury in 12th House: 12th House: International business communication, meditative contemplation, research in secluded institutes, and linguistic skill."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "1th house",
+        "1st house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 1th House: 1st House (Peak Digbala / Gaja): Divine protection, radiant wisdom, moral integrity, noble dignity, and immense societal respect."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "2th house",
+        "2nd house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 2th House: 2nd House: Golden speech, abundant financial reserves, cultured lineage, patron of spiritual knowledge, and truthfulness."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "3th house",
+        "3rd house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 3th House: 3rd House: Philosophical writer, encouraging mentor to siblings, courageous promoter of righteous literature and dharma."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "4th house",
+        "4th house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 4th House: 4th House: Vast emotional happiness, maternal blessing, palatial home, spiritual sanctuary, and scholarly education."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "5th house",
+        "5th house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 5th House: 5th House: Supreme purvapunya, brilliant creative intelligence, blessed children, spiritual mantra siddhi, and wise advisory."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "6th house",
+        "6th house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 6th House: 6th House: Healer of conflicts, righteous vanquisher of obstacles, benevolent service, and protection from chronic ailments."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "7th house",
+        "7th house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 7th House: 7th House: Virtuous, noble, and wise spouse; harmonious marital blessing; prestigious international business alliances."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "8th house",
+        "8th house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 8th House: 8th House: Deep mystical understanding, longevity, unearned inheritances, transformative spiritual grace, and occult depth."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "9th house",
+        "9th house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 9th House: 9th House: Supreme Bhagya (Fortune), world spiritual teacher, profound dharma, immense pilgrim blessings, and righteous father."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "10th house",
+        "10th house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 10th House: 10th House: Highly revered public dignitary, judge, ethical minister, corporate chancellor, and celebrated mentor."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "11th house",
+        "11th house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 11th House: 11th House: Limitless auspicious gains, support from great Gurus and leaders, righteous fulfillment of life ambitions."
+    },
+    {
+      "tags": [
+        "Jupiter",
+        "12th house",
+        "12th house"
+      ],
+      "weight": 3,
+      "text": "Jupiter in 12th House: 12th House: Moksha seeker, deep meditative samadhi, philanthropic charity, spiritual voyages, and divine grace in seclusion."
+    },
+    {
+      "tags": [
+        "Venus",
+        "1th house",
+        "1st house"
+      ],
+      "weight": 3,
+      "text": "Venus in 1th House: 1st House: Extremely charismatic, graceful beauty, magnetic allure, artistic elegance, romantic nature, and social popularity."
+    },
+    {
+      "tags": [
+        "Venus",
+        "2th house",
+        "2nd house"
+      ],
+      "weight": 3,
+      "text": "Venus in 2th House: 2nd House: Melodious voice, exquisite culinary taste, opulent jewelry/wealth, poetic speech, and luxurious family lifestyle."
+    },
+    {
+      "tags": [
+        "Venus",
+        "3th house",
+        "3rd house"
+      ],
+      "weight": 3,
+      "text": "Venus in 3th House: 3rd House: Artistic talent in music/theatre/design, harmonious social relations, charming communication, and creative travels."
+    },
+    {
+      "tags": [
+        "Venus",
+        "4th house",
+        "4th house"
+      ],
+      "weight": 3,
+      "text": "Venus in 4th House: 4th House (Peak Digbala): Luxurious residence, elite vehicles, artistic domestic interior, devoted maternal love, and deep peace."
+    },
+    {
+      "tags": [
+        "Venus",
+        "5th house",
+        "5th house"
+      ],
+      "weight": 3,
+      "text": "Venus in 5th House: 5th House: Romantic genius, artistic and theatrical creativity, joyful children, master of fine arts, and playful charm."
+    },
+    {
+      "tags": [
+        "Venus",
+        "6th house",
+        "6th house"
+      ],
+      "weight": 3,
+      "text": "Venus in 6th House: 6th House: Diplomatic problem solver, service in luxury/hospitality industries; learns to protect health against indulgence."
+    },
+    {
+      "tags": [
+        "Venus",
+        "7th house",
+        "7th house"
+      ],
+      "weight": 3,
+      "text": "Venus in 7th House: 7th House: Beautiful, loving, cultured spouse; blissful marriage; high commercial prosperity in luxury, art, and public trade."
+    },
+    {
+      "tags": [
+        "Venus",
+        "8th house",
+        "8th house"
+      ],
+      "weight": 3,
+      "text": "Venus in 8th House: 8th House: Secret romantic magnetism, financial inheritances, gains through marriage partner, and esoteric rejuvenation."
+    },
+    {
+      "tags": [
+        "Venus",
+        "9th house",
+        "9th house"
+      ],
+      "weight": 3,
+      "text": "Venus in 9th House: 9th House: Fortune through arts and culture, spiritual appreciation of beauty, romantic voyages, and blessed mentors."
+    },
+    {
+      "tags": [
+        "Venus",
+        "10th house",
+        "10th house"
+      ],
+      "weight": 3,
+      "text": "Venus in 10th House: 10th House: Celebrated career in arts, media, fashion, entertainment, diplomacy, luxury goods, and public relations."
+    },
+    {
+      "tags": [
+        "Venus",
+        "11th house",
+        "11th house"
+      ],
+      "weight": 3,
+      "text": "Venus in 11th House: 11th House: Great financial luxury, rich artistic network, fulfillment of romantic and material desires, and widespread favor."
+    },
+    {
+      "tags": [
+        "Venus",
+        "12th house",
+        "12th house"
+      ],
+      "weight": 3,
+      "text": "Venus in 12th House: 12th House (Exaltation Joy): Highest bed comforts, exotic foreign travels, spiritual appreciation of love, and lavish hospitality."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "1th house",
+        "1st house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 1th House: 1st House: Serious, mature demeanor, profound endurance, disciplined life approach, and hard-earned monumental success."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "2th house",
+        "2nd house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 2th House: 2nd House: Prudent financial accumulation, frugal speech, disciplined family responsibility, and wealth through perseverance."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "3th house",
+        "3rd house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 3th House: 3rd House: Formidable grit, unyielding perseverance, technical handcraft mastery, and victory over severe competition."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "4th house",
+        "4th house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 4th House: 4th House: Deep emotional stoicism, ancient property management, austere domestic lifestyle, and care for traditional roots."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "5th house",
+        "5th house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 5th House: 5th House: Methodical intelligence, serious scholarship, structured creative projects, and lessons in patience with children."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "6th house",
+        "6th house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 6th House: 6th House: Insuperable resistance to enemies, tireless service capacity, legal endurance, and triumph over heavy debts."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "7th house",
+        "7th house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 7th House: 7th House (Peak Digbala): Mature, loyal, enduring partner; structured long-term business partnerships; commanding public authority."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "8th house",
+        "8th house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 8th House: 8th House: Remarkable longevity, deep endurance through crises, mastery of difficult secrets, and disciplined research."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "9th house",
+        "9th house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 9th House: 9th House: Solemn devotion to duty, structured higher philosophy, conservative ethics, and respect for ancient traditions."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "10th house",
+        "10th house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 10th House: 10th House: Monumental rise to organizational authority, leader of labor/masses, tireless work ethic, and unshakeable legacy."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "11th house",
+        "11th house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 11th House: 11th House: Lasting wealth accumulated through steady industry, loyal elder friends, and solid lifetime accomplishments."
+    },
+    {
+      "tags": [
+        "Saturn",
+        "12th house",
+        "12th house"
+      ],
+      "weight": 3,
+      "text": "Saturn in 12th House: 12th House: Solitary spiritual discipline, ascetic meditation, service in remote institutions, and detachment from vanity."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "1th house",
+        "1st house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 1th House: 1st House: Magnetic persona, unconventional charisma, intense hunger for self-identity, and revolutionary presence."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "2th house",
+        "2nd house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 2th House: 2nd House: Unconventional wealth streams, intense financial ambition, innovative speech, and diverse culinary tastes."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "3th house",
+        "3rd house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 3th House: 3rd House: Fearless modern communicator, digital media pioneer, bold risk-taker, and unconventional marketing master."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "4th house",
+        "4th house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 4th House: 4th House: Foreign or modern architecture home, unconventional domestic journey, and hunger for expansive land/vehicles."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "5th house",
+        "5th house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 5th House: 5th House: Unconventional speculative genius, modern artistic expression, sharp technical intellect, and unique romance."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "6th house",
+        "6th house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 6th House: 6th House: Supreme destroyer of rivals, immune mastery, triumphs in unconventional litigation, and healthcare innovation."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "7th house",
+        "7th house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 7th House: 7th House: Unconventional, foreign, or highly ambitious partner; dynamic modern partnerships with global reach."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "8th house",
+        "8th house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 8th House: 8th House: Deep occult mastery, interest in sudden transformations, research into unmapped mysteries and technologies."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "9th house",
+        "9th house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 9th House: 9th House: Non-dogmatic global philosophy, international spiritual explorations, and cross-cultural pilgrimage."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "10th house",
+        "10th house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 10th House: 10th House: Meteoric career ascent, global fame, master of modern technology and mass media, and political disruption."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "11th house",
+        "11th house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 11th House: 11th House: Huge speculative and commercial windfalls, elite global networks, and rapid manifestation of aspirations."
+    },
+    {
+      "tags": [
+        "Rahu",
+        "12th house",
+        "12th house"
+      ],
+      "weight": 3,
+      "text": "Rahu in 12th House: 12th House: Long-term foreign settlement, mystical dream states, international commerce, and unconventional philanthropy."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "1th house",
+        "1st house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 1th House: 1st House: Introverted mystic, psychic perception, spiritual humility, detachment from ego, and intuitive insight."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "2th house",
+        "2nd house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 2th House: 2nd House: Detached speech, spiritual truth-telling, simple culinary habits, and intuitive discernment of financial reality."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "3th house",
+        "3rd house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 3th House: 3rd House: Instinctive bravery, concise telepathic communication, past-life technical skills, and spiritual self-reliance."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "4th house",
+        "4th house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 4th House: 4th House: Inner spiritual sanctuary, detachment from material real estate, maternal spiritual lineage, and deep meditation."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "5th house",
+        "5th house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 5th House: 5th House: Past-life mantra mastery, intuitive intellect, detachment from speculative drama, and spiritual discipleship."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "6th house",
+        "6th house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 6th House: 6th House: Spiritual immunity, natural healing instincts, effortless transcendence of mundane conflicts and rivalries."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "7th house",
+        "7th house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 7th House: 7th House: Spiritual, introverted partner; karmic relationship lessons encouraging soul-level connection beyond materialism."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "8th house",
+        "8th house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 8th House: 8th House: Supreme Kundalini and esoteric intuition, effortless comprehension of death and rebirth, and mystical rebirth."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "9th house",
+        "9th house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 9th House: 9th House: Innate comprehension of Vedic philosophy, detachment from rigid dogma, and direct communion with the divine."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "10th house",
+        "10th house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 10th House: 10th House: Quiet professional execution, spiritual leadership, lack of petty ambition, and success in specialized niches."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "11th house",
+        "11th house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 11th House: 11th House: Detachment from material hoarding, spiritual friendships, and effortless fulfillment of genuine dharmic needs."
+    },
+    {
+      "tags": [
+        "Ketu",
+        "12th house",
+        "12th house"
+      ],
+      "weight": 3,
+      "text": "Ketu in 12th House: 12th House (Moksha Sthana): Direct portal to spiritual liberation, deep samadhi in meditation, and final karmic completion."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 1th House: In own house (Swakshetra). Powerful amplification of 1th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 3th House: Connects the significations of the 1th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "1th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "1th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 2th House: In own house (Swakshetra). Powerful amplification of 2th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 3th House: Connects the significations of the 2th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "2th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "2th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 3th House: In own house (Swakshetra). Powerful amplification of 3th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "3th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "3th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 3th House: Connects the significations of the 4th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 4th House: In own house (Swakshetra). Powerful amplification of 4th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "4th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "4th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 3th House: Connects the significations of the 5th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 5th House: In own house (Swakshetra). Powerful amplification of 5th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "5th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "5th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 3th House: Connects the significations of the 6th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 6th House: In own house (Swakshetra). Powerful amplification of 6th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "6th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "6th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 3th House: Connects the significations of the 7th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 7th House: In own house (Swakshetra). Powerful amplification of 7th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "7th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "7th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 3th House: Connects the significations of the 8th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 8th House: In own house (Swakshetra). Powerful amplification of 8th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "8th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "8th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 3th House: Connects the significations of the 9th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 9th House: In own house (Swakshetra). Powerful amplification of 9th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "9th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "9th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 3th House: Connects the significations of the 10th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 10th House: In own house (Swakshetra). Powerful amplification of 10th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "10th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "10th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 3th House: Connects the significations of the 11th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 11th House: In own house (Swakshetra). Powerful amplification of 11th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "11th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "11th Lord in 12th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "1th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 1th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "2th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 2th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "3th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 3th House: Connects the significations of the 12th house with the initiative, courage, and communication of the 3th house."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "4th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 4th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "5th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 5th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "6th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 6th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "7th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 7th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "8th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 8th House: Positioned in a Dusthana house. Requires conscious mastery, spiritual discipline, and turns obstacles into transformative growth."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "9th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 9th House: Positioned in an auspicious Trikona house. Blesses the native with Lakshmi's fortune, divine merit (purvapunya), and ethical success."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "10th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 10th House: Positioned in a powerful Kendra house. Manifests active dynamic results, public prominence, and executive strength in life."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "11th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 11th House: Positioned in a Dhana (wealth/gain) house. Generates abundant financial accumulation, valuable resources, and profitable networks."
+    },
+    {
+      "tags": [
+        "12th lord",
+        "12th house",
+        "House Lord"
+      ],
+      "weight": 2,
+      "text": "12th Lord in 12th House: In own house (Swakshetra). Powerful amplification of 12th house themes, giving supreme stability, protection, and fulfillment."
+    },
+    {
+      "tags": [
+        "Ashwini",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Ashwini Nakshatra: Ashwini (0°–13°20' Aries): Ruled by Ketu, deity Ashwini Kumaras. Rapid healing, pioneering initiative, swift action, veterinary/medical skill, and transport."
+    },
+    {
+      "tags": [
+        "Bharani",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Bharani Nakshatra: Bharani (13°20'–26°40' Aries): Ruled by Venus, deity Yama. Extreme creative power, capacity to bear heavy burdens, transformation, gynaecology, and artistic depth."
+    },
+    {
+      "tags": [
+        "Krittika",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Krittika Nakshatra: Krittika (26°40' Aries – 10° Taurus): Ruled by Sun, deity Agni. Purification, cutting sharp intellect, culinary mastery, administrative leadership, and razor focus."
+    },
+    {
+      "tags": [
+        "Rohini",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Rohini Nakshatra: Rohini (10°–23°20' Taurus): Ruled by Moon, deity Brahma. Seductive beauty, fertility, agricultural wealth, artistic grace, luxury trade, and creative design."
+    },
+    {
+      "tags": [
+        "Mrigashira",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Mrigashira Nakshatra: Mrigashira (23°20' Taurus – 6°40' Gemini): Ruled by Mars, deity Soma. Searching curiosity, gentle nature, investigative intelligence, textile/travel arts, and research."
+    },
+    {
+      "tags": [
+        "Ardra",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Ardra Nakshatra: Ardra (6°40'–20° Gemini): Ruled by Rahu, deity Rudra. Stormy emotional transformation, intellectual brilliance, computer programming, nuclear/biotech, and deep tears turning to triumph."
+    },
+    {
+      "tags": [
+        "Punarvasu",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Punarvasu Nakshatra: Punarvasu (20° Gemini – 3°20' Cancer): Ruled by Jupiter, deity Aditi. Return of the light, forgiveness, renewal, archery/space travel, civil aviation, and spiritual restoration."
+    },
+    {
+      "tags": [
+        "Pushya",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Pushya Nakshatra: Pushya (3°20'–16°40' Cancer): Ruled by Saturn, deity Brihaspati. The most auspicious nakshatra for nurturing, spiritual initiation, ethical mentorship, dairy/pharma, and lasting foundations."
+    },
+    {
+      "tags": [
+        "Ashlesha",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Ashlesha Nakshatra: Ashlesha (16°40'–30° Cancer): Ruled by Mercury, deity Nagas. Hypnotic wisdom, psychological insight, venom-antidote medicine, secretive strategy, and esoteric mastery."
+    },
+    {
+      "tags": [
+        "Magha",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Magha Nakshatra: Magha (0°–13°20' Leo): Ruled by Ketu, deity Pitris. Royal throne, ancestral lineage power, administrative dignity, traditional ceremony, and leadership."
+    },
+    {
+      "tags": [
+        "Purva Phalguni",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Purva Phalguni Nakshatra: Purva Phalguni (13°20'–26°40' Leo): Ruled by Venus, deity Bhaga. Relaxed pleasure, romance, fine arts, theatrical entertainment, musical joy, and social grace."
+    },
+    {
+      "tags": [
+        "Uttara Phalguni",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Uttara Phalguni Nakshatra: Uttara Phalguni (26°40' Leo – 10° Virgo): Ruled by Sun, deity Aryaman. Noble charity, honorable alliances, philanthropy, marriage contracts, and social responsibility."
+    },
+    {
+      "tags": [
+        "Hasta",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Hasta Nakshatra: Hasta (10°–23°20' Virgo): Ruled by Moon, deity Savitur. Magic in the hands, craft mastery, surgical precision, astrology, healing touch, and commercial skill."
+    },
+    {
+      "tags": [
+        "Chitra",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Chitra Nakshatra: Chitra (23°20' Virgo – 6°40' Libra): Ruled by Mars, deity Vishwakarma. Brilliant architectural design, sparkling glamour, sculpting, graphic artistry, and aesthetic mastery."
+    },
+    {
+      "tags": [
+        "Swati",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Swati Nakshatra: Swati (6°40'–20° Libra): Ruled by Rahu, deity Vayu. Independent freedom, business trade, aviation, diplomacy, flexibility, and pranayama mastery."
+    },
+    {
+      "tags": [
+        "Vishakha",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Vishakha Nakshatra: Vishakha (20° Libra – 3°20' Scorpio): Ruled by Jupiter, deity Indra-Agni. Focused determination, targeted ambition, triumphant goals, political alliance, and spiritual zeal."
+    },
+    {
+      "tags": [
+        "Anuradha",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Anuradha Nakshatra: Anuradha (3°20'–16°40' Scorpio): Ruled by Saturn, deity Mitra. Pure devotion, friendship, organizational networking, foreign travel success, and heart-centered bhakti."
+    },
+    {
+      "tags": [
+        "Jyeshtha",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Jyeshtha Nakshatra: Jyeshtha (16°40'–30° Scorpio): Ruled by Mercury, deity Indra. Seniority, protective authority, heroic courage, esoteric secrets, and high organizational command."
+    },
+    {
+      "tags": [
+        "Mula",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Mula Nakshatra: Mula (0°–13°20' Sagittarius): Ruled by Ketu, deity Nirriti. Root-level destruction and profound spiritual rebirth, botanical medicine, research, and non-attachment."
+    },
+    {
+      "tags": [
+        "Purva Ashadha",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Purva Ashadha Nakshatra: Purva Ashadha (13°20'–26°40' Sagittarius): Ruled by Venus, deity Apas. Invincible victory, persuasive oratory, maritime commerce, philosophical depth, and natural charm."
+    },
+    {
+      "tags": [
+        "Uttara Ashadha",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Uttara Ashadha Nakshatra: Uttara Ashadha (26°40' Sagittarius – 10° Capricorn): Ruled by Sun, deity Vishwadevas. Unyielding integrity, permanent victory, institutional leadership, and statesman honor."
+    },
+    {
+      "tags": [
+        "Shravana",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Shravana Nakshatra: Shravana (10°–23°20' Capricorn): Ruled by Moon, deity Vishnu. Deep listening, oral transmission of sacred knowledge, higher education, media, and scholarly learning."
+    },
+    {
+      "tags": [
+        "Dhanishta",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Dhanishta Nakshatra: Dhanishta (23°20' Capricorn – 6°40' Aquarius): Ruled by Mars, deity Ashta Vasus. Musical rhythm, immense material wealth, martial discipline, and philanthropic renown."
+    },
+    {
+      "tags": [
+        "Shatabhisha",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Shatabhisha Nakshatra: Shatabhisha (6°40'–20° Aquarius): Ruled by Rahu, deity Varuna. Hundred physicians, enigmatic healing, space science, radar/telecom, solitude, and esoteric secrets."
+    },
+    {
+      "tags": [
+        "Purva Bhadrapada",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Purva Bhadrapada Nakshatra: Purva Bhadrapada (20° Aquarius – 3°20' Pisces): Ruled by Jupiter, deity Aja Ekapada. Spiritual tapasya, transformative fire, philosophical passion, and occult vision."
+    },
+    {
+      "tags": [
+        "Uttara Bhadrapada",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Uttara Bhadrapada Nakshatra: Uttara Bhadrapada (3°20'–16°40' Pisces): Ruled by Saturn, deity Ahirbudhnya. Boundless wisdom, tranquil contemplation, charitable foundations, and spiritual enlightenment."
+    },
+    {
+      "tags": [
+        "Revati",
+        "Nakshatra"
+      ],
+      "weight": 3,
+      "text": "Revati Nakshatra: Revati (16°40'–30° Pisces): Ruled by Mercury, deity Pushan. Complete nourishment, safe journeys, animal care, poetic compassion, abundance, and spiritual ascension."
+    },
+    {
+      "tags": [
+        "Gaja Kesari Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Gaja Kesari Yoga: Jupiter in Kendra (1, 4, 7, 10) from Moon. Endows noble character, permanent fame, wisdom, social authority, and protection from disasters."
+    },
+    {
+      "tags": [
+        "Budhaditya Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Budhaditya Yoga: Sun and Mercury conjunct in same sign without deep combustion. Gives high academic brilliance, administrative acumen, sharp memory, and eloquence."
+    },
+    {
+      "tags": [
+        "Ruchaka Yoga (Mahapurusha)",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Ruchaka Yoga (Mahapurusha): Mars in Kendra in Aries, Scorpio, or Capricorn. Grants physical stamina, executive leadership, property wealth, military honors, and fearless courage."
+    },
+    {
+      "tags": [
+        "Bhadra Yoga (Mahapurusha)",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Bhadra Yoga (Mahapurusha): Mercury in Kendra in Gemini or Virgo. Grants sharp intellect, versatile eloquence, business mastery, longevity, and academic distinction."
+    },
+    {
+      "tags": [
+        "Hamsa Yoga (Mahapurusha)",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Hamsa Yoga (Mahapurusha): Jupiter in Kendra in Cancer, Sagittarius, or Pisces. Bestows profound spiritual wisdom, ethical purity, high advisory status, and public reverence."
+    },
+    {
+      "tags": [
+        "Malavya Yoga (Mahapurusha)",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Malavya Yoga (Mahapurusha): Venus in Kendra in Taurus, Libra, or Pisces. Bestows supreme aesthetic taste, marital bliss, luxurious vehicles, artistic success, and prosperity."
+    },
+    {
+      "tags": [
+        "Sasa Yoga (Mahapurusha)",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Sasa Yoga (Mahapurusha): Saturn in Kendra in Libra, Capricorn, or Aquarius. Bestows organizational power over masses, endurance, disciplined wealth, and lasting legacy."
+    },
+    {
+      "tags": [
+        "Dharma-Karmadhipati Raja Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Dharma-Karmadhipati Raja Yoga: 9th Lord and 10th Lord conjunct or in mutual aspect. Highest Raja Yoga connecting fortune and action; grants supreme societal honors."
+    },
+    {
+      "tags": [
+        "Chandra-Mangal Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Chandra-Mangal Yoga: Moon and Mars in conjunction or 7th mutual aspect. Ignites powerful commercial enterprise, financial resourcefulness, and self-earned wealth."
+    },
+    {
+      "tags": [
+        "Lakshmi Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Lakshmi Yoga: 9th Lord exalted or in own house in Kendra/Trikona, and Venus well-placed. Bestows unshakeable prosperity, virtuous conduct, and royal grace."
+    },
+    {
+      "tags": [
+        "Saraswati Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Saraswati Yoga: Jupiter, Venus, and Mercury in Kendras/Trikonas/2nd house. Endows genius in creative arts, music, writing, sciences, and worldwide fame."
+    },
+    {
+      "tags": [
+        "Amala Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Amala Yoga: Benefic planet (Jupiter, Venus, Mercury) in the 10th house from Lagna or Moon. Grants unblemished character, honorable profession, and lasting prestige."
+    },
+    {
+      "tags": [
+        "Harsha Vipareeta Raja Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Harsha Vipareeta Raja Yoga: 6th Lord placed in 6th, 8th, or 12th house. Grants invincibility over rivals, victory in litigation, and robust physical resistance."
+    },
+    {
+      "tags": [
+        "Sarala Vipareeta Raja Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Sarala Vipareeta Raja Yoga: 8th Lord placed in 6th, 8th, or 12th house. Bestows fearlessness, long life, sudden windfall wealth, and supreme crisis mastery."
+    },
+    {
+      "tags": [
+        "Vimala Vipareeta Raja Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Vimala Vipareeta Raja Yoga: 12th Lord placed in 6th, 8th, or 12th house. Bestows financial independence, high ethical integrity, contentment, and spiritual freedom."
+    },
+    {
+      "tags": [
+        "Neechabhanga Raja Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Neechabhanga Raja Yoga: Debilitated planet whose dispositor or exaltation lord is in Kendra from Lagna/Moon. Transforms initial hardships into grand lifetime success."
+    },
+    {
+      "tags": [
+        "Parivartana Yoga (Maha)",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Parivartana Yoga (Maha): Mutual exchange of house lords between Kendra and Trikona houses. Supercharges both houses, granting phenomenal lifetime prosperity."
+    },
+    {
+      "tags": [
+        "Durudhara Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Durudhara Yoga: Planets (other than Sun/Rahu/Ketu) flanking Moon on both 2nd and 12th sides. Bestows emotional balance, wealth, and generous nature."
+    },
+    {
+      "tags": [
+        "Sunapha Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Sunapha Yoga: Planets in 2nd from Moon. Grants self-made wealth, pleasant speech, and joyful lifestyle."
+    },
+    {
+      "tags": [
+        "Anapha Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Anapha Yoga: Planets in 12th from Moon. Bestows magnetic charm, clean character, good health, and broad-minded nature."
+    },
+    {
+      "tags": [
+        "Vesi Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Vesi Yoga: Benefic in 2nd from Sun. Grants truthful speech, steady fortune, and distinguished status."
+    },
+    {
+      "tags": [
+        "Vosi Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Vosi Yoga: Benefic in 12th from Sun. Bestows charitable nature, sharp memory, and peaceful mindset."
+    },
+    {
+      "tags": [
+        "Ubhayachari Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Ubhayachari Yoga: Benefics on both 2nd and 12th sides of Sun. Bestows all-around prosperity, royal recognition, and eloquence."
+    },
+    {
+      "tags": [
+        "Kahala Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Kahala Yoga: 4th and 9th lords in mutual Kendras with strong Lagna lord. Bestows leadership of large teams, courage, and prominent status."
+    },
+    {
+      "tags": [
+        "Shankha Yoga",
+        "Yoga",
+        "Raja Yoga"
+      ],
+      "weight": 3,
+      "text": "Shankha Yoga: 5th and 6th lords in Kendras with strong Lagna lord. Bestows humanitarian wealth, scholarship, and moral discipline."
+    },
+    {
+      "tags": [
+        "Sun Mahadasha",
+        "Sun Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Sun Mahadasha: Focus on career authority, father, government recognition, vitality, and leadership. Auspicious if Sun is strong; causes ego clashes if afflicted."
+    },
+    {
+      "tags": [
+        "Moon Mahadasha",
+        "Moon Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Moon Mahadasha: Focus on emotions, mother, public popularity, mental clarity, travel, and domestic expansion. Waxing Moon gives high happiness."
+    },
+    {
+      "tags": [
+        "Mars Mahadasha",
+        "Mars Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Mars Mahadasha: Focus on property, enterprise, physical stamina, leadership, siblings, and courage. Afflicted Mars requires careful conflict management."
+    },
+    {
+      "tags": [
+        "Rahu Mahadasha",
+        "Rahu Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Rahu Mahadasha: Brings sudden meteoric rises, international ventures, material ambitions, technological breakthroughs, and unconventional lifestyle shifts."
+    },
+    {
+      "tags": [
+        "Jupiter Mahadasha",
+        "Jupiter Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Jupiter Mahadasha: Golden period for children, higher education, spiritual wisdom, financial prosperity, moral honors, and philosophical fulfillment."
+    },
+    {
+      "tags": [
+        "Saturn Mahadasha",
+        "Saturn Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Saturn Mahadasha: Brings intense discipline, organizational duty, karmic maturation, perseverance, and solid long-term lifetime achievements."
+    },
+    {
+      "tags": [
+        "Mercury Mahadasha",
+        "Mercury Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Mercury Mahadasha: Focus on business commerce, intellectual publications, analytics, media networking, trade, and learning."
+    },
+    {
+      "tags": [
+        "Ketu Mahadasha",
+        "Ketu Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Ketu Mahadasha: Period of spiritual awakening, inward detachment, research, psychic intuition, and completion of karmic cycles."
+    },
+    {
+      "tags": [
+        "Venus Mahadasha",
+        "Venus Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Venus Mahadasha: Fabulous era for relationships, marriage, arts, luxury vehicles, domestic comforts, aesthetic success, and prosperity."
+    },
+    {
+      "tags": [
+        "Sade Sati (Rising Phase)",
+        "Saturn transit in 12th from Moon: Initiates mental restructuring, foreign travel, budget discipline, and introspection. Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Sade Sati (Rising Phase): Saturn transit in 12th from Moon: Initiates mental restructuring, foreign travel, budget discipline, and introspection."
+    },
+    {
+      "tags": [
+        "Sade Sati (Peak Phase)",
+        "Saturn transit in 1st over Natal Moon: Tests emotional endurance, strengthens self-reliance, and builds ironclad character. Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Sade Sati (Peak Phase): Saturn transit in 1st over Natal Moon: Tests emotional endurance, strengthens self-reliance, and builds ironclad character."
+    },
+    {
+      "tags": [
+        "Sade Sati (Setting Phase)",
+        "Saturn transit in 2nd from Moon: Reorganizes financial resources, speech, family commitments, and establishes permanent stability. Mahadasha",
+        "Dasha",
+        "Transit"
+      ],
+      "weight": 2,
+      "text": "Sade Sati (Setting Phase): Saturn transit in 2nd from Moon: Reorganizes financial resources, speech, family commitments, and establishes permanent stability."
+    },
+    {
+      "tags": [
+        "Ashtakoot Varna",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "Varna Koota (1 Point): Compares ego temperaments based on Moon signs. Ensures mutual spiritual respect and equality."
+    },
+    {
+      "tags": [
+        "Ashtakoot Vashya",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "Vashya Koota (2 Points): Evaluates mutual magnetic attraction, dominance dynamics, and instinctual harmony."
+    },
+    {
+      "tags": [
+        "Ashtakoot Tara",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "Tara Koota (3 Points): Evaluates health, prosperity, longevity, and auspicious cosmic timing between birth nakshatras."
+    },
+    {
+      "tags": [
+        "Ashtakoot Yoni",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "Yoni Koota (4 Points): Measures biological compatibility, intimacy, sexual attraction, and instinctual animal temperament."
+    },
+    {
+      "tags": [
+        "Ashtakoot Graha Maitri",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "Graha Maitri Koota (5 Points): Evaluates mental friendship, intellectual communication, and psychological compatibility of Moon sign lords."
+    },
+    {
+      "tags": [
+        "Ashtakoot Gana",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "Gana Koota (6 Points): Compares nature (Deva / Manushya / Rakshasa). Ensures shared social values, temperament, and domestic harmony."
+    },
+    {
+      "tags": [
+        "Ashtakoot Bhakoot",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "Bhakoot Koota (7 Points): Evaluates emotional attachment, family welfare, and financial growth. 6/8 and 2/12 positions require remedies."
+    },
+    {
+      "tags": [
+        "Ashtakoot Nadi",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "Nadi Koota (8 Points): Most vital koota evaluating genetic compatibility, progeny health, nervous system resonance, and longevity."
+    },
+    {
+      "tags": [
+        "Manglik Compatibility",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "Kuja Dosha in both charts neutralizes marital friction. Mars in 1st, 2nd, 4th, 7th, 8th, or 12th matched with equal Mars ensures lifelong loyalty."
+    },
+    {
+      "tags": [
+        "7th House in Synastry",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "7th House Lord well-placed in Kendra/Trikona and aspected by Jupiter or Venus guarantees enduring affection and social respect in marriage."
+    },
+    {
+      "tags": [
+        "Navamsha D9 Compatibility",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "D9 Navamsha chart reveals the soul of marriage. Venus and 7th Lord dignity in D9 determine inner marital contentment after age 28-30."
+    },
+    {
+      "tags": [
+        "Upapada Lagna (UL)",
+        "Marriage",
+        "Compatibility",
+        "Ashtakoot"
+      ],
+      "weight": 3,
+      "text": "Upapada Lagna in mutual trines or quadrants with partner's Arudha Lagna (AL) indicates deep karmic bond and marital stability."
+    },
+    {
+      "tags": [
+        "Career & 10th House",
+        "Career",
+        "Wealth",
+        "Health",
+        "Finance",
+        "Spirituality"
+      ],
+      "weight": 2,
+      "text": "10th House represents Karma, authority, executive honors, and profession. Planets in 10th or aspecting 10th lord define the industry and public legacy."
+    },
+    {
+      "tags": [
+        "Dashamsha D10 Chart",
+        "Career",
+        "Wealth",
+        "Health",
+        "Finance",
+        "Spirituality"
+      ],
+      "weight": 2,
+      "text": "D10 Dashamsha is the definitive divisional chart for professional achievement, career shifts, promotions, and societal status."
+    },
+    {
+      "tags": [
+        "Wealth & Dhana Bhavas",
+        "Career",
+        "Wealth",
+        "Health",
+        "Finance",
+        "Spirituality"
+      ],
+      "weight": 2,
+      "text": "2nd House (accumulated wealth), 11th House (liquid gains/income), 5th & 9th Houses (purvapunya fortune) form the pillars of lasting financial prosperity."
+    },
+    {
+      "tags": [
+        "Indu Lagna & Wealth",
+        "Career",
+        "Wealth",
+        "Health",
+        "Finance",
+        "Spirituality"
+      ],
+      "weight": 2,
+      "text": "Indu Lagna evaluated from Moon and 9th lords calculates extraordinary sudden financial prosperity and wealth magnitude."
+    },
+    {
+      "tags": [
+        "Health & 6th House",
+        "Career",
+        "Wealth",
+        "Health",
+        "Finance",
+        "Spirituality"
+      ],
+      "weight": 2,
+      "text": "6th House (Rogabhava) and Lagnesha vitality indicate immune strength, disease resistance, daily wellness habits, and recovery speed."
+    },
+    {
+      "tags": [
+        "8th House Longevity",
+        "Career",
+        "Wealth",
+        "Health",
+        "Finance",
+        "Spirituality"
+      ],
+      "weight": 2,
+      "text": "8th House (Ayurbhava) governed by Saturn (Ayushkaraka) determines longevity, transformative regeneration, and crisis endurance."
+    },
+    {
+      "tags": [
+        "Foreign Residence & 12th House",
+        "Career",
+        "Wealth",
+        "Health",
+        "Finance",
+        "Spirituality"
+      ],
+      "weight": 2,
+      "text": "12th House, 9th House, and Rahu connections to Lagna/4th Lord indicate international relocations, global careers, and foreign settlement."
+    },
+    {
+      "tags": [
+        "Moksha & Spirituality",
+        "Career",
+        "Wealth",
+        "Health",
+        "Finance",
+        "Spirituality"
+      ],
+      "weight": 2,
+      "text": "12th House, 8th House, 4th House (Moksha Trikona) with Ketu or Jupiter involvement indicate deep meditative illumination and spiritual enlightenment."
+    },
+    {
+      "tags": [
+        "Ruby (Manikya)",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Sun Gemstone: 3–5 carats in Gold on right hand Ring Finger on Sunday morning. Boosts leadership, vitality, and career authority. Strictly avoid if Sun rules Dusthana (6/8/12)."
+    },
+    {
+      "tags": [
+        "Pearl (Moti)",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Moon Gemstone: Natural South Sea Pearl in Silver on Little Finger on Monday evening. Calms anxiety, strengthens emotions and motherly bond."
+    },
+    {
+      "tags": [
+        "Red Coral (Moonga)",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Mars Gemstone: 6–8 carats in Copper/Gold on Ring Finger on Tuesday morning. Boosts physical stamina, courage, and property luck. Avoid if Mars is functional malefic."
+    },
+    {
+      "tags": [
+        "Emerald (Panna)",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Mercury Gemstone: 4–6 carats in Gold/Silver on Little Finger on Wednesday morning. Enhances communication, analytical coding, memory, and business commerce."
+    },
+    {
+      "tags": [
+        "Yellow Sapphire (Pukhraj)",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Jupiter Gemstone: 4–6 carats in Gold on Index Finger on Thursday morning. Bestows wisdom, wealth, marital grace, children, and spiritual protection."
+    },
+    {
+      "tags": [
+        "Diamond / White Sapphire",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Venus Gemstone: 1+ carat in Platinum/Silver on Middle or Ring Finger on Friday morning. Enhances aesthetic charm, artistic renown, and luxury comforts."
+    },
+    {
+      "tags": [
+        "Blue Sapphire (Neelam)",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Saturn Gemstone: 4–6 carats in Silver on Middle Finger on Saturday evening. Must undergo 3-day trial. Bestows meteoric organizational rise, focus, and protection."
+    },
+    {
+      "tags": [
+        "Hessonite (Gomed)",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Rahu Gemstone: 5–7 carats in Silver on Middle Finger on Saturday. Clears confusion, enhances tech innovation and political strategy."
+    },
+    {
+      "tags": [
+        "Cat's Eye (Lehsuniya)",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Ketu Gemstone: 4–6 carats in Silver on Little or Middle Finger on Tuesday. Protects against hidden psychic attacks, awakens spiritual intuition."
+    },
+    {
+      "tags": [
+        "Maha Mrityunjaya Mantra",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Supreme healing mantra: \"Om Tryambakam Yajamahe Sugandhim Pushti-Vardhanam Urvarukamiva Bandhanan Mrityor Mukshiya Mamritat\". Protects health, longevity, and dispels afflictions."
+    },
+    {
+      "tags": [
+        "Gayatri Mantra",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Solar illumination mantra: \"Om Bhur Bhuva Swaha Tat Savitur Varenyam Bhargo Devasya Dheemahi Dhiyo Yo Nah Prachodayat\". Awakens supreme intellect, inner light, and spiritual courage."
+    },
+    {
+      "tags": [
+        "Hanuman Chalisa",
+        "Remedy",
+        "Gemstone",
+        "Mantra"
+      ],
+      "weight": 3,
+      "text": "Recited on Tuesdays and Saturdays. Completely dissolves fear, panic, Manglik tension, Shani Sade Sati distress, and malicious planetary influences."
+    }
   ]
 }

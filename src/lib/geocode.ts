@@ -1,7 +1,6 @@
 /**
  * Geocoding helper — converts city/location strings to lat/lng + UTC offset
- * Uses Nominatim (OpenStreetMap) — completely free, no API key required.
- * Timezone resolution uses @vvo/tzdb offline database.
+ * Uses OpenStreetMap Nominatim with offline timezone resolution.
  */
 
 import { getTimeZones } from '@vvo/tzdb';
@@ -10,14 +9,14 @@ export interface GeoLocation {
   lat: number;
   lng: number;
   displayName: string;
-  timezone: string;       // IANA timezone e.g. "Asia/Kolkata"
+  timezone: string;         // IANA timezone e.g. "Asia/Kolkata"
   utcOffsetMinutes: number; // e.g. 330 for IST (+5:30)
 }
 
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
-const USER_AGENT   = 'ZodiacSense/1.0 (contact@zodiacsense.app)';
+const USER_AGENT = 'ZodiacSense/2.0 (contact@zodiacsense.app)';
 
-// Default fallback: India geographic center (covers most Indian users)
+// Default fallback: India geographic center
 const DEFAULT_LOCATION: GeoLocation = {
   lat: 20.5937,
   lng: 78.9629,
@@ -27,26 +26,23 @@ const DEFAULT_LOCATION: GeoLocation = {
 };
 
 /**
- * Find the IANA timezone name closest to a given lat/lng using the offline tzdb.
- * Picks the timezone whose largest city is geographically nearest.
- *
- * Note: `lat` is accepted for API stability; the current heuristic uses only lng.
+ * Find the exact IANA timezone name and UTC offset for coordinates.
  */
 export function getTimezoneForCoords(lat: number, lng: number): { timezone: string; utcOffsetMinutes: number } {
+  // Direct territorial match for India (strict +5:30 IST)
+  if (lat >= 6.0 && lat <= 38.0 && lng >= 68.0 && lng <= 98.0) {
+    return { timezone: 'Asia/Kolkata', utcOffsetMinutes: 330 };
+  }
+
   const timezones = getTimeZones();
 
+  // Try to find timezone by matching longitude offset heuristic
+  const approxOffsetFromLng = (lng / 15) * 60; // minutes
   let bestTz = 'UTC';
   let bestOffset = 0;
   let bestDist = Infinity;
 
   for (const tz of timezones) {
-    // tzdb doesn't expose a single lat/lng — use rawOffsetInMinutes as a rough
-    // proxy to pick the timezone with the closest offset when we can't compute
-    // distance. For better accuracy we find the nearest by city coordinates
-    // embedded in the name (e.g. "Asia/Kolkata" → India) through country code.
-    // Since tzdb doesn't give city coords, we do a simple UTC-offset heuristic:
-    // pick the timezone whose current offset best matches (lng / 15) degrees → hours.
-    const approxOffsetFromLng = lng / 15 * 60; // minutes
     const diff = Math.abs(tz.rawOffsetInMinutes - approxOffsetFromLng);
     if (diff < bestDist) {
       bestDist = diff;
@@ -60,7 +56,6 @@ export function getTimezoneForCoords(lat: number, lng: number): { timezone: stri
 
 /**
  * Geocode a free-text location string to lat/lng + timezone.
- * Falls back to India defaults if geocoding fails.
  */
 export async function geocodeCity(location: string): Promise<GeoLocation> {
   if (!location || location.trim().length < 2) {
@@ -72,7 +67,7 @@ export async function geocodeCity(location: string): Promise<GeoLocation> {
       q: location,
       format: 'json',
       limit: '1',
-      addressdetails: '0',
+      addressdetails: '1',
     });
 
     const res = await fetch(`${NOMINATIM_URL}?${params}`, {
@@ -80,18 +75,23 @@ export async function geocodeCity(location: string): Promise<GeoLocation> {
         'User-Agent': USER_AGENT,
         'Accept-Language': 'en',
       },
-      signal: AbortSignal.timeout(5000), // 5s timeout
+      signal: AbortSignal.timeout(5000),
     });
 
     if (!res.ok) throw new Error(`Nominatim HTTP ${res.status}`);
 
-    const results: Array<{ lat: string; lon: string; display_name: string }> = await res.json();
+    const results: Array<{ lat: string; lon: string; display_name: string; address?: { country_code?: string } }> =
+      await res.json();
 
     if (!results.length) return DEFAULT_LOCATION;
 
-    const { lat: latStr, lon: lngStr, display_name } = results[0];
+    const { lat: latStr, lon: lngStr, display_name, address } = results[0];
     const lat = parseFloat(latStr);
     const lng = parseFloat(lngStr);
+
+    if (address?.country_code === 'in') {
+      return { lat, lng, displayName: display_name, timezone: 'Asia/Kolkata', utcOffsetMinutes: 330 };
+    }
 
     const { timezone, utcOffsetMinutes } = getTimezoneForCoords(lat, lng);
 

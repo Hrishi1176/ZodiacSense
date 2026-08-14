@@ -1,4 +1,4 @@
-/** Shared Vedic astrology constants — single source of truth for rule-based analysis. */
+/** Shared Vedic astrology constants — BPHS single source of truth for deterministic analysis. */
 
 export const SIGNS = [
   'Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
@@ -39,21 +39,35 @@ export function houseDistance(fromSign: string, toSign: string): number {
   return ((to - from + 12) % 12) + 1;
 }
 
-// ─── Planetary dignities ─────────────────────────────────────────────────────
+// ─── Planetary Dignities (BPHS Standard) ─────────────────────────────────────
 
-export type Dignity = 'Exalted' | 'Debilitated' | 'Own Sign' | 'Moolatrikona' | 'Neutral';
+export type Dignity = 'Exalted' | 'Debilitated' | 'Own Sign' | 'Moolatrikona' | 'Great Friend' | 'Friend' | 'Neutral' | 'Enemy' | 'Great Enemy';
 
-const EXALTATION: Record<string, Sign> = {
-  Sun: 'Aries', Moon: 'Taurus', Mars: 'Capricorn', Mercury: 'Virgo',
-  Jupiter: 'Cancer', Venus: 'Pisces', Saturn: 'Libra',
+export const EXALTATION: Record<string, { sign: Sign; degree: number }> = {
+  Sun: { sign: 'Aries', degree: 10 },
+  Moon: { sign: 'Taurus', degree: 3 },
+  Mars: { sign: 'Capricorn', degree: 28 },
+  Mercury: { sign: 'Virgo', degree: 15 },
+  Jupiter: { sign: 'Cancer', degree: 5 },
+  Venus: { sign: 'Pisces', degree: 27 },
+  Saturn: { sign: 'Libra', degree: 20 },
+  Rahu: { sign: 'Taurus', degree: 15 },
+  Ketu: { sign: 'Scorpio', degree: 15 },
 };
 
-const DEBILITATION: Record<string, Sign> = {
-  Sun: 'Libra', Moon: 'Scorpio', Mars: 'Cancer', Mercury: 'Pisces',
-  Jupiter: 'Capricorn', Venus: 'Virgo', Saturn: 'Aries',
+export const DEBILITATION: Record<string, { sign: Sign; degree: number }> = {
+  Sun: { sign: 'Libra', degree: 10 },
+  Moon: { sign: 'Scorpio', degree: 3 },
+  Mars: { sign: 'Cancer', degree: 28 },
+  Mercury: { sign: 'Pisces', degree: 15 },
+  Jupiter: { sign: 'Capricorn', degree: 5 },
+  Venus: { sign: 'Virgo', degree: 27 },
+  Saturn: { sign: 'Aries', degree: 20 },
+  Rahu: { sign: 'Scorpio', degree: 15 },
+  Ketu: { sign: 'Taurus', degree: 15 },
 };
 
-const OWN_SIGNS: Record<string, Sign[]> = {
+export const OWN_SIGNS: Record<string, Sign[]> = {
   Sun: ['Leo'],
   Moon: ['Cancer'],
   Mars: ['Aries', 'Scorpio'],
@@ -61,33 +75,53 @@ const OWN_SIGNS: Record<string, Sign[]> = {
   Jupiter: ['Sagittarius', 'Pisces'],
   Venus: ['Taurus', 'Libra'],
   Saturn: ['Capricorn', 'Aquarius'],
+  Rahu: ['Aquarius'],
+  Ketu: ['Scorpio'],
 };
 
-const MOOLATRIKONA: Record<string, Sign> = {
-  Sun: 'Leo', Moon: 'Taurus', Mars: 'Aries', Mercury: 'Virgo',
-  Jupiter: 'Sagittarius', Venus: 'Libra', Saturn: 'Aquarius',
+export const MOOLATRIKONA: Record<string, { sign: Sign; fromDeg: number; toDeg: number }> = {
+  Sun: { sign: 'Leo', fromDeg: 0, toDeg: 20 },
+  Moon: { sign: 'Taurus', fromDeg: 3, toDeg: 30 },
+  Mars: { sign: 'Aries', fromDeg: 0, toDeg: 12 },
+  Mercury: { sign: 'Virgo', fromDeg: 15, toDeg: 20 },
+  Jupiter: { sign: 'Sagittarius', fromDeg: 0, toDeg: 10 },
+  Venus: { sign: 'Libra', fromDeg: 0, toDeg: 15 },
+  Saturn: { sign: 'Aquarius', fromDeg: 0, toDeg: 20 },
 };
 
-export function getDignity(planet: string, sign: string): Dignity {
-  if (EXALTATION[planet] === sign) return 'Exalted';
-  if (DEBILITATION[planet] === sign) return 'Debilitated';
-  if (MOOLATRIKONA[planet] === sign) return 'Moolatrikona';
+export function getDignity(planet: string, sign: string, degInSign = 15): Dignity {
+  if (EXALTATION[planet]?.sign === sign) return 'Exalted';
+  if (DEBILITATION[planet]?.sign === sign) return 'Debilitated';
+  
+  const mt = MOOLATRIKONA[planet];
+  if (mt && mt.sign === sign && degInSign >= mt.fromDeg && degInSign <= mt.toDeg) {
+    return 'Moolatrikona';
+  }
   if (OWN_SIGNS[planet]?.includes(sign as Sign)) return 'Own Sign';
+
+  const signLord = SIGN_LORDS[sign as Sign];
+  if (signLord) {
+    const rel = getNaturalFriendship(planet, signLord);
+    if (rel === 'Friend') return 'Friend';
+    if (rel === 'Enemy') return 'Enemy';
+  }
   return 'Neutral';
 }
 
-// ─── Natural (Naisargika) planetary friendship ───────────────────────────────
+// ─── Natural (Naisargika) Planetary Friendship (BPHS Standard) ───────────────
 
 export type Friendship = 'Friend' | 'Enemy' | 'Neutral';
 
-const NATURAL_FRIENDSHIP: Record<string, Record<string, Friendship>> = {
-  Sun:     { Moon: 'Enemy', Mars: 'Friend', Mercury: 'Friend', Jupiter: 'Friend', Venus: 'Enemy', Saturn: 'Enemy' },
-  Moon:    { Sun: 'Friend', Mars: 'Neutral', Mercury: 'Friend', Jupiter: 'Neutral', Venus: 'Neutral', Saturn: 'Neutral' },
-  Mars:    { Sun: 'Friend', Moon: 'Friend', Mercury: 'Enemy', Jupiter: 'Friend', Venus: 'Neutral', Saturn: 'Neutral' },
-  Mercury: { Sun: 'Friend', Moon: 'Enemy', Mars: 'Neutral', Jupiter: 'Neutral', Venus: 'Friend', Saturn: 'Neutral' },
-  Jupiter: { Sun: 'Friend', Moon: 'Friend', Mars: 'Friend', Mercury: 'Enemy', Venus: 'Enemy', Saturn: 'Neutral' },
-  Venus:   { Sun: 'Enemy', Moon: 'Enemy', Mars: 'Neutral', Mercury: 'Friend', Jupiter: 'Neutral', Saturn: 'Friend' },
-  Saturn:  { Sun: 'Enemy', Moon: 'Enemy', Mars: 'Enemy', Mercury: 'Friend', Jupiter: 'Neutral', Venus: 'Friend' },
+export const NATURAL_FRIENDSHIP: Record<string, Record<string, Friendship>> = {
+  Sun:     { Moon: 'Friend', Mars: 'Friend', Jupiter: 'Friend', Mercury: 'Neutral', Venus: 'Enemy', Saturn: 'Enemy', Rahu: 'Enemy', Ketu: 'Enemy' },
+  Moon:    { Sun: 'Friend', Mercury: 'Friend', Mars: 'Neutral', Jupiter: 'Neutral', Venus: 'Neutral', Saturn: 'Neutral', Rahu: 'Enemy', Ketu: 'Enemy' },
+  Mars:    { Sun: 'Friend', Moon: 'Friend', Jupiter: 'Friend', Venus: 'Neutral', Saturn: 'Neutral', Mercury: 'Enemy', Rahu: 'Enemy', Ketu: 'Friend' },
+  Mercury: { Sun: 'Friend', Venus: 'Friend', Mars: 'Neutral', Jupiter: 'Neutral', Saturn: 'Neutral', Moon: 'Enemy', Rahu: 'Friend', Ketu: 'Neutral' },
+  Jupiter: { Sun: 'Friend', Moon: 'Friend', Mars: 'Friend', Saturn: 'Neutral', Mercury: 'Enemy', Venus: 'Enemy', Rahu: 'Enemy', Ketu: 'Friend' },
+  Venus:   { Mercury: 'Friend', Saturn: 'Friend', Mars: 'Neutral', Jupiter: 'Neutral', Sun: 'Enemy', Moon: 'Enemy', Rahu: 'Friend', Ketu: 'Neutral' },
+  Saturn:  { Mercury: 'Friend', Venus: 'Friend', Jupiter: 'Neutral', Sun: 'Enemy', Moon: 'Enemy', Mars: 'Enemy', Rahu: 'Friend', Ketu: 'Neutral' },
+  Rahu:    { Mercury: 'Friend', Venus: 'Friend', Saturn: 'Friend', Jupiter: 'Neutral', Mars: 'Enemy', Sun: 'Enemy', Moon: 'Enemy' },
+  Ketu:    { Mars: 'Friend', Jupiter: 'Friend', Mercury: 'Neutral', Venus: 'Neutral', Saturn: 'Neutral', Sun: 'Enemy', Moon: 'Enemy' },
 };
 
 export function getNaturalFriendship(lord1: string, lord2: string): Friendship {
@@ -107,7 +141,7 @@ export function grahaMaitriScore(lord1: string, lord2: string): number {
   return 0;
 }
 
-// ─── Gana (Deva / Manushya / Rakshasa) by nakshatra index ───────────────────
+// ─── Gana (Deva / Manushya / Rakshasa) by Nakshatra Index ───────────────────
 
 export function getGana(nakIdx: number): 'Deva' | 'Manushya' | 'Rakshasa' {
   const deva = [0, 4, 6, 7, 12, 14, 16, 21, 26];
@@ -128,10 +162,10 @@ export function ganaScore(g1: string, g2: string): number {
 // ─── Varna by Moon sign (Ashtakoot) ──────────────────────────────────────────
 
 const VARNA_BY_SIGN: Record<Sign, number> = {
-  Cancer: 4, Scorpio: 4, Pisces: 4,
-  Aries: 3, Leo: 3, Sagittarius: 3,
-  Taurus: 2, Virgo: 2, Capricorn: 2,
-  Gemini: 1, Libra: 1, Aquarius: 1,
+  Cancer: 4, Scorpio: 4, Pisces: 4,        // Brahmin (Water)
+  Aries: 3, Leo: 3, Sagittarius: 3,        // Kshatriya (Fire)
+  Taurus: 2, Virgo: 2, Capricorn: 2,       // Vaishya (Earth)
+  Gemini: 1, Libra: 1, Aquarius: 1,        // Shudra (Air)
 };
 
 export function getVarna(moonSign: string): number {
@@ -152,7 +186,6 @@ const VASHYA_BY_SIGN: Record<Sign, VashyaGroup> = {
   Sagittarius: 'Chatushpada', Capricorn: 'Chatushpada', Aquarius: 'Manava', Pisces: 'Jalachara',
 };
 
-/** Standard vashya compatibility matrix (max 2 points). */
 const VASHYA_MATRIX: Record<VashyaGroup, Partial<Record<VashyaGroup, number>>> = {
   Chatushpada: { Chatushpada: 2, Manava: 1, Jalachara: 1, Vanachara: 1.5, Keeta: 1 },
   Manava:      { Chatushpada: 1, Manava: 2, Jalachara: 1.5, Vanachara: 0, Keeta: 1 },
@@ -167,10 +200,10 @@ export function vashyaScore(boyMoon: string, girlMoon: string): number {
   return VASHYA_MATRIX[b]?.[g] ?? 1;
 }
 
-// ─── Tara (Dina) koot ─────────────────────────────────────────────────────────
+// ─── Tara (Dina) Koot ─────────────────────────────────────────────────────────
 
-const TARA_NAMES = ['Janma', 'Sampat', 'Vipat', 'Kshema', 'Pratyari', 'Sadhaka', 'Vadha', 'Mitra', 'Param Mitra'];
-const MALEFIC_TARA = new Set([3, 5, 7]); // Vipat, Pratyari, Vadha (1-indexed remainder)
+export const TARA_NAMES = ['Janma', 'Sampat', 'Vipat', 'Kshema', 'Pratyari', 'Sadhaka', 'Vadha', 'Mitra', 'Param Mitra'];
+const MALEFIC_TARA = new Set([3, 5, 7]); // Vipat, Pratyari, Vadha
 
 function taraRemainder(fromNak: number, toNak: number): number {
   let count = toNak - fromNak;
@@ -193,11 +226,11 @@ export function taraScore(boyNakIdx: number, girlNakIdx: number): { score: numbe
   };
 }
 
-// ─── Yoni koot ────────────────────────────────────────────────────────────────
+// ─── Yoni Koot ────────────────────────────────────────────────────────────────
 
-type YoniAnimal = 'Horse' | 'Elephant' | 'Sheep' | 'Serpent' | 'Dog' | 'Cat' | 'Rat' | 'Cow' | 'Buffalo' | 'Tiger' | 'Deer' | 'Monkey' | 'Mongoose' | 'Lion';
+export type YoniAnimal = 'Horse' | 'Elephant' | 'Sheep' | 'Serpent' | 'Dog' | 'Cat' | 'Rat' | 'Cow' | 'Buffalo' | 'Tiger' | 'Deer' | 'Monkey' | 'Mongoose' | 'Lion';
 
-const YONI_BY_NAK: YoniAnimal[] = [
+export const YONI_BY_NAK: YoniAnimal[] = [
   'Horse', 'Elephant', 'Sheep', 'Serpent', 'Serpent', 'Dog',
   'Cat', 'Sheep', 'Cat', 'Rat', 'Rat', 'Cow',
   'Buffalo', 'Tiger', 'Buffalo', 'Tiger', 'Deer', 'Deer',
@@ -205,7 +238,6 @@ const YONI_BY_NAK: YoniAnimal[] = [
   'Lion', 'Cow', 'Elephant',
 ];
 
-/** Yoni enmity pairs (score 0); same = 4; friendly = 3; neutral = 2; enemy = 1; sworn = 0 */
 const YONI_ENEMIES: [YoniAnimal, YoniAnimal][] = [
   ['Horse', 'Buffalo'], ['Elephant', 'Lion'], ['Sheep', 'Monkey'],
   ['Serpent', 'Mongoose'], ['Dog', 'Deer'], ['Cat', 'Rat'],
@@ -232,21 +264,22 @@ export function yoniScore(boyNakIdx: number, girlNakIdx: number): { score: numbe
   return { score: yoniCompatibility(boyYoni, girlYoni), boyYoni, girlYoni };
 }
 
-// ─── Bhakoot koot ─────────────────────────────────────────────────────────────
+// ─── Bhakoot Koot ─────────────────────────────────────────────────────────────
 
 export function bhakootScore(boyMoonSign: string, girlMoonSign: string): { score: number; distance: number; dosha: boolean } {
   const dist = houseDistance(girlMoonSign, boyMoonSign);
   const diff = Math.min(dist - 1, 12 - (dist - 1));
-  const doshaPairs = new Set([2, 5, 6]); // 2/12, 5/9, 6/8 bhakoot dosha
-  const dosha = doshaPairs.has(diff);
+  const doshaPairs = new Set([1, 5]); // 2/12 and 6/8 positions (diff 1 and 5)
+  const isNineFive = dist === 5 || dist === 9; // 5/9 position
+  const dosha = doshaPairs.has(diff) || isNineFive;
   return { score: dosha ? 0 : 7, distance: dist, dosha };
 }
 
-// ─── Nadi koot ────────────────────────────────────────────────────────────────
+// ─── Nadi Koot ────────────────────────────────────────────────────────────────
 
-type Nadi = 'Adi' | 'Madhya' | 'Antya';
+export type Nadi = 'Adi' | 'Madhya' | 'Antya';
 
-const NADI_BY_NAK: Nadi[] = [
+export const NADI_BY_NAK: Nadi[] = [
   'Adi', 'Madhya', 'Antya', 'Adi', 'Madhya', 'Antya',
   'Adi', 'Madhya', 'Antya', 'Adi', 'Madhya', 'Antya',
   'Adi', 'Madhya', 'Antya', 'Adi', 'Madhya', 'Antya',
@@ -261,33 +294,76 @@ export function nadiScore(boyNakIdx: number, girlNakIdx: number): { score: numbe
   return { score: dosha ? 0 : 8, boyNadi, girlNadi, dosha };
 }
 
-// ─── House significations (for interpretive text) ────────────────────────────
+// ─── House Themes & Planetary Remedies ────────────────────────────────────────
 
 export const HOUSE_THEMES: Record<number, string> = {
-  1: 'Self, personality, vitality',
-  2: 'Wealth, family, speech',
-  3: 'Courage, siblings, communication',
-  4: 'Home, mother, emotional foundation',
-  5: 'Creativity, children, intelligence',
-  6: 'Health, enemies, service',
-  7: 'Marriage, partnerships',
-  8: 'Longevity, transformation, obstacles',
-  9: 'Fortune, dharma, higher learning',
-  10: 'Career, status, public life',
-  11: 'Gains, aspirations, networks',
-  12: 'Losses, spirituality, foreign lands',
+  1: 'Self, personality, physical body, vitality, and life direction',
+  2: 'Wealth, financial reserves, family values, speech, and food habits',
+  3: 'Courage, willpower, younger siblings, short journeys, communication, and skills',
+  4: 'Home environment, mother, landed assets, vehicles, peace of mind, and domestic happiness',
+  5: 'Intellect, children, past life merits (Purvapunya), creative expression, and education',
+  6: 'Daily routine, service, overcoming enemies/debts, health resilience, and litigation',
+  7: 'Spouse, marriage, business partnerships, open interactions, and public dealings',
+  8: 'Longevity, transformations, deep research, hidden assets, occult, and sudden shifts',
+  9: 'Dharma, fortune, father, spiritual preceptors (Guru), higher learning, and pilgrimages',
+  10: 'Career, profession, social authority, government honors, reputation, and public status',
+  11: 'Gains, liquid wealth, fulfilling desires, elder siblings, and elite networks',
+  12: 'Moksha, spirituality, foreign residence/travels, investments, and expenditure',
 };
 
-// ─── Remedies by planet ───────────────────────────────────────────────────────
-
 export const PLANET_REMEDIES: Record<string, string[]> = {
-  Sun: ['Offer water to Sun at sunrise (Surya Arghya)', 'Recite Aditya Hridayam on Sundays', 'Wear ruby only after Jyotish consultation'],
-  Moon: ['Chant Chandra mantra on Mondays', 'Donate white items (rice, milk) on Mondays', 'Practice meditation for emotional balance'],
-  Mars: ['Recite Hanuman Chalisa on Tuesdays', 'Donate red lentils on Tuesdays', 'Perform Mangal Shanti if Manglik dosha is present'],
-  Mercury: ['Chant Budh mantra on Wednesdays', 'Donate green items or books', 'Practice clear written communication daily'],
-  Jupiter: ['Chant Guru mantra on Thursdays', 'Donate yellow items or support education', 'Respect teachers and elders'],
-  Venus: ['Chant Shukra mantra on Fridays', 'Donate white sweets or artistic supplies', 'Cultivate harmony in relationships'],
-  Saturn: ['Chant Shani mantra on Saturdays', 'Serve the elderly and underprivileged', 'Practice discipline and patience'],
-  Rahu: ['Chant Rahu mantra; avoid impulsive decisions', 'Donate on Saturdays to reduce confusion', 'Maintain ethical boundaries in ambition'],
-  Ketu: ['Chant Ketu mantra; practice spiritual discipline', 'Donate blankets or support spiritual causes', 'Reduce attachment to outcomes'],
+  Sun: [
+    'Offer water to the rising Sun (Surya Arghya) daily with Gayatri or Aditya Hridayam Stotra',
+    'Donate copper, wheat, jaggery, or ruby-colored items on Sundays',
+    'Show deep respect to father, mentors, and elders',
+    'Wear authentic Ruby (Manikya) in gold on ring finger only if Sun is a functional benefic',
+  ],
+  Moon: [
+    'Chant "Om Som Somaya Namah" or recite Shiva Panchakshara Stotra on Mondays',
+    'Donate rice, milk, silver, white sweets, or water to travelers',
+    'Practice mindful breathing, meditation, and seek the blessings of mother',
+    'Wear natural Pearl (Moti) or Moonstone in silver on little finger',
+  ],
+  Mars: [
+    'Recite Hanuman Chalisa or Sundarkand every Tuesday',
+    'Donate red lentils (masoor dal), copper, or red flowers on Tuesdays',
+    'Channel physical energy through martial arts, gym, or sports rather than impulsive anger',
+    'Wear Red Coral (Moonga) in copper/gold on ring finger after verifying Manglik factors',
+  ],
+  Mercury: [
+    'Chant "Om Budhaya Namah" or recite Vishnu Sahasranama on Wednesdays',
+    'Donate green moong dal, green vegetables, or stationery to underprivileged students',
+    'Cultivate analytical writing, continuous learning, and clear transparent speech',
+    'Wear untreated Emerald (Panna) in gold/silver on little finger',
+  ],
+  Jupiter: [
+    'Recite Guru Stotram or chant "Om Brihaspataye Namah" on Thursdays',
+    'Donate chana dal, turmeric, yellow cloth, or support spiritual schools/Gurus',
+    'Cultivate righteous conduct (Dharma), humility, and generosity',
+    'Wear natural Yellow Sapphire (Pukhraj) or Topaz in gold on index finger',
+  ],
+  Venus: [
+    'Worship Goddess Lakshmi or chant Shri Suktam on Fridays',
+    'Donate white items (curd, sugar, ghee, silk clothing) on Fridays',
+    'Maintain artistic cleanliness, respect partner/women, and appreciate aesthetics',
+    'Wear natural Diamond or White Sapphire/Opal in silver/platinum on middle/index finger',
+  ],
+  Saturn: [
+    'Recite Hanuman Chalisa, Dasharatha Shani Stotra, or chant "Om Sham Shanicharaya Namah" on Saturdays',
+    'Donate mustard oil, black sesame seeds, iron, or black umbrellas to laborers/elderly',
+    'Cultivate discipline, perseverance, punctuality, and help underprivileged workers',
+    'Wear Blue Sapphire (Neelam) or Amethyst in silver only after trial and expert recommendation',
+  ],
+  Rahu: [
+    'Chant Durga Chalisa or "Om Bhram Bhreem Bhroum Sah Rahave Namah" on Saturdays/Wednesdays',
+    'Donate dark blankets, radish, or feed birds and stray animals',
+    'Stay grounded, avoid deceit/gambling, and practice clarity in worldly pursuits',
+    'Wear Hessonite Garnet (Gomed) in silver on middle finger if Rahu is well-placed in Kendra/Trikona',
+  ],
+  Ketu: [
+    'Worship Lord Ganesha and recite Ganesha Atharvashirsha on Tuesdays',
+    'Feed stray dogs, donate sesame seeds or multi-colored blankets',
+    'Practice introspective meditation, non-attachment, and study spiritual philosophy',
+    'Wear Cat\'s Eye (Chrysoberyl) in silver on little/middle finger under guidance',
+  ],
 };

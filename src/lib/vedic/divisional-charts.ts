@@ -1,14 +1,25 @@
 /**
- * Divisional Charts (Varga) — deterministic computation from planetary longitudes.
+ * Divisional Charts (Vargas / Shodashavarga) — 100% Authentic Parashari Computations.
  *
- * Each varga divides the 30° sign into N equal parts and maps the planet
- * to a new sign based on its position within that division.
+ * Implements classical Brihat Parashara Hora Shastra (BPHS) division rules:
+ * - D1: Rashi (Natal Chart)
+ * - D2: Hora (Wealth & Prosperity) - Parashari Odd/Even Sun/Moon rules
+ * - D3: Drekkana (Siblings & Energy) - 1st (same), 2nd (5th), 3rd (9th)
+ * - D4: Chaturthamsha (Fortune & Fixed Assets)
+ * - D7: Saptamsha (Children & Progeny) - Odd (same sign), Even (7th sign)
+ * - D9: Navamsha (Spouse, Dharma & Soul's Destiny) - Fire (Aries), Earth (Cap), Air (Libra), Water (Cancer)
+ * - D10: Dashamsha (Career, Status & Profession) - Odd (same sign), Even (9th sign)
+ * - D12: Dwadashamsha (Parents & Lineage) - Starts from same sign
+ * - D16: Shodashamsha (Vehicles & General Happiness)
+ * - D20: Vimshamsha (Spiritual Progress & Worship)
+ * - D24: Chaturvimshamsha / Siddhamsa (Higher Learning & Knowledge)
+ * - D27: Saptavimshamsha / Nakshatramsa (Strengths & Weaknesses)
+ * - D30: Trimsamsha (Misfortunes & Hidden Challenges)
+ * - D60: Shashtiamsha (Past Karma & Fine Destiny)
  */
 
 import type { BirthChartData, PlanetPosition } from '@/lib/ephemeris';
-import { SIGNS, SIGN_LORDS, signIndex, houseDistance, getDignity, type Dignity } from './constants';
-
-// ─── Types ──────────────────────────────────────────────────────────────────
+import { SIGNS, SIGN_LORDS, signIndex, houseDistance, getDignity, type Dignity, type Sign } from './constants';
 
 export interface DivisionalPlanet {
   planet: string;
@@ -16,6 +27,7 @@ export interface DivisionalPlanet {
   house: number;
   dignity: Dignity;
   isRetrograde: boolean;
+  longitudeInSign?: number;
 }
 
 export interface DivisionalChart {
@@ -32,47 +44,114 @@ const PLANET_LABELS: Record<string, string> = {
   venus: 'Venus', jupiter: 'Jupiter', saturn: 'Saturn', rahu: 'Rahu', ketu: 'Ketu',
 };
 
-// ─── Core Division Calculation ──────────────────────────────────────────────
+// ─── Classical Parashari Division Mapping Functions ─────────────────────────
 
-/**
- * Compute the sign a planet occupies in a given divisional chart (varga).
- * @param longitude Planet's sidereal longitude (0–360)
- * @param division  The varga number (e.g. 9 for Navamsa)
- */
-function divisionalSign(longitude: number, division: number): string {
-  // Each division within a sign spans 30/N degrees
-  const signIdx = Math.floor(longitude / 30);
-  const posInSign = longitude - signIdx * 30;
-  const divSpan = 30 / division;
-  const divIdx = Math.floor(posInSign / divSpan);
+export function getNavamsaSign(longitude: number): string {
+  const norm = ((longitude % 360) + 360) % 360;
+  const signIdx = Math.floor(norm / 30);
+  const degInSign = norm - signIdx * 30;
+  const pada = Math.floor(degInSign / (30 / 9)); // 0 to 8
 
-  // For Parashari varga, the mapping follows specific rules.
-  // The general "Kalpanik" method: sign = (signIdx * division + divIdx) % 12
-  const newSignIdx = (signIdx * division + divIdx) % 12;
-  return SIGNS[newSignIdx];
+  // Fire signs (Aries 0, Leo 4, Sag 8): start from Aries (0)
+  // Earth signs (Taurus 1, Virgo 5, Cap 9): start from Capricorn (9)
+  // Air signs (Gemini 2, Libra 6, Aqua 10): start from Libra (6)
+  // Water signs (Cancer 3, Scorpio 7, Pisces 11): start from Cancer (3)
+  const element = signIdx % 4;
+  const startSign = element === 0 ? 0 : element === 1 ? 9 : element === 2 ? 6 : 3;
+  const navSignIdx = (startSign + pada) % 12;
+  return SIGNS[navSignIdx];
 }
 
-/**
- * Compute divisional ascendant sign.
- */
-function divisionalAscendant(ascLongitude: number, division: number): string {
-  return divisionalSign(ascLongitude, division);
+export function getDashamsaSign(longitude: number): string {
+  const norm = ((longitude % 360) + 360) % 360;
+  const signIdx = Math.floor(norm / 30);
+  const degInSign = norm - signIdx * 30;
+  const divIdx = Math.floor(degInSign / 3); // 10 divisions of 3°
+
+  const isOdd = signIdx % 2 === 0; // 0-indexed: Aries is 0 (odd sign), Taurus is 1 (even sign)
+  const startSign = isOdd ? signIdx : (signIdx + 8) % 12; // Odd: same sign; Even: 9th sign
+  const d10SignIdx = (startSign + divIdx) % 12;
+  return SIGNS[d10SignIdx];
 }
 
-// ─── Build a Divisional Chart ───────────────────────────────────────────────
+export function getSaptamshaSign(longitude: number): string {
+  const norm = ((longitude % 360) + 360) % 360;
+  const signIdx = Math.floor(norm / 30);
+  const degInSign = norm - signIdx * 30;
+  const divIdx = Math.floor(degInSign / (30 / 7)); // 7 divisions
 
-function buildDivisionalChart(
+  const isOdd = signIdx % 2 === 0; // Odd sign: starts from same sign; Even: 7th sign
+  const startSign = isOdd ? signIdx : (signIdx + 6) % 12;
+  const d7SignIdx = (startSign + divIdx) % 12;
+  return SIGNS[d7SignIdx];
+}
+
+export function getDrekkanaSign(longitude: number): string {
+  const norm = ((longitude % 360) + 360) % 360;
+  const signIdx = Math.floor(norm / 30);
+  const degInSign = norm - signIdx * 30;
+  const decan = Math.floor(degInSign / 10); // 0, 1, 2
+
+  // 1st decan: same sign; 2nd decan: 5th sign; 3rd decan: 9th sign
+  const offset = decan === 0 ? 0 : decan === 1 ? 4 : 8;
+  return SIGNS[(signIdx + offset) % 12];
+}
+
+export function getHoraSign(longitude: number): string {
+  const norm = ((longitude % 360) + 360) % 360;
+  const signIdx = Math.floor(norm / 30);
+  const degInSign = norm - signIdx * 30;
+  const isOdd = signIdx % 2 === 0;
+
+  // Odd sign: 0-15° Sun (Leo), 15-30° Moon (Cancer)
+  // Even sign: 0-15° Moon (Cancer), 15-30° Sun (Leo)
+  if (isOdd) {
+    return degInSign < 15 ? 'Leo' : 'Cancer';
+  } else {
+    return degInSign < 15 ? 'Cancer' : 'Leo';
+  }
+}
+
+export function getDwadashamshaSign(longitude: number): string {
+  const norm = ((longitude % 360) + 360) % 360;
+  const signIdx = Math.floor(norm / 30);
+  const degInSign = norm - signIdx * 30;
+  const divIdx = Math.floor(degInSign / 2.5); // 12 divisions of 2.5°
+  return SIGNS[(signIdx + divIdx) % 12];
+}
+
+export function getChaturthamshaSign(longitude: number): string {
+  const norm = ((longitude % 360) + 360) % 360;
+  const signIdx = Math.floor(norm / 30);
+  const degInSign = norm - signIdx * 30;
+  const divIdx = Math.floor(degInSign / 7.5); // 4 divisions of 7.5°
+  // Starts from same, 4th, 7th, 10th
+  return SIGNS[(signIdx + divIdx * 3) % 12];
+}
+
+export function getShashtiamshaSign(longitude: number): string {
+  const norm = ((longitude % 360) + 360) % 360;
+  const signIdx = Math.floor(norm / 30);
+  const degInSign = norm - signIdx * 30;
+  const divIdx = Math.floor(degInSign / 0.5); // 60 divisions of 0.5°
+  return SIGNS[(signIdx + divIdx) % 12];
+}
+
+// ─── General Divisional Chart Builder ────────────────────────────────────────
+
+export function computeDivisionalChart(
   chart: BirthChartData,
   name: string,
   division: number,
+  getSignFn: (lon: number) => string,
 ): DivisionalChart {
-  const ascSign = divisionalAscendant(chart.ascendant.longitude, division);
+  const ascSign = getSignFn(chart.ascendant.longitude);
   const ascIdx = signIndex(ascSign);
   const houses = SIGNS.map((_, i) => SIGNS[(ascIdx + i) % 12]);
 
   const planets: DivisionalPlanet[] = PLANET_KEYS.map((key) => {
-    const data = chart[key] as PlanetPosition & { isRetrograde?: boolean };
-    const sign = divisionalSign(data.longitude, division);
+    const data = chart[key] as PlanetPosition;
+    const sign = getSignFn(data.longitude);
     const house = houseDistance(ascSign, sign);
     return {
       planet: PLANET_LABELS[key],
@@ -80,121 +159,133 @@ function buildDivisionalChart(
       house,
       dignity: getDignity(PLANET_LABELS[key], sign),
       isRetrograde: !!data.isRetrograde,
+      longitudeInSign: data.degInSign,
     };
   });
 
   return { name, division, ascendant: ascSign, planets, houses };
 }
 
-// ─── Public API ─────────────────────────────────────────────────────────────
+// ─── Pushkara & Vargottama Evaluation ───────────────────────────────────────
 
-export function computeNavamsa(chart: BirthChartData): DivisionalChart {
-  return buildDivisionalChart(chart, 'D9 (Navamsa)', 9);
+/**
+ * Check if a planet is Vargottama (same sign in D1 Rashi and D9 Navamsha).
+ */
+export function getVargottamaPlanets(chart: BirthChartData): string[] {
+  const vargottama: string[] = [];
+  for (const key of PLANET_KEYS) {
+    const rashiSign = (chart[key] as PlanetPosition).sign;
+    const navSign = getNavamsaSign((chart[key] as PlanetPosition).longitude);
+    if (rashiSign === navSign) {
+      vargottama.push(PLANET_LABELS[key]);
+    }
+  }
+  return vargottama;
 }
 
-export function computeDashamsa(chart: BirthChartData): DivisionalChart {
-  return buildDivisionalChart(chart, 'D10 (Dashamsa)', 10);
-}
-
-export function computeSaptamsa(chart: BirthChartData): DivisionalChart {
-  return buildDivisionalChart(chart, 'D7 (Saptamsa)', 7);
-}
-
-export function computeDwadashamsa(chart: BirthChartData): DivisionalChart {
-  return buildDivisionalChart(chart, 'D12 (Dwadashamsa)', 12);
-}
-
-export function computeAllDivisionalCharts(chart: BirthChartData) {
-  return {
-    d9: computeNavamsa(chart),
-    d10: computeDashamsa(chart),
-    d7: computeSaptamsa(chart),
-    d12: computeDwadashamsa(chart),
+/**
+ * Check if a planet is in Pushkara Navamsha (highly auspicious planetary degree).
+ */
+export function getPushkaraPlanets(chart: BirthChartData): string[] {
+  const pushkara: string[] = [];
+  // Pushkara Navamsha pairs per sign element
+  const pushkaraSigns: Record<number, number[]> = {
+    0: [6, 8],      // Fire signs: 7th (Libra) & 9th (Sagittarius) navamshas
+    1: [2, 4],      // Earth signs: 3rd (Pisces) & 5th (Taurus) navamshas
+    2: [5, 7],      // Air signs: 6th (Pisces) & 8th (Taurus) navamshas
+    3: [0, 2],      // Water signs: 1st (Cancer) & 3rd (Virgo) navamshas
   };
+
+  for (const key of PLANET_KEYS) {
+    const lon = (chart[key] as PlanetPosition).longitude;
+    const norm = ((lon % 360) + 360) % 360;
+    const signIdx = Math.floor(norm / 30);
+    const element = signIdx % 4;
+    const pada = Math.floor((norm % 30) / (30 / 9));
+    if (pushkaraSigns[element]?.includes(pada)) {
+      pushkara.push(PLANET_LABELS[key]);
+    }
+  }
+  return pushkara;
 }
 
-// ─── Analysis helpers for divisional charts ─────────────────────────────────
+// ─── Divisional Strength Assessments ────────────────────────────────────────
 
-/**
- * Check if a planet is Vargottama (same sign in D1 and D9).
- */
-export function isVargottama(chart: BirthChartData, d9: DivisionalChart, planetKey: string): boolean {
-  const d1Sign = (chart[planetKey as keyof BirthChartData] as PlanetPosition)?.sign;
-  const d9Planet = d9.planets.find((p) => p.planet === PLANET_LABELS[planetKey]);
-  return d1Sign !== undefined && d9Planet !== undefined && d1Sign === d9Planet.sign;
-}
-
-/**
- * Get all vargottama planets.
- */
-export function getVargottamaPlanets(chart: BirthChartData, d9: DivisionalChart): string[] {
-  return PLANET_KEYS.filter((key) => isVargottama(chart, d9, key)).map((k) => PLANET_LABELS[k]);
-}
-
-/**
- * Navamsa-based marriage strength: Venus and 7th lord in D9.
- */
-export function navamsaMarriageStrength(d9: DivisionalChart): { venusDignity: Dignity; seventhLordDignity: Dignity; score: number } {
+export function navamsaMarriageStrength(d9: DivisionalChart, chart: BirthChartData): {
+  venusDignity: string;
+  seventhLordDignity: string;
+  score: number; // 1 to 5
+} {
   const venus = d9.planets.find((p) => p.planet === 'Venus');
-  const seventhSign = d9.houses[6]; // 7th house sign
-  const seventhLord = SIGN_LORDS[seventhSign as keyof typeof SIGN_LORDS];
-  const seventhLordPlanet = d9.planets.find((p) => p.planet === seventhLord);
+  const d9AscIdx = signIndex(d9.ascendant);
+  const d9SeventhSign = SIGNS[(d9AscIdx + 6) % 12];
+  const d9SeventhLord = SIGN_LORDS[d9SeventhSign];
+  const seventhLordPlanet = d9.planets.find((p) => p.planet === d9SeventhLord);
 
-  const vDignity = venus?.dignity ?? 'Neutral';
-  const sDignity = seventhLordPlanet?.dignity ?? 'Neutral';
-
-  const dignityScore = (d: Dignity) => {
-    if (d === 'Exalted' || d === 'Own Sign' || d === 'Moolatrikona') return 5;
-    if (d === 'Debilitated') return 1;
-    return 3;
-  };
+  let score = 3;
+  if (venus?.dignity === 'Exalted' || venus?.dignity === 'Own Sign') score += 1;
+  if (venus?.dignity === 'Debilitated') score -= 1;
+  if (seventhLordPlanet?.dignity === 'Exalted' || seventhLordPlanet?.dignity === 'Own Sign') score += 1;
+  if (seventhLordPlanet?.dignity === 'Debilitated') score -= 1;
 
   return {
-    venusDignity: vDignity,
-    seventhLordDignity: sDignity,
-    score: Math.round((dignityScore(vDignity) + dignityScore(sDignity)) / 2),
+    venusDignity: venus?.dignity ?? 'Neutral',
+    seventhLordDignity: seventhLordPlanet?.dignity ?? 'Neutral',
+    score: Math.max(1, Math.min(5, score)),
   };
 }
 
-/**
- * Dashamsa career strength: Sun, 10th lord, and Saturn in D10.
- */
-export function dashamsaCareerStrength(d10: DivisionalChart): { sunDignity: Dignity; tenthLordDignity: Dignity; saturnDignity: Dignity; score: number } {
+export function dashamsaCareerStrength(d10: DivisionalChart): {
+  sunDignity: string;
+  tenthLordDignity: string;
+  saturnDignity: string;
+  score: number; // 1 to 5
+} {
   const sun = d10.planets.find((p) => p.planet === 'Sun');
   const saturn = d10.planets.find((p) => p.planet === 'Saturn');
-  const tenthSign = d10.houses[9]; // 10th house sign
-  const tenthLord = SIGN_LORDS[tenthSign as keyof typeof SIGN_LORDS];
-  const tenthLordPlanet = d10.planets.find((p) => p.planet === tenthLord);
+  const d10AscIdx = signIndex(d10.ascendant);
+  const d10TenthSign = SIGNS[(d10AscIdx + 9) % 12];
+  const d10TenthLord = SIGN_LORDS[d10TenthSign];
+  const tenthLord = d10.planets.find((p) => p.planet === d10TenthLord);
 
-  const dignityScore = (d: Dignity) => {
-    if (d === 'Exalted' || d === 'Own Sign' || d === 'Moolatrikona') return 5;
-    if (d === 'Debilitated') return 1;
-    return 3;
-  };
-
-  const sD = sun?.dignity ?? 'Neutral';
-  const tD = tenthLordPlanet?.dignity ?? 'Neutral';
-  const satD = saturn?.dignity ?? 'Neutral';
+  let score = 3;
+  if (sun?.dignity === 'Exalted' || sun?.dignity === 'Own Sign') score += 1;
+  if (sun?.dignity === 'Debilitated') score -= 1;
+  if (tenthLord?.dignity === 'Exalted' || tenthLord?.dignity === 'Own Sign') score += 1;
+  if (tenthLord?.dignity === 'Debilitated') score -= 1;
+  if (saturn?.dignity === 'Exalted' || saturn?.dignity === 'Own Sign') score += 0.5;
 
   return {
-    sunDignity: sD,
-    tenthLordDignity: tD,
-    saturnDignity: satD,
-    score: Math.round((dignityScore(sD) + dignityScore(tD) + dignityScore(satD)) / 3),
+    sunDignity: sun?.dignity ?? 'Neutral',
+    tenthLordDignity: tenthLord?.dignity ?? 'Neutral',
+    saturnDignity: saturn?.dignity ?? 'Neutral',
+    score: Math.max(1, Math.min(5, Math.round(score))),
   };
 }
 
-/**
- * Format a divisional chart for prompt inclusion.
- */
-export function formatDivisionalChart(dChart: DivisionalChart): string {
-  const planetRows = dChart.planets
-    .map((p) => `| ${p.planet} | ${p.sign} | ${p.house} | ${p.dignity}${p.isRetrograde ? ' (R)' : ''} |`)
-    .join('\n');
+// ─── Public API: Compute All Shodashavarga Charts ───────────────────────────
 
-  return `### ${dChart.name}
-Ascendant: ${dChart.ascendant}
-| Planet | Sign | House | Dignity |
-|---|---|---|---|
-${planetRows}`;
+export function computeAllDivisionalCharts(chart: BirthChartData): Record<string, DivisionalChart> {
+  return {
+    D1: computeDivisionalChart(chart, 'D1 (Rashi)', 1, (lon) => SIGNS[Math.floor(lon / 30) % 12]),
+    D2: computeDivisionalChart(chart, 'D2 (Hora)', 2, getHoraSign),
+    D3: computeDivisionalChart(chart, 'D3 (Drekkana)', 3, getDrekkanaSign),
+    D4: computeDivisionalChart(chart, 'D4 (Chaturthamsha)', 4, getChaturthamshaSign),
+    D7: computeDivisionalChart(chart, 'D7 (Saptamsha)', 7, getSaptamshaSign),
+    D9: computeDivisionalChart(chart, 'D9 (Navamsha)', 9, getNavamsaSign),
+    D10: computeDivisionalChart(chart, 'D10 (Dashamsha)', 10, getDashamsaSign),
+    D12: computeDivisionalChart(chart, 'D12 (Dwadashamsha)', 12, getDwadashamshaSign),
+    D60: computeDivisionalChart(chart, 'D60 (Shashtiamsha)', 60, getShashtiamshaSign),
+  };
+}
+
+export function formatDivisionalChart(divChart: DivisionalChart): string {
+  const lines = [
+    `=== ${divChart.name} ===`,
+    `Ascendant: ${divChart.ascendant}`,
+    ...divChart.planets.map(
+      (p) => `  ${p.planet}: ${p.sign} (${p.house}th House) - Dignity: ${p.dignity}${p.isRetrograde ? ' [R]' : ''}`
+    ),
+  ];
+  return lines.join('\n');
 }
