@@ -77,6 +77,7 @@ export default function Navbar({ locale }: { locale: string }) {
   };
 
   const navLinks = [
+    { href: '/horoscope', label: t('nav_horoscope', 'Horoscope'), icon: '🔮' },
     { href: '/palm-reading', label: t('palm_reading'), icon: '✋' },
     { href: '/birth-chart', label: t('birth_chart'), icon: '🌌' },
     { href: '/marriage-bichar', label: t('marriage_bichar'), icon: '💍' },
@@ -98,7 +99,7 @@ export default function Navbar({ locale }: { locale: string }) {
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
                 <span className={styles.navLinkIcon}>{link.icon}</span>
-                {link.label}
+                <span className={styles.navLinkLabel}>{link.label}</span>
               </Link>
             ))}
             {session && (

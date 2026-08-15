@@ -50,6 +50,10 @@ export default function Footer() {
             <Star size={14} className={styles.columnIcon} />
             {t('footer_features')}
           </h4>
+          <Link href="/horoscope" className={styles.link}>
+            <span className={styles.linkArrow}>→</span>
+            {t('nav_horoscope', 'Horoscope')}
+          </Link>
           <Link href="/palm-reading" className={styles.link}>
             <span className={styles.linkArrow}>→</span>
             {t('palm_reading')}

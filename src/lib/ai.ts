@@ -41,11 +41,18 @@ export function fillTemplate(template: string, vars: Record<string, string | num
   });
 }
 
+export interface AiOptions {
+  contextId?: string;
+  temperature?: number;
+  topP?: number;
+}
+
 export async function callGrokText(
   model: string,
   systemPrompt: string,
   userPrompt: string,
   maxTokens: number,
+  options?: AiOptions
 ): Promise<GrokResponse> {
   const config = getApiConfig();
   
@@ -57,13 +64,20 @@ export async function callGrokText(
     { role: 'user',   content: userPrompt },
   ];
 
+  const bodyPayload: any = { model: finalModel, messages, max_tokens: maxTokens };
+  if (options) {
+    if (options.contextId) bodyPayload.context_id = options.contextId;
+    if (options.temperature !== undefined) bodyPayload.temperature = options.temperature;
+    if (options.topP !== undefined) bodyPayload.top_p = options.topP;
+  }
+
   const res = await fetch(config.url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${config.key}`,
     },
-    body: JSON.stringify({ model: finalModel, messages, max_tokens: maxTokens }),
+    body: JSON.stringify(bodyPayload),
     signal: AbortSignal.timeout(90000), // 90s timeout for structured responses
   });
 
@@ -89,6 +103,7 @@ export async function callGrokVision(
   userText: string,
   imageUrls: string[],
   maxTokens: number,
+  options?: AiOptions
 ): Promise<GrokResponse> {
   const config = getApiConfig();
   
@@ -98,7 +113,7 @@ export async function callGrokVision(
     if (!geminiKey) {
       throw new Error('You are using a Groq API key, but Groq decommissioned their vision models. Please add a GEMINI_API_KEY to your .env.local to enable Palm Reading for free, or use a real xAI Grok API key.');
     }
-    return callGeminiVision(geminiKey, systemPrompt, userText, imageUrls);
+    return callGeminiVision(geminiKey, systemPrompt, userText, imageUrls, options);
   }
 
   const finalModel = config.defaultVisionModel;
@@ -114,13 +129,20 @@ export async function callGrokVision(
   }
   messages.push({ role: 'user', content: userContent });
 
+  const bodyPayload: any = { model: finalModel, messages, max_tokens: maxTokens };
+  if (options) {
+    if (options.contextId) bodyPayload.context_id = options.contextId;
+    if (options.temperature !== undefined) bodyPayload.temperature = options.temperature;
+    if (options.topP !== undefined) bodyPayload.top_p = options.topP;
+  }
+
   const res = await fetch(config.url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${config.key}`,
     },
-    body: JSON.stringify({ model: finalModel, messages, max_tokens: maxTokens }),
+    body: JSON.stringify(bodyPayload),
     signal: AbortSignal.timeout(90000), // 90s for vision
   });
 
@@ -148,6 +170,7 @@ async function callGeminiVision(
   systemPrompt: string,
   userText: string,
   imageUrls: string[], // base64 data URIs
+  options?: AiOptions
 ): Promise<GrokResponse> {
   const parts: any[] = [];
   
@@ -175,9 +198,18 @@ async function callGeminiVision(
     }
   }
 
-  const payload = {
+  const payload: any = {
     contents: [{ parts }]
   };
+
+  if (options) {
+    if (options.contextId) payload.cachedContent = options.contextId;
+    if (options.temperature !== undefined || options.topP !== undefined) {
+      payload.generationConfig = {};
+      if (options.temperature !== undefined) payload.generationConfig.temperature = options.temperature;
+      if (options.topP !== undefined) payload.generationConfig.topP = options.topP;
+    }
+  }
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 

@@ -82,17 +82,38 @@
   animation: zodiacTwinkle 5s ease-in-out infinite;
 }
 
-.zodiacArm:nth-child(3n) .zodiacIcon { animation-delay: 1.4s; }
-.zodiacArm:nth-child(4n) .zodiacIcon { animation-delay: 2.6s; }
+.zodiacImg {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  display: block !important;
+  border: 1.5px solid rgba(228, 178, 92, 0.8) !important;
+  box-shadow: 0 0 12px rgba(228, 178, 92, 0.6), 0 4px 10px rgba(0, 0, 0, 0.8) !important;
+  filter: drop-shadow(0 0 8px rgba(232, 182, 76, 0.75)) !important;
+  animation: zodiacTwinkle 5s ease-in-out infinite;
+  transition: transform 0.3s;
+}
+
+.zodiacArm:nth-child(3n) .zodiacIcon,
+.zodiacArm:nth-child(3n) .zodiacImg { animation-delay: 1.4s; }
+.zodiacArm:nth-child(4n) .zodiacIcon,
+.zodiacArm:nth-child(4n) .zodiacImg { animation-delay: 2.6s; }
 
 [data-theme='light'] .zodiacIcon {
   stroke: url(#zsGoldDeep);
 }
 
-@keyframes zodiacTwinkle {
-  0%, 100% { opacity: 0.65; }
-  50% { opacity: 1; }
+[data-theme='light'] .zodiacImg {
+  border-color: rgba(200, 134, 10, 0.9) !important;
+  box-shadow: 0 0 10px rgba(200, 134, 10, 0.4) !important;
 }
+
+@keyframes zodiacTwinkle {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
 
 /* ---- Central Sun ---- */
 .sunHolder {

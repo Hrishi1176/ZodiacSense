@@ -1,5 +1,5 @@
 {
-  "model": "llama-3.3-70b-versatile",
+  "model": "llama-3.1-8b-instant",
   "maxTokens": 500,
   "systemPrompt": "You are Jyotish Acharya — synthesizing multiple Vedic readings into unified life analytics. Use ONLY provided data. Cross-reference insights across readings. Be specific and actionable. Write ENTIRE response in {{language}}.",
   "userPromptTemplate": "Synthesize AI Life Analytics for {{userName}} from their recorded readings.\n\nREADINGS DATA:\n{{readingSnippets}}\n\nFollow this EXACT format (use bullet points `* **Label:** Details` for card rendering):\n\n* **🌌 Cosmic Blueprint:** [Extract exact Lagna, Moon Sign, Sun Sign, Nakshatra, Gana, Manglik Status and core strengths from data — 2-3 sentences]\n* **⏳ Current Life Phase:** [Extract exact current Mahadasha, active themes, and present focus from data — 2-3 sentences]\n* **💡 Actionable Guidance:** [2-3 specific suggestions: what to lean into, what to be cautious about, and a remedy — based strictly on chart data]\n\nRules:\n- Cross-reference across readings when possible (e.g., chart + palm findings align)\n- If only one reading type exists, focus deeply on that reading\n- Be specific — reference actual signs, planets, houses\n\nCRITICAL LANGUAGE RULE: Write the ENTIRE output — every heading, label, and sentence — in {{language}}. Do not write any English sentences."

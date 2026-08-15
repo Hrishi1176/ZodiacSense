@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, Star, Zap, Heart } from 'lucide-react';
+import { Sparkles, ArrowRight, Star, Zap, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import Cosmic3DScene from '@/components/Cosmic3DScene';
 import styles from './page.module.css';
 
@@ -22,6 +22,14 @@ const fadeUp = {
 };
 
 const cards = [
+  {
+    icon: '/chart_icon.png',
+    key: 'horoscope_title',
+    descKey: 'horoscope_subtitle',
+    tagKey: 'timeframe_daily',
+    href: '/horoscope',
+    gradient: 'linear-gradient(135deg, #10b981 0%, #3b82f6 100%)',
+  },
   {
     icon: '/palm_icon.png',
     key: 'palm_reading',
@@ -51,6 +59,10 @@ const cards = [
 export default function Home() {
   const { t } = useTranslation();
   const [totalReadings, setTotalReadings] = useState<string>('50K+');
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
+  const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
+  const sliderRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch('/api/stats/global')
@@ -67,6 +79,53 @@ export default function Home() {
       })
       .catch(err => console.error('Failed to fetch stats:', err));
   }, []);
+
+  const updateScrollState = () => {
+    if (!sliderRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+    setCanScrollLeft(scrollLeft > 10);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+
+    const cardWidth = scrollWidth / cards.length;
+    const current = Math.round(scrollLeft / cardWidth);
+    setActiveIndex(Math.min(Math.max(current, 0), cards.length - 1));
+  };
+
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (slider) {
+      updateScrollState();
+      slider.addEventListener('scroll', updateScrollState, { passive: true });
+      window.addEventListener('resize', updateScrollState);
+      return () => {
+        slider.removeEventListener('scroll', updateScrollState);
+        window.removeEventListener('resize', updateScrollState);
+      };
+    }
+  }, []);
+
+  const scrollToCard = (index: number) => {
+    if (!sliderRef.current) return;
+    const slider = sliderRef.current;
+    const cardElement = slider.children[index] as HTMLElement;
+    if (cardElement) {
+      slider.scrollTo({
+        left: cardElement.offsetLeft - slider.offsetLeft,
+        behavior: 'smooth',
+      });
+      setActiveIndex(index);
+    }
+  };
+
+  const handleSlide = (direction: 'left' | 'right') => {
+    if (!sliderRef.current) return;
+    const slider = sliderRef.current;
+    const scrollAmount = (slider.children[0] as HTMLElement)?.offsetWidth || 340;
+    slider.scrollBy({
+      left: direction === 'left' ? -scrollAmount - 24 : scrollAmount + 24,
+      behavior: 'smooth',
+    });
+  };
 
   const stats = [
     { value: totalReadings, label: t('home_stat_readings'), icon: <Star size={14} /> },
@@ -127,46 +186,83 @@ export default function Home() {
           ))}
         </motion.div>
 
-        {/* Feature Cards */}
-        <motion.div className={styles.featuresGrid}>
-          {cards.map((card, i) => (
-            <motion.div
-              key={card.key}
-              custom={5 + i}
-              variants={fadeUp}
-              className={`${styles.featureCard} glass-panel`}
-              onClick={() => (window.location.href = card.href)}
-              style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(5, 5, 26, 0.35) 0%, rgba(5, 5, 26, 0.92) 100%), url(${card.icon})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-              whileHover={{ y: -8 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+        {/* Feature Cards Slider Container */}
+        <div className={styles.sliderContainer}>
+          {/* Navigation Controls */}
+          <div className={styles.sliderControls}>
+            <button
+              className={`${styles.sliderNavBtn} ${!canScrollLeft ? styles.navBtnDisabled : ''}`}
+              onClick={() => handleSlide('left')}
+              aria-label="Previous Slide"
+              disabled={!canScrollLeft}
             >
-              {/* Accent gradient bar */}
-              <div className={styles.cardAccent} style={{ background: card.gradient }} />
+              <ChevronLeft size={22} />
+            </button>
+            <button
+              className={`${styles.sliderNavBtn} ${!canScrollRight ? styles.navBtnDisabled : ''}`}
+              onClick={() => handleSlide('right')}
+              aria-label="Next Slide"
+              disabled={!canScrollRight}
+            >
+              <ChevronRight size={22} />
+            </button>
+          </div>
 
-              <div className={styles.cardHeader}>
-                <span className={styles.cardTag} style={{ background: card.gradient }}>
-                  {t(card.tagKey)}
-                </span>
-                <span className={styles.cardArrow}>
-                  <ArrowRight size={20} />
-                </span>
-              </div>
+          {/* Single-line Slider Track */}
+          <div className={styles.sliderTrackWrapper}>
+            <motion.div ref={sliderRef} className={styles.featuresSliderTrack}>
+              {cards.map((card, i) => (
+                <motion.div
+                  key={card.key}
+                  custom={5 + i}
+                  variants={fadeUp}
+                  className={`${styles.featureCard} glass-panel`}
+                  onClick={() => (window.location.href = card.href)}
+                  style={{
+                    backgroundImage: `linear-gradient(to bottom, rgba(5, 5, 26, 0.35) 0%, rgba(5, 5, 26, 0.92) 100%), url(${card.icon})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                >
+                  {/* Accent gradient bar */}
+                  <div className={styles.cardAccent} style={{ background: card.gradient }} />
 
-              <div className={styles.cardContent}>
-                <h3>{t(card.key)}</h3>
-                <p>{t(card.descKey)}</p>
-              </div>
+                  <div className={styles.cardHeader}>
+                    <span className={styles.cardTag} style={{ background: card.gradient }}>
+                      {t(card.tagKey)}
+                    </span>
+                    <span className={styles.cardArrow}>
+                      <ArrowRight size={20} />
+                    </span>
+                  </div>
 
-              <div className={styles.cardFooter}>
-                <span className={styles.cardCta}>{t('home_explore')}</span>
-              </div>
+                  <div className={styles.cardContent}>
+                    <h3>{t(card.key)}</h3>
+                    <p>{t(card.descKey)}</p>
+                  </div>
+
+                  <div className={styles.cardFooter}>
+                    <span className={styles.cardCta}>{t('home_explore')}</span>
+                  </div>
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
-        </motion.div>
+          </div>
+
+          {/* Pagination Indicators / Dots */}
+          <div className={styles.sliderDots}>
+            {cards.map((_, idx) => (
+              <button
+                key={idx}
+                className={`${styles.sliderDot} ${activeIndex === idx ? styles.activeDot : ''}`}
+                onClick={() => scrollToCard(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </div>
       </motion.main>
     </div>
   );

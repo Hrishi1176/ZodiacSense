@@ -330,30 +330,46 @@
 }
 
 .centerFill {
-  fill: rgba(10, 10, 34, 0.55);
+  fill: rgba(10, 10, 34, 0.7);
 }
 
 [data-theme='light'] .centerFill {
-  fill: rgba(255, 255, 255, 0.8);
+  fill: rgba(255, 255, 255, 0.85);
+}
+
+.centerMedallionBg {
+  fill: rgba(8, 7, 24, 0.95);
+}
+
+[data-theme='light'] .centerMedallionBg {
+  fill: rgba(240, 243, 248, 0.95);
+}
+
+.centerMedallionRing {
+  fill: none;
+  stroke: url(#zsGold);
+  stroke-width: 1.4;
+  filter: drop-shadow(0 0 8px rgba(232, 182, 76, 0.65));
 }
 
 .centerGlyphIcon {
-  stroke: url(#zsGold);
-  filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.75));
-  animation: glyphPulse 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(228, 178, 92, 0.5));
 }
 
 .centerLabel {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  fill: rgba(139, 92, 246, 0.95);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  fill: #c4b5fd;
+  filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.45));
 }
 
 .centerSub {
-  font-size: 10px;
-  font-weight: 600;
-  fill: rgba(148, 163, 184, 0.9);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  fill: url(#zsGold);
+  filter: drop-shadow(0 0 6px rgba(232, 182, 76, 0.75));
 }
 
 [data-theme='light'] .centerLabel {
@@ -361,7 +377,7 @@
 }
 
 [data-theme='light'] .centerSub {
-  fill: #475569;
+  fill: url(#zsGoldDeep);
 }
 
 /* ─── Legend ────────────────────────────────────────────────────────────── */

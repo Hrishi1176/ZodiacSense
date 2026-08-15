@@ -1,6 +1,8 @@
 {
   "title": "ZodiacSense",
   "home": "मुख पृष्ठ",
+  "horoscope": "आज का राशिफल",
+  "nav_horoscope": "आज का राशिफल",
   "palm_reading": "हस्त रेखा विचार",
   "birth_chart": "जन्म कुण्डली",
   "marriage_bichar": "विवाह विचार",
@@ -104,6 +106,8 @@
   "footer_tagline": "उन्नत AI मॉडलों द्वारा संचालित ब्रह्मांडीय मार्गदर्शन",
 
   "loader_default": "सितारों से परामर्श हो रहा है...",
+  "auth_required": "कृपया पहले साइन इन करें",
+  "select_rashi_req": "कृपया अपनी राशि चुनें",
 
   "logout_title": "साइन आउट करें?",
   "logout_desc": "क्या आप वाकई ZodiacSense से साइन आउट करना चाहते हैं? आप अपनी कुंडली और कोटा देखने के लिए कभी भी वापस साइन इन कर सकते हैं।",
@@ -159,6 +163,17 @@
   "bg_sound_on": "पृष्ठभूमि व्याख्यान चलाएँ",
   "bg_sound_off": "पृष्ठभूमि व्याख्यान म्यूट करें",
   "translating_report": "आपकी रिपोर्ट चुनी गई भाषा में अनुवादित की जा रही है…",
+
+  "horoscope_title": "आज का राशिफल (Today's Horoscope)",
+  "horoscope_subtitle": "आज का ज्योतिषीय मार्गदर्शन प्राप्त करने के लिए अपनी राशि चुनें।",
+  "horoscope_remaining_today": "आज की शेष भविष्यवाणियाँ: {{count}}",
+  "horoscope_btn_reveal_today": "आज का राशिफल देखें",
+  "horoscope_chart_hint": "आपकी आखिरी कुंडली से चंद्र राशि पहले से चुनी गई है",
+  "timeframe_daily": "दैनिक",
+  "timeframe_weekly": "साप्ताहिक",
+  "timeframe_monthly": "मासिक",
+  "timeframe_yearly": "वार्षिक",
+  "timeframe_custom": "कस्टम",
 
   "home_badge": "AI-संचालित ज्योतिष",
   "home_stat_readings": "रीडिंग पूर्ण",

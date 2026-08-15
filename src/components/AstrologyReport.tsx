@@ -4,16 +4,10 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import {
-  TbZodiacAries, TbZodiacTaurus, TbZodiacGemini, TbZodiacCancer,
-  TbZodiacLeo, TbZodiacVirgo, TbZodiacLibra, TbZodiacScorpio,
-  TbZodiacSagittarius, TbZodiacCapricorn, TbZodiacAquarius, TbZodiacPisces,
-} from 'react-icons/tb';
-import type { IconType } from 'react-icons';
 import styles from './AstrologyReport.module.css';
 import GoldDefs from './GoldDefs';
 import ZodiacWheelChart, { PLANET_ICONS, PLANET_ICON_COLORS } from './ZodiacWheelChart';
-
+import { SignIcon, DashaIcon } from './ZodiacIcons';
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 interface YogaData { name: string; strength: string; confidence: number; description?: string }
@@ -45,16 +39,7 @@ interface AstrologyReportProps {
 // ─── Constants ──────────────────────────────────────────────────────────────
 
 const SIGNS = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-const SIGN_ICONS: IconType[] = [
-  TbZodiacAries, TbZodiacTaurus, TbZodiacGemini, TbZodiacCancer,
-  TbZodiacLeo, TbZodiacVirgo, TbZodiacLibra, TbZodiacScorpio,
-  TbZodiacSagittarius, TbZodiacCapricorn, TbZodiacAquarius, TbZodiacPisces,
-];
-// South Indian chart layout: grid position → sign index
-// Row 0: Pisces(11), Aries(0), Taurus(1), Gemini(2)
-// Row 1: Aquarius(10), [center], [center], Cancer(3)
-// Row 2: Capricorn(9), [center], [center], Leo(4)
-// Row 3: Sagittarius(8), Scorpio(7), Libra(6), Virgo(5)
+
 const SOUTH_INDIAN_LAYOUT = [
   11, 0, 1, 2,
   10, -1, -1, 3,
@@ -66,14 +51,6 @@ function signIndex(sign: string): number {
   return SIGNS.indexOf(sign);
 }
 
-/** Zodiac sign icon from react-icons (Tabler set) */
-function SignIcon({ sign, className }: { sign: string; className?: string }) {
-  const Icon = SIGN_ICONS[signIndex(sign)];
-  if (!Icon) return null;
-  return <Icon className={className || styles.signIcon} aria-hidden="true" />;
-}
-
-// ─── Sub-components ─────────────────────────────────────────────────────────
 
 function DignityBadge({ dignity }: { dignity?: string }) {
   const { t } = useTranslation();
@@ -152,7 +129,7 @@ function ChartGrid({ ascendant, planets, isMini = false }: {
               <div key={i} className={`${cellClass} ${centerClass}`}>
                 {!isMini && (
                   <div className={styles.centerLabel}>
-                    <SignIcon sign={ascendant} className={styles.signIconCenter} /><br />
+                    <SignIcon sign={ascendant} size={28} className={styles.signIconCenter} /><br />
                     <span className={styles.centerLabelSmall}>{t('report_lagna')}</span>
                   </div>
                 )}
@@ -170,8 +147,9 @@ function ChartGrid({ ascendant, planets, isMini = false }: {
           <div key={i} className={cellClass}>
             {!isMini && <span className={styles.chartCellHouse}>{house}</span>}
             <span className={signClass} title={t(`signs.${sign}`, sign)}>
-              <SignIcon sign={sign} />
+              <SignIcon sign={sign} size={isMini ? 16 : 22} />
             </span>
+
             <span className={planetClass}>
               {signPlanets.map((p) => {
                 const PlanetIcon = PLANET_ICONS[p.planet];
@@ -291,15 +269,15 @@ export default function AstrologyReport({ result, metadata, birthData }: Astrolo
         <div className={styles.overviewGrid}>
           <div className={styles.overviewItem}>
             <span className={styles.overviewLabel}>{t('report_ascendant')}</span>
-            <span className={styles.overviewValue}><SignIcon sign={ascendant} /> {signName(ascendant)}</span>
+            <span className={styles.overviewValue}><SignIcon sign={ascendant} size={28} /> {signName(ascendant)}</span>
           </div>
           <div className={styles.overviewItem}>
             <span className={styles.overviewLabel}>{t('report_moon_sign')}</span>
-            <span className={styles.overviewValue}><SignIcon sign={moonSign} /> {signName(moonSign)}</span>
+            <span className={styles.overviewValue}><SignIcon sign={moonSign} size={28} /> {signName(moonSign)}</span>
           </div>
           <div className={styles.overviewItem}>
             <span className={styles.overviewLabel}>{t('report_sun_sign')}</span>
-            <span className={styles.overviewValue}><SignIcon sign={sunSign} /> {signName(sunSign)}</span>
+            <span className={styles.overviewValue}><SignIcon sign={sunSign} size={28} /> {signName(sunSign)}</span>
           </div>
           <div className={styles.overviewItem}>
             <span className={styles.overviewLabel}>{t('report_nakshatra')}</span>
@@ -307,8 +285,15 @@ export default function AstrologyReport({ result, metadata, birthData }: Astrolo
           </div>
           <div className={styles.overviewItem}>
             <span className={styles.overviewLabel}>{t('report_current_dasha')}</span>
-            <span className={styles.overviewValue}>{metadata.currentDasha ? planetName(metadata.currentDasha) : '—'}</span>
+            <span className={styles.overviewValue}>
+              {metadata.currentDasha ? (
+                <>
+                  <DashaIcon dasha={metadata.currentDasha} size={28} /> {planetName(metadata.currentDasha)}
+                </>
+              ) : '—'}
+            </span>
           </div>
+
           {metadata.verified !== undefined && (
             <div className={styles.overviewItem}>
               <span className={styles.overviewLabel}>{t('report_verification')}</span>
@@ -390,8 +375,9 @@ export default function AstrologyReport({ result, metadata, birthData }: Astrolo
                     {planetName(p.planet)}
                     {p.isRetrograde && <span className={styles.badgeRetrograde} title={t('report_retrograde')}>℞</span>}
                   </td>
-                  <td><SignIcon sign={p.sign} /> {signName(p.sign)}</td>
+                  <td><SignIcon sign={p.sign} size={22} /> {signName(p.sign)}</td>
                   <td>{p.house}</td>
+
                   <td><DignityBadge dignity={p.dignity} /></td>
                 </tr>
                 );

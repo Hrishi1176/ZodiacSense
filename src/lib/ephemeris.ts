@@ -649,3 +649,37 @@ Manglik Status: ${manglikStatus}
 Whole-Sign Houses (1st = ${chart.houses[0]}):
 ${chart.houses.map((h, i) => `  ${i + 1}th House: ${h}`).join('\n')}`;
 }
+
+export function computeCurrentTransits(): string {
+  const now = new Date();
+  const year = now.getUTCFullYear();
+  const month = now.getUTCMonth() + 1;
+  const day = now.getUTCDate();
+  const hourDec = now.getUTCHours() + now.getUTCMinutes() / 60.0 + now.getUTCSeconds() / 3600.0;
+  
+  const jd = sw.julday(year, month, day, hourDec, 1);
+  const ayanamsha = sw.get_ayanamsa_ut(jd);
+
+  const sun = getPlanet(jd, SE_SUN);
+  const moon = getPlanet(jd, SE_MOON);
+  const mars = getPlanet(jd, SE_MARS);
+  const mercury = getPlanet(jd, SE_MERCURY);
+  const venus = getPlanet(jd, SE_VENUS);
+  const jupiter = getPlanet(jd, SE_JUPITER);
+  const saturn = getPlanet(jd, SE_SATURN);
+  const rahu = getPlanet(jd, SE_TRUE_NODE);
+  
+  const ketuLon = normDeg(rahu.longitude + 180);
+  const ketu = degreeToSignInfo(ketuLon);
+
+  return `LIVE PLANETARY TRANSITS (Swiss Ephemeris / Lahiri Ayanamsha: ${ayanamsha.toFixed(4)}°):
+Sun: ${sun.sign} ${sun.degree}${sun.isRetrograde ? ' [Retrograde]' : ''}
+Moon: ${moon.sign} ${moon.degree}${moon.isRetrograde ? ' [Retrograde]' : ''}
+Mars: ${mars.sign} ${mars.degree}${mars.isRetrograde ? ' [Retrograde]' : ''}
+Mercury: ${mercury.sign} ${mercury.degree}${mercury.isRetrograde ? ' [Retrograde]' : ''}
+Venus: ${venus.sign} ${venus.degree}${venus.isRetrograde ? ' [Retrograde]' : ''}
+Jupiter: ${jupiter.sign} ${jupiter.degree}${jupiter.isRetrograde ? ' [Retrograde]' : ''}
+Saturn: ${saturn.sign} ${saturn.degree}${saturn.isRetrograde ? ' [Retrograde]' : ''}
+Rahu: ${rahu.sign} ${rahu.degree}${rahu.isRetrograde ? ' [Retrograde]' : ''}
+Ketu: ${ketu.sign} ${ketu.degree}`;
+}

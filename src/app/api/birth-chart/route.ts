@@ -105,6 +105,7 @@ export async function POST(req: Request) {
       finalSystemPrompt,
       userPrompt,
       birthChartPrompt.maxTokens,
+      { temperature: 0.2, topP: 0.9 }
     );
 
     // ─── Step 7: Self-verification (catch hallucinations) ────────────────

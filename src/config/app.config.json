@@ -1,9 +1,10 @@
 {
   "quotas": {
-    "palm_reading": 3,
-    "birth_chart": 3,
-    "marriage_bichar": 3,
-    "chatbot": 5
+    "palm_reading": 1,
+    "birth_chart": 10,
+    "marriage_bichar": 1,
+    "chatbot": 3,
+    "horoscope_daily": 1
   },
   "features": {
     "autoHandDetect": true,

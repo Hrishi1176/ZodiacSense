@@ -73,6 +73,7 @@ export async function POST(req: Request) {
           finalSystemPrompt,
           userPrompt,
           dashboardPrompt.maxTokens,
+          { temperature: 0.2, topP: 0.9 }
         );
         aiSummary = aiResponse.text;
       } catch (aiErr) {

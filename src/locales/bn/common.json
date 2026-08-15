@@ -1,6 +1,8 @@
 {
   "title": "ZodiacSense",
   "home": "হোম",
+  "horoscope": "আজকের রাশিফল",
+  "nav_horoscope": "আজকের রাশিফল",
   "palm_reading": "হস্তরেখা বিচার",
   "birth_chart": "জন্ম কুণ্ডলী",
   "marriage_bichar": "বিবাহ বিচার",
@@ -103,7 +105,9 @@
   "footer_rights": "সর্বস্বত্ব সংরক্ষিত।",
   "footer_tagline": "উন্নত AI মডেল দ্বারা চালিত মহাজাগতিক পথনির্দেশ",
 
-  "loader_default": "নক্ষত্রদের সাথে পরামর্শ চলছে...",
+  "loader_default": "নক্ষত্রের পরামর্শ নেওয়া হচ্ছে...",
+  "auth_required": "অনুগ্রহ করে প্রথমে সাইন ইন করুন",
+  "select_rashi_req": "অনুগ্রহ করে আপনার রাশি নির্বাচন করুন",
 
   "logout_title": "সাইন আউট করবেন?",
   "logout_desc": "আপনি কি নিশ্চিতভাবে ZodiacSense থেকে সাইন আউট করতে চান? আপনার জন্ম কুণ্ডলী এবং কোটা দেখতে যেকোনো সময় আবার সাইন ইন করতে পারবেন।",
@@ -159,6 +163,17 @@
   "bg_sound_on": "পটভূমি বর্ণনা চালান",
   "bg_sound_off": "পটভূমি বর্ণনা মিউট করুন",
   "translating_report": "আপনার রিপোর্ট নির্বাচিত ভাষায় অনুবাদ করা হচ্ছে…",
+
+  "horoscope_title": "আজকের রাশিফল (Today's Horoscope)",
+  "horoscope_subtitle": "আপনার রাশি নির্বাচন করে আজকের শুভ দিকনির্দেশনা ও দিনলিপি জেনে নিন।",
+  "horoscope_remaining_today": "আজকের অবশিষ্ট পূর্বাভাস: {{count}}",
+  "horoscope_btn_reveal_today": "আজকের রাশিফল দেখুন",
+  "horoscope_chart_hint": "আপনার শেষ জন্ম কুণ্ডলী থেকে চন্দ্র রাশি আগে থেকে নির্বাচিত হয়েছে",
+  "timeframe_daily": "দৈনিক",
+  "timeframe_weekly": "সাপ্তাহিক",
+  "timeframe_monthly": "মাসিক",
+  "timeframe_yearly": "বার্ষিক",
+  "timeframe_custom": "কাস্টম",
 
   "home_badge": "AI-চালিত জ্যোতিষ",
   "home_stat_readings": "রিডিং সম্পন্ন",
