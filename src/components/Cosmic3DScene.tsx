@@ -8,21 +8,11 @@ import {
   TbPlanet,
   TbSunMoon,
   TbComet,
-  TbZodiacAries,
-  TbZodiacTaurus,
-  TbZodiacGemini,
-  TbZodiacCancer,
-  TbZodiacLeo,
-  TbZodiacVirgo,
-  TbZodiacLibra,
-  TbZodiacScorpio,
-  TbZodiacSagittarius,
-  TbZodiacCapricorn,
-  TbZodiacAquarius,
-  TbZodiacPisces,
 } from 'react-icons/tb';
 import styles from './Cosmic3DScene.module.css';
 import GoldDefs from './GoldDefs';
+import { SignIcon } from './ZodiacIcons';
+
 
 interface PlanetDef {
   key: string;
@@ -47,20 +37,12 @@ const PLANETS: PlanetDef[] = [
   { key: 'Ketu', Icon: TbComet, r: 292, dur: 82, phase: 310, size: 20, color: '#22d3ee' },
 ];
 
-const SIGNS: { key: string; Icon: IconType }[] = [
-  { key: 'Aries', Icon: TbZodiacAries },
-  { key: 'Taurus', Icon: TbZodiacTaurus },
-  { key: 'Gemini', Icon: TbZodiacGemini },
-  { key: 'Cancer', Icon: TbZodiacCancer },
-  { key: 'Leo', Icon: TbZodiacLeo },
-  { key: 'Virgo', Icon: TbZodiacVirgo },
-  { key: 'Libra', Icon: TbZodiacLibra },
-  { key: 'Scorpio', Icon: TbZodiacScorpio },
-  { key: 'Sagittarius', Icon: TbZodiacSagittarius },
-  { key: 'Capricorn', Icon: TbZodiacCapricorn },
-  { key: 'Aquarius', Icon: TbZodiacAquarius },
-  { key: 'Pisces', Icon: TbZodiacPisces },
+const SIGNS = [
+  'Aries', 'Taurus', 'Gemini', 'Cancer',
+  'Leo', 'Virgo', 'Libra', 'Scorpio',
+  'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'
 ];
+
 
 const ZODIAC_RADIUS = 344;
 const ZODIAC_DUR = 240; // seconds for one full ring rotation
@@ -105,20 +87,25 @@ export default function Cosmic3DScene() {
               style={{ width: ZODIAC_RADIUS * 2, height: ZODIAC_RADIUS * 2, left: -ZODIAC_RADIUS, top: -ZODIAC_RADIUS }}
             />
             <div className={styles.zodiacRing} style={{ '--dur': `${ZODIAC_DUR}s` } as React.CSSProperties}>
-              {SIGNS.map((s, i) => (
+              {SIGNS.map((sign, i) => (
                 <div
-                  key={s.key}
+                  key={sign}
                   className={styles.zodiacArm}
                   style={{ '--phase': `${i * 30}deg`, '--r': `${ZODIAC_RADIUS}px` } as React.CSSProperties}
                 >
                   <div className={styles.spinCancel} style={{ '--dur': `${ZODIAC_DUR}s` } as React.CSSProperties}>
                     <div className={styles.upright} style={{ '--phase': `${i * 30}deg` } as React.CSSProperties}>
-                      <s.Icon className={styles.zodiacIcon} title={t(`signs.${s.key}`, s.key)} />
+                      <SignIcon
+                        sign={sign}
+                        size={34}
+                        className={styles.zodiacImg}
+                      />
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+
 
             {/* Central Sun */}
             <div className={styles.sunHolder}>

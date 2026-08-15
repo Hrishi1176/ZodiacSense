@@ -3,14 +3,12 @@
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  TbZodiacAries, TbZodiacTaurus, TbZodiacGemini, TbZodiacCancer,
-  TbZodiacLeo, TbZodiacVirgo, TbZodiacLibra, TbZodiacScorpio,
-  TbZodiacSagittarius, TbZodiacCapricorn, TbZodiacAquarius, TbZodiacPisces,
   TbPlanet, TbSunMoon, TbComet,
 } from 'react-icons/tb';
 import { FaSun, FaMoon, FaMars, FaMercury, FaVenus, FaStar } from 'react-icons/fa';
 import type { IconType } from 'react-icons';
 import GoldDefs from './GoldDefs';
+import { SIGN_ICONS } from './ZodiacIcons';
 import styles from './ZodiacWheelChart.module.css';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -31,11 +29,7 @@ interface ZodiacWheelChartProps {
 // ─── Constants ──────────────────────────────────────────────────────────────
 
 const SIGNS = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
-const SIGN_ICONS: IconType[] = [
-  TbZodiacAries, TbZodiacTaurus, TbZodiacGemini, TbZodiacCancer,
-  TbZodiacLeo, TbZodiacVirgo, TbZodiacLibra, TbZodiacScorpio,
-  TbZodiacSagittarius, TbZodiacCapricorn, TbZodiacAquarius, TbZodiacPisces,
-];
+
 
 /** Friendly planet icons (shared with the report table / South Indian grid) */
 export const PLANET_ICONS: Record<string, IconType> = {
@@ -110,6 +104,7 @@ export default function ZodiacWheelChart({ ascendant, planets }: ZodiacWheelChar
   const signName = (s: string) => t(`signs.${s}`, s);
   const planetName = (p: string) => t(`planets.${p}`, p);
   const ascIdx = Math.max(0, SIGNS.indexOf(ascendant));
+  const ascSlug = (ascendant || 'aries').toLowerCase().trim();
   const CenterSignIcon = SIGN_ICONS[ascIdx];
 
   // House k (0-based) → sign index; house 1 = ascendant sign, counter-clockwise
@@ -175,6 +170,9 @@ export default function ZodiacWheelChart({ ascendant, planets }: ZodiacWheelChar
             <stop offset="0%" stopColor="rgba(251,191,36,0.28)" />
             <stop offset="100%" stopColor="rgba(236,72,153,0.16)" />
           </linearGradient>
+          <clipPath id="zwCenterClip">
+            <circle cx={CX} cy={CY - 16} r={21} />
+          </clipPath>
         </defs>
 
         {/* Opaque dark disc — keeps the wheel readable over the moving video */}
@@ -328,19 +326,26 @@ export default function ZodiacWheelChart({ ascendant, planets }: ZodiacWheelChar
         <g className={styles.centerCore}>
           <circle cx={CX} cy={CY} r={R_CENTER} className={styles.centerFill} />
           <circle cx={CX} cy={CY} r={R_CENTER} fill="none" stroke="url(#zwRing)" strokeWidth="1.2" opacity="0.8" />
-          {CenterSignIcon && (
-            <CenterSignIcon
-              x={CX - 17}
-              y={CY - 40}
-              width={34}
-              height={34}
-              className={styles.centerGlyphIcon}
-            />
-          )}
-          <text x={CX} y={CY + 10} className={styles.centerLabel} textAnchor="middle" dominantBaseline="central">
+          
+          {/* Circular sign medallion with gold ring */}
+          <circle cx={CX} cy={CY - 16} r={21} className={styles.centerMedallionBg} />
+          <image
+            href={`/zodiacs/${ascSlug}.png`}
+            x={CX - 21}
+            y={CY - 37}
+            width={42}
+            height={42}
+            clipPath="url(#zwCenterClip)"
+            preserveAspectRatio="xMidYMid slice"
+            className={styles.centerGlyphIcon}
+          />
+          <circle cx={CX} cy={CY - 16} r={21} className={styles.centerMedallionRing} />
+
+          {/* Subtitle & Title */}
+          <text x={CX} y={CY + 18} className={styles.centerLabel} textAnchor="middle" dominantBaseline="central">
             {t('report_chart_center', 'Your Rising Sign')}
           </text>
-          <text x={CX} y={CY + 26} className={styles.centerSub} textAnchor="middle" dominantBaseline="central">
+          <text x={CX} y={CY + 33} className={styles.centerSub} textAnchor="middle" dominantBaseline="central">
             {signName(ascendant)}
           </text>
         </g>

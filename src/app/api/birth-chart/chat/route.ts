@@ -111,6 +111,7 @@ export async function POST(req: Request) {
       finalSystemPrompt,
       userPrompt,
       chatPrompt.maxTokens,
+      { temperature: 0.2, topP: 0.9 }
     );
 
     const quotaResult = await incrementQuotaUsage(userId, 'chatbot');

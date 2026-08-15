@@ -28,7 +28,7 @@
 }
 
 .main {
-  max-width: 1100px;
+  max-width: 1360px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -267,17 +267,84 @@
   color: rgba(71, 85, 105, 0.85);
 }
 
-/* ===== Feature cards ===== */
-.featuresGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+/* ===== Feature cards Slider ===== */
+.sliderContainer {
+  width: 100%;
+  position: relative;
+  margin-top: 1rem;
+}
+
+.sliderControls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-right: 0.5rem;
+}
+
+.sliderNavBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(30, 27, 75, 0.6);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: #c4b5fd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sliderNavBtn:hover:not(:disabled) {
+  background: rgba(139, 92, 246, 0.3);
+  border-color: rgba(139, 92, 246, 0.8);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.navBtnDisabled {
+  opacity: 0.35;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.sliderTrackWrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.featuresSliderTrack {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   gap: 1.5rem;
   width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0.75rem 0.25rem 1.25rem;
+}
+
+.featuresSliderTrack::-webkit-scrollbar {
+  display: none;
 }
 
 .featureCard {
-  min-height: 360px;
-  padding: 2rem 1.85rem 1.75rem;
+  flex: 0 0 calc(25% - 1.15rem);
+  min-width: 290px;
+  max-width: 350px;
+  min-height: 370px;
+  padding: 2rem 1.75rem 1.75rem;
   border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;
@@ -289,6 +356,8 @@
   border: 1px solid var(--glass-border);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  scroll-snap-align: start;
+  user-select: none;
 }
 
 .featureCard:hover {
@@ -348,21 +417,21 @@
 }
 
 .cardContent h3 {
-  font-size: clamp(1.35rem, 2.5vw, 1.6rem);
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
   font-weight: 800;
   color: #ffffff;
   margin-bottom: 0.65rem;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
   letter-spacing: -0.02em;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .cardContent p {
   color: rgba(226, 232, 240, 0.95);
-  line-height: 1.65;
-  font-size: 0.95rem;
+  line-height: 1.6;
+  font-size: 0.92rem;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .cardFooter {
@@ -386,22 +455,35 @@
   color: #fff;
 }
 
-.featureCard h3 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin-bottom: 0.75rem;
-  letter-spacing: -0.3px;
-}
-
-.featureCard p {
-  color: rgba(148, 163, 184, 0.9);
-  line-height: 1.65;
-  font-size: 0.95rem;
-}
-
 [data-theme='light'] .featureCard p {
   color: rgba(71, 85, 105, 0.9);
+}
+
+/* ===== Slider Pagination Dots ===== */
+.sliderDots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.sliderDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: rgba(139, 92, 246, 0.25);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.activeDot {
+  width: 28px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #38bdf8 100%);
+  border-color: #a78bfa;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
 }
 
 /* =============================================
@@ -420,7 +502,8 @@
     margin-bottom: 3.5rem;
   }
   .featureCard {
-    min-height: 320px;
+    flex: 0 0 300px;
+    min-height: 340px;
     padding: 1.75rem 1.5rem;
   }
 }
@@ -460,27 +543,11 @@
   .stat {
     min-width: 90px;
   }
-  .featuresGrid {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
   .featureCard {
-    min-height: 280px;
-    text-align: center;
-  }
-  .cardHeader {
-    flex-direction: row;
-    justify-content: center;
-  }
-  .cardContent {
-    align-items: center;
-  }
-  .cardContent h3,
-  .cardContent p {
-    text-align: center;
-  }
-  .cardFooter {
-    text-align: center;
+    flex: 0 0 82vw;
+    max-width: 320px;
+    min-height: 310px;
+    padding: 1.5rem 1.25rem;
   }
 }
 
@@ -511,13 +578,14 @@
     font-size: 0.7rem;
   }
   .featureCard {
-    min-height: 260px;
-    padding: 1.5rem 1.25rem 1.25rem;
+    flex: 0 0 85vw;
+    min-height: 290px;
+    padding: 1.25rem 1rem;
   }
   .cardContent h3 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
   .cardContent p {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
   }
 }

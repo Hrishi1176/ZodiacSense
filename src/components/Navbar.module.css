@@ -17,13 +17,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.85rem;
   padding: 0.85rem 1.5rem;
   background: rgba(5, 5, 26, 0.45);
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
   border-bottom: 1px solid rgba(139, 92, 246, 0.18);
   transition: all 0.4s ease;
-  overflow: hidden;
 }
 
 .scrolled .navContainer {
@@ -99,32 +99,60 @@
   100% { transform: scale(1.12); filter: drop-shadow(0 0 10px rgba(56, 189, 248, 1)); }
 }
 
-/* ===== NAV LINKS ===== */
+/* ===== NAV LINKS (Scrollable on all devices, single line) ===== */
 .navLinks {
   display: flex;
-  gap: 1.75rem;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1.35rem;
   align-items: center;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap !important;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  -webkit-overflow-scrolling: touch;
+  padding: 0.25rem 0.5rem;
+  margin: 0 0.5rem;
+}
+
+.navLinks::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .navLinks a {
   display: inline-flex;
+  flex-direction: row;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   text-decoration: none;
   color: var(--text-color);
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   letter-spacing: 0.3px;
   position: relative;
   opacity: 0.88;
   transition: opacity 0.3s, color 0.3s, transform 0.2s;
-  padding: 0.4rem 0;
+  padding: 0.4rem 0.1rem;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  flex-shrink: 0 !important;
+}
+
+.navLinkLabel {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  display: inline-block;
 }
 
 .navLinkIcon {
   font-size: 1rem;
   filter: drop-shadow(0 0 4px rgba(139, 92, 246, 0.4));
   transition: transform 0.3s;
+  flex-shrink: 0;
+  display: inline-block;
 }
 
 .navLinks a:hover .navLinkIcon {
@@ -153,12 +181,23 @@
 }
 
 .dashboardLink {
-  display: flex;
+  display: inline-flex;
+  flex-direction: row;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   color: #38bdf8 !important;
   font-weight: 600 !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  flex-shrink: 0 !important;
 }
+
+.dashboardLink span {
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+}
+
+
 
 /* ===== ACTIONS ===== */
 .actions {

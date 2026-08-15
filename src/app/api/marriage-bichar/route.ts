@@ -192,6 +192,7 @@ export async function POST(req: Request) {
       finalSystemPrompt,
       userPrompt,
       marriageBicharPrompt.maxTokens,
+      { temperature: 0.2, topP: 0.9 }
     );
 
     // Translate the English report to the user's locale (no-op for English)
